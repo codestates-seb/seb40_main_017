@@ -1,4 +1,4 @@
-package team017.response;
+package team017.global.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
