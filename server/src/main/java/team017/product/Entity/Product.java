@@ -26,7 +26,6 @@ public class Product {
     private int stock;
 
     @Column(nullable = false)
-    private String category; //상품분류
-
+    private int category; //상품분류 (과일 :1 , 채소: 2, 곡물: 3,  견과류: 4)
 
 }
