@@ -19,9 +19,8 @@ public class Ord {
     @Column(length = 13, nullable = false, unique = true)
     private String phone;
 
-    @Enumerated(value = EnumType.STRING)
-    @Column()
-    private String status;
+//    @Enumerated(value = EnumType.STRING)
+//    private String status;
 
     //상품 PK OneToMany
 //  @OneToMany(mappedBy = "ord", targetEntity = product.class)
