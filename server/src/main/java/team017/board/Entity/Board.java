@@ -39,5 +39,4 @@ public class Board extends Auditable {
     @OneToOne
     private Product product;
 
-
 }
