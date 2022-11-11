@@ -24,12 +24,12 @@ public class MemberDto {
 		private String name;
 
 		/* 비밀번호 형식을 지켜서 작성해야 한다. */
-		// @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,15}$",
-		// 	message = "비밀번호는 숫자, 영어 포함 8~15자리 이내로 구성해야합니다.")
+		@Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,15}$",
+			message = "비밀번호는 숫자, 영어 포함 8~15자리 이내로 구성해야합니다.")
 		private String password;
 
-		// @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,15}$",
-		// 	message = "비밀번호는 숫자, 영어 포함 8~15자리 이내로 구성해야합니다.")
+		@Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,15}$",
+			message = "비밀번호는 숫자, 영어 포함 8~15자리 이내로 구성해야합니다.")
 		private String passwordCheck;
 
 		@Pattern(regexp = "^01(?:0|1|[6-9])-(?:\\d{3}|\\d{4})-\\d{4}$",
