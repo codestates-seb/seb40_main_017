@@ -8,7 +8,6 @@ import team017.product.Entity.Product;
 
 import javax.persistence.*;
 
-
 @Getter
 @Setter
 @Entity
