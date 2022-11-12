@@ -17,6 +17,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import team017.board.Entity.Board;
+import team017.ord.entity.Ord;
+import team017.product.Entity.Product;
 
 @Getter
 @Entity
@@ -64,10 +66,42 @@ public class Seller {
 		this.introduce = introduce;
 	}
 
-	//ssh 추가
-	@OneToMany(mappedBy = "seller", cascade = {CascadeType.REMOVE}, targetEntity = Board.class)
-	private List<Board> board = new ArrayList<>();
+	/* 🧡게시판 - 판매자 일대다 연관 관계 : 판매자 참조 */
+	@OneToMany(mappedBy = "seller", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, targetEntity = Board.class)
+	private List<Board> boardList = new ArrayList<>();
 
-//	@OneToMany(mappedBy = "product",cascade = {CascadeType.REMOVE}, targetEntity = Product.class)
-//	private List<Product> product = new ArrayList<>();
+	/* 🧡게시판 - 판매자 연관 관계 편의 메서드*/
+	public void addBoards (Board board) {
+		boardList.add(board);
+
+		if (board.getSeller() != this) {
+			board.setSeller(this);
+		}
+	}
+
+	/* 💙상품 - 판매자 일대다 연관 관계 : 판매자 참조 */
+	@OneToMany(mappedBy = "seller",cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, targetEntity = Product.class)
+	private List<Product> productList = new ArrayList<>();
+
+	/* 💙상품 - 판매자 연관 관계 편의 메서드*/
+	public void addProduct(Product product){
+		productList.add(product);
+
+		if(product.getSeller() !=this){
+			product.setSeller(this);
+		}
+	}
+
+	/* 💖판매자 - 주문 일대다 연관 관계 : 판매자 참조 */
+	@OneToMany(mappedBy = "seller", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+	private List<Ord> ordList = new ArrayList<>();
+
+	/* 💖판매자 - 주문 연관 관계 편의 메서드  */
+	public void addOrd (Ord ord) {
+		ordList.add(ord);
+
+		if (ord.getSeller() != this) {
+			ord.setSeller(this);
+		}
+	}
 }

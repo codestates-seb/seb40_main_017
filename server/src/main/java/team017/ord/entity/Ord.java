@@ -2,10 +2,15 @@ package team017.ord.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import team017.member.entity.Client;
+import team017.member.entity.Seller;
+import team017.product.Entity.Product;
 
 import javax.persistence.*;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @Entity
 public class Ord {
@@ -23,10 +28,18 @@ public class Ord {
 	// @Column()
 	// private String status;
 
-	//상품 PK OneToMany
-	//  @OneToMany(mappedBy = "ord", targetEntity = product.class)
+	/* 💖판매자 - 주문 다대일 연관 관계 : 판매자 참조 */
+	@ManyToOne
+	@JoinColumn(name = "seller_id")
+	private Seller seller;
 
-	//소비자 PK OneToMany
-	//   @OneToMany(mappedBy = "ord", targetEntity = client.class)
+	/* 💛 소비자 - 주문 다대일 연관 관계 : 소비자 참조 */
+	@ManyToOne
+	@JoinColumn(name = "client_id")
+	private Client client;
 
+	/* 🍑상품 - 주문 다대일 연관 관계 : 상품 참조 */
+	@ManyToOne
+	@JoinColumn(name = "product_id")
+	private Product product;
 }
