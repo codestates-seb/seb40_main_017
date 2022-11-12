@@ -37,6 +37,10 @@ public class MemberController {
 			throw new BusinessLogicException(ExceptionCode.PASSWORD_NOT_MATCH);
 		}
 
+		if (!requestBody.getRole().equalsIgnoreCase("CLIENT") || !requestBody.getRole().equalsIgnoreCase("SELLER")) {
+			throw new RuntimeException("역할 선택이 잘못되었습니다.");
+		}
+
 		Member member = memberService.createMember(mapper.memberDtoToMember(requestBody));
 		MemberDto.Response response = mapper.memberToMemberResponseDto(member);
 
