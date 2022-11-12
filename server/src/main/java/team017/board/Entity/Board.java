@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import team017.global.audit.Auditable;
-import team017.product.Entity.Product;
+// import team017.product.Entity.Product;
 
 import javax.persistence.*;
 
@@ -34,7 +34,7 @@ public class Board extends Auditable {
     @Column(nullable = false)
     private double avg ;
 
-    @OneToOne
-    private Product product;
+    // @OneToOne
+    // private Product product;
 
 }
