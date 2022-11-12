@@ -36,7 +36,3 @@ out/
 
 ### VS Code ###
 .vscode/
-
-######
-.yml
-build.gradle
