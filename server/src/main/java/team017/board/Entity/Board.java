@@ -4,7 +4,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import team017.global.audit.Auditable;
-// import team017.product.Entity.Product;
+import team017.member.entity.Seller;
+import team017.product.Entity.Product;
 
 import javax.persistence.*;
 
@@ -17,7 +18,7 @@ public class Board extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long sellBoardId;
+    private Long boardId;
 
     @Column(length = 100, nullable = false)
     private String title;
@@ -28,13 +29,21 @@ public class Board extends Auditable {
     @Column(nullable = false )
     private int viewCount;
 
+//    @Column(nullable = false )
+//    private String status; //판매 상태
+
 //    @Column
-//    List<String> imageList = new ArrayList<String>();
+//    private List<String> imageList = new ArrayList<>();
 
     @Column(nullable = false)
     private double avg ;
 
-    // @OneToOne
-    // private Product product;
+    @OneToOne
+    @JoinColumn(name = "productId" , referencedColumnName = "productId")
+    private Product product;
+
+    @ManyToOne
+    @JoinColumn(name = "sellerId" , referencedColumnName = "sellerId")
+    private Seller seller;
 
 }
