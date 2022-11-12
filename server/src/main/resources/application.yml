@@ -6,11 +6,11 @@ spring:
     password:
 
   jpa:
+    open-in-view: true
     show-sql: true
     hibernate:
       format_sql: true
       ddl-auto: create
-
   logging:
     level:
       org:
@@ -18,3 +18,14 @@ spring:
           SQL: DEBUG
           type:
             trace
+cloud:
+  aws:
+    credentials:
+      access-key: ${AWS_ACCESS_KEY}
+      secret-key: ${AWS_SECRET_ACCESS_KEY}
+    s3:
+      bucket: jihoon-bucket
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false

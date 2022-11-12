@@ -3,14 +3,12 @@ package team017.member.dto;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 public class MemberDto {
 
-	@Getter
+	@Getter @Setter
+	@NoArgsConstructor
 	@AllArgsConstructor
 	public static class Post {
 
@@ -42,10 +40,8 @@ public class MemberDto {
 		/* role 은 Security 하면서 작업 예정 */
 		private String role;
 	}
-	/* 수정은 생산자 및 소비자 DTO 에서 해야하나? */
-
-	@Builder
 	@Getter
+	@Setter
 	public static class Response {
 		private long memberId;
 		private String email;
@@ -54,4 +50,6 @@ public class MemberDto {
 		private String address;
 		/* role 은 Security 하면서 작업 예정 */
 	}
+
+	/* 수정은 생산자 및 소비자 DTO 에서 해야하나? */
 }
