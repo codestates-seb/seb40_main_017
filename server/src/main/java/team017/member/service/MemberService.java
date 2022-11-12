@@ -1,5 +1,6 @@
 package team017.member.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -9,17 +10,24 @@ import team017.global.Exception.BusinessLogicException;
 import team017.global.Exception.ExceptionCode;
 import team017.member.entity.Member;
 import team017.member.repository.MemberRepository;
+import team017.security.utils.CustomAuthorityUtils;
 
 @Service
 @RequiredArgsConstructor
 public class MemberService {
 
 	private final MemberRepository memberRepository;
+	private final CustomAuthorityUtils authorityUtils;
 
 	/* 회원 가입 */
 	public Member createMember(Member member) {
 		verifyEmailExist(member.getEmail());
-		/* 역할 및 비밀번호 암호화는 테스트 후에 추가 예정 */
+		List<String> roles = authorityUtils.createRoles(member.getRole());
+
+		/* 대문자로 저장 */
+		member.setRole(member.getRole().toUpperCase());
+		member.setRoles(roles);
+		/* 비밀번호 암호화는 테스트 후에 추가 예정 */
 
 		return memberRepository.save(member);
 	}
