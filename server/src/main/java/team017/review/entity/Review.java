@@ -1,5 +1,6 @@
 package team017.review.entity;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import team017.global.audit.Auditable;
@@ -23,4 +24,11 @@ public class Review extends Auditable {
     @Column(nullable = false)
     private Double star;
 
+    @Builder
+    public Review(Long reviewId, String context, String image, Double star) {
+        this.reviewId = reviewId;
+        this.context = context;
+        this.image = image;
+        this.star = star;
+    }
 }

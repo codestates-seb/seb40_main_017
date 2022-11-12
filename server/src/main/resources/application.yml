@@ -17,3 +17,15 @@ spring:
         format_sql: true
   sql:
     init:
+cloud:
+  aws:
+    credentials:
+      access-key: ${ AWS_ACCESS_KEY }
+      secret-key: ${ AWS_SECRET_ACCESS_KEY }
+    s3:
+      bucket: jihoon-bucket
+      dir:
+    region:
+      static: ap-northeast-2
+    stack:
+      auto:false
