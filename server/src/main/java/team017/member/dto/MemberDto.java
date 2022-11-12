@@ -3,13 +3,12 @@ package team017.member.dto;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
 public class MemberDto {
 
-	@Getter
+	@Getter @Setter
+	@NoArgsConstructor
 	@AllArgsConstructor
 	public static class Post {
 
@@ -26,6 +25,9 @@ public class MemberDto {
 		@Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,15}$",
 			message = "비밀번호는 숫자, 영어 포함 8~15자리 이내로 구성해야합니다.")
 		private String password;
+
+		@Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,15}$",
+			message = "비밀번호는 숫자, 영어 포함 8~15자리 이내로 구성해야합니다.")
 		private String passwordCheck;
 
 		@Pattern(regexp = "^01(?:0|1|[6-9])-(?:\\d{3}|\\d{4})-\\d{4}$",
@@ -36,17 +38,18 @@ public class MemberDto {
 		private String address;
 
 		/* role 은 Security 하면서 작업 예정 */
+		private String role;
 	}
-	/* 수정은 생산자 및 소비자 DTO 에서 해야하나? */
-
 	@Getter
-	@Builder
+	@Setter
 	public static class Response {
-		private Long memberId;
+		private long memberId;
 		private String email;
 		private String name;
 		private String phone;
 		private String address;
 		/* role 은 Security 하면서 작업 예정 */
 	}
+
+	/* 수정은 생산자 및 소비자 DTO 에서 해야하나? */
 }
