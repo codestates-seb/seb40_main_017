@@ -39,8 +39,8 @@ public class SellerImage extends Auditable {
 	public void setSeller(Seller seller) {
 		this.seller = seller;
 
-		// if (seller.getSellerImage() != this) {
-		// 	seller.setSellerImage(this);
-		// }
+		if (seller.getSellerImage() != this) {
+			seller.setSellerImage(this);
+		}
 	}
 }
