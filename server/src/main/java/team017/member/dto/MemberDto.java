@@ -45,25 +45,12 @@ public class MemberDto {
 		/* 들어오는 값으로 Authority 부여 및 DB에 역할 저장 */
 		private String role;
 	}
-	/* 수정은 생산자 및 소비자 DTO 에서 해야하나? */
-
-
-	@Getter
-	@Setter
-	@NoArgsConstructor
-	public static class Response {
-		private long memberId;
-		private String email;
-		private String name;
-		private String phone;
-		private String address;
-		private String role;
-	}
 
 	@Getter
 	@Setter
 	@NoArgsConstructor
 	public static class ClientDto{
+		private long memberId;
 		private long clientId;
 		private String email;
 		private String name;
@@ -76,6 +63,7 @@ public class MemberDto {
 	@Setter
 	@NoArgsConstructor
 	public static class SellerDto{
+		private long memberId;
 		private long sellerId;
 		private String email;
 		private String name;

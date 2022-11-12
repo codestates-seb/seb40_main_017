@@ -55,14 +55,18 @@ public class MemberController {
 		/* role 입력이 제대로 되었다면, 각 역할의 클래스에도 저장이 되어야 함. */
 		if (requestBody.getRole().equalsIgnoreCase("client")) {
 			member.setClient(new Client());
+			Member createMember = memberService.createMember(member);
+			MemberDto.ClientDto response = mapper.memberToClientDto(createMember, createMember.getClient());
+			return new ResponseEntity<>(response, HttpStatus.CREATED);
 		}
 		if (requestBody.getRole().equalsIgnoreCase("seller")) {
 			member.setSeller(new Seller());
+			Member createMember = memberService.createMember(member);
+			MemberDto.SellerDto response = mapper.memberToSellerDto(createMember, createMember.getSeller());
+			return new ResponseEntity<>(response, HttpStatus.CREATED);
 		}
-		Member createMember = memberService.createMember(member);
-		MemberDto.Response response = mapper.memberToMemberResponseDto(createMember);
 
-		return new ResponseEntity<>(response, HttpStatus.CREATED);
+		throw new RuntimeException("알 수 없는 에러입니다.");
 	}
 
 	/* 회원 탈퇴 -> DB 삭제 */
