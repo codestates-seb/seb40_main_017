@@ -57,19 +57,6 @@ public class Seller {
 		}
 	}
 
-	/* 🌺판매자 - 판매 내역 일대다 연관 관계 : 판매자 참조 */
-	@OneToMany(mappedBy = "seller")
-	private List<SellHistory> sellHistoryList = new ArrayList<>();
-
-	/* 🌺판매자 - 판매 내역 연관 관계 편의 메서드 */
-	public void addSellHistory(SellHistory sellHistory) {
-		sellHistoryList.add(sellHistory);
-
-		if (sellHistory.getSeller() != this) {
-			sellHistory.setSeller(this);
-		}
-	}
-
 	@Builder
 	public Seller(Long sellerId, String introduce) {
 		this.sellerId = sellerId;
