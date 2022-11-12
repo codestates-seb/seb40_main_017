@@ -16,6 +16,7 @@ import javax.persistence.OneToOne;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import team017.board.Entity.Board;
 
 @Getter
 @Entity
@@ -62,4 +63,11 @@ public class Seller {
 		this.sellerId = sellerId;
 		this.introduce = introduce;
 	}
+
+	//ssh 추가
+	@OneToMany(mappedBy = "seller", cascade = {CascadeType.REMOVE}, targetEntity = Board.class)
+	private List<Board> board = new ArrayList<>();
+
+//	@OneToMany(mappedBy = "product",cascade = {CascadeType.REMOVE}, targetEntity = Product.class)
+//	private List<Product> product = new ArrayList<>();
 }

@@ -30,13 +30,4 @@ public class BoardPostDto {
     @NotBlank
     private int category;
 
-    @Getter
-    @AllArgsConstructor
-    public static class ProductPostDto {
-
-
-    }
-
-
-
 }
