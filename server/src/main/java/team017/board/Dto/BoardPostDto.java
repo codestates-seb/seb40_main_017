@@ -4,10 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import team017.member.entity.Seller;
-import team017.product.Entity.Product;
 
-import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Getter
 @Setter
@@ -17,14 +15,28 @@ public class BoardPostDto {
 
     private Long sellerId;
 
+    @NotBlank
     private String title;
 
+    @NotBlank
     private String content;
 
+    @NotBlank
     private int price;
 
+    @NotBlank
     private int stock;
 
-    private String category;
+    @NotBlank
+    private int category;
+
+    @Getter
+    @AllArgsConstructor
+    public static class ProductPostDto {
+
+
+    }
+
+
 
 }
