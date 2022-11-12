@@ -18,6 +18,7 @@ spring:
           SQL: DEBUG
           type:
             trace
+          
 cloud:
   aws:
     credentials:
