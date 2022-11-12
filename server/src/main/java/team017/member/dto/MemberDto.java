@@ -40,6 +40,7 @@ public class MemberDto {
 		private String address;
 
 		/* role 은 Security 하면서 작업 예정 */
+		private String role;
 	}
 	/* 수정은 생산자 및 소비자 DTO 에서 해야하나? */
 
