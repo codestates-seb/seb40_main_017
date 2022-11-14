@@ -40,10 +40,13 @@ public class BoardController {
 
     //게시글 삭제
     @DeleteMapping("/{board_id}")
-    public ResponseEntity deleteBoard(){
+    public ResponseEntity deleteBoard(@PathVariable("board_id") long boardId){
+        boardService.deleteBoard(boardId);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>("Success",HttpStatus.OK);
     }
+
+
 //
 //    //특정 상품 조회(상품 페이지)
 //    @GetMapping("/{board_id}")

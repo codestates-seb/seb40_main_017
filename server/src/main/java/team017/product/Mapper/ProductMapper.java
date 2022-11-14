@@ -12,5 +12,4 @@ public interface ProductMapper {
 
     Product boardPostDtoToProduct(BoardPostDto boardPostDto);
 
-    Product boardPatchDtoToProduct(BoardPatchDto boardPatchDto);
 }
