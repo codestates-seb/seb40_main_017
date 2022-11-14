@@ -31,7 +31,7 @@ public class Board extends Auditable {
     private String content;
 
     @Column(nullable = false )
-    private int viewCount;
+    private int view;
 
 //    @Column(nullable = false )
 //    private String status; //판매 상태
