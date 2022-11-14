@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { FiPackage } from 'react-icons/fi';
 import { GiShinyApple, GiCarrot, GiGrain, GiPeanut } from 'react-icons/gi';
 
-const Homenav = styled.div`
+const Homenavbox = styled.div`
   background: var(--darker-gray);
   width: 100%;
   height: 350px;
@@ -33,7 +33,7 @@ const Homenav = styled.div`
 
 function HomeNav() {
   return (
-    <Homenav>
+    <Homenavbox>
       <div>
         <div className="icon">
           <FiPackage size={75} color={'var(--white)'} />
@@ -64,7 +64,7 @@ function HomeNav() {
         </div>
         <p>견과류</p>
       </div>
-    </Homenav>
+    </Homenavbox>
   );
 }
 

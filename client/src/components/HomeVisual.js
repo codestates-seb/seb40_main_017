@@ -4,7 +4,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/swiper-bundle.min.css';
 import 'swiper/swiper.min.css';
 
-const Homevisual = styled.div`
+const Homevisualbox = styled.div`
   background: var(--green);
   box-sizing: border-box;
   width: 100%;
@@ -127,7 +127,7 @@ function HomeVisual() {
   };
 
   return (
-    <Homevisual ref={visualRef} onClick={handleChange}>
+    <Homevisualbox ref={visualRef} onClick={handleChange}>
       <div className="text effect">
         <h1 className="text-white effect" ref={headerRef}>
           {' '}
@@ -163,7 +163,7 @@ function HomeVisual() {
           </SwiperSlide>
         </Swiper>
       </div>
-    </Homevisual>
+    </Homevisualbox>
   );
 }
 
