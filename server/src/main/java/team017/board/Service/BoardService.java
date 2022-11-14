@@ -2,17 +2,23 @@ package team017.board.Service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import team017.board.Dto.BoardPatchDto;
 import team017.board.Dto.BoardPostDto;
 import team017.board.Dto.BoardResponseDto;
 import team017.board.Entity.Board;
 import team017.board.Mapper.BoardMapper;
 import team017.board.Repository.BoardRepository;
+import team017.global.Exception.BusinessLogicException;
+import team017.global.Exception.ExceptionCode;
+
 import team017.member.entity.Seller;
 import team017.member.service.SellerService;
 import team017.product.Entity.Product;
 import team017.product.Mapper.ProductMapper;
 import team017.product.Repository.ProductRepository;
 import team017.product.Service.ProductService;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -63,6 +69,69 @@ public class BoardService {
     }
 
 
+    public BoardResponseDto updateBoard(long boardId, BoardPatchDto boardPatchDto) {
+
+        //boardId 존재 여부 확인
+        Board findBoard = findVerifiedBoard(boardPatchDto.getBoardId());
+
+        //상품 update
+        Product updatedProduct = updateProduct(findBoard, boardPatchDto);
+
+        //게시글 update (단, 재고는 update 되지 않음)
+        Optional.ofNullable(boardPatchDto.getContent())
+                .ifPresent(content -> findBoard.setContent(content));
+        Optional.ofNullable(boardPatchDto.getTitle())
+                .ifPresent(title -> findBoard.setTitle(title));
+
+        Board updatedBoard = boardRepository.save(findBoard);
+
+        BoardResponseDto boardResponseDto = boardMapper.productToBoardResponseDto(updatedProduct, updatedBoard);
+
+        return boardResponseDto;
+
+    }
+
+    public Product updateProduct(Board findBoard, BoardPatchDto boardPatchDto) {
+
+        //productId 확인
+        Product findProduct = findVerifiedProduct(findBoard.getProduct());
+
+        //상품 update
+        Optional.ofNullable(boardPatchDto.getPrice())
+                .ifPresent(price -> findProduct.setPrice(price));
+        Optional.ofNullable(boardPatchDto.getStatus())
+                .ifPresent(status ->findProduct.setStatus(status));
+        Optional.ofNullable(boardPatchDto.getCategory())
+                .ifPresent(category -> findProduct.setCategory(category));
+
+
+        return productRepository.save(findProduct);
+    }
+
+    public Product findVerifiedProduct(Product product) {
+        Optional<Product> optionalProduct = productRepository.findById(product.getProductId());
+        Product findProduct = optionalProduct.orElseThrow(()-> new BusinessLogicException(ExceptionCode.PRODUCT_NOT_FOUND));
+        return findProduct;
+    }
+
+    public Board findVerifiedBoard(long boardId) {
+        Optional<Board> optionalBoard = boardRepository.findById(boardId);
+        Board findBoard = optionalBoard.orElseThrow(()-> new BusinessLogicException(ExceptionCode.BOARD_NOT_FOUND));
+        return findBoard;
+
+    }
+
+    public void deleteBoard(long boardId) {
+        Board findBoard = findVerifiedBoard(boardId);
+        Product findProduct = findVerifiedProduct(findBoard.getProduct());
+
+        //상품 삭제
+        boardRepository.delete(findBoard);
+
+        //게시글 삭제
+        productRepository.delete(findProduct);
+
+    }
 
 
 }
