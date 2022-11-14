@@ -16,12 +16,14 @@ import javax.persistence.OneToOne;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import team017.board.Entity.Board;
 import team017.ord.entity.Ord;
 import team017.product.Entity.Product;
 
 @Getter
 @Entity
+@Setter
 @NoArgsConstructor
 public class Seller {
 	@Id
