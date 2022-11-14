@@ -13,9 +13,8 @@ import java.time.LocalDateTime;
 public interface BoardMapper {
     Board boardPostDtoToBoard(BoardPostDto boardPostDto);
 
-    //@Mapping(target = "seller.Set", expression = "java(product.getSeller().getSellerId())")
-    Board productToBoard(Product product ,BoardPostDto boardPostDto);
-    //@Mapping(target = "status", expression = "java(product.getStatus())")
+    @Mapping(target = "status", expression = "java(product.getStatus())")
+    @Mapping(target = "sellerId", expression = "java(board.getSeller().getSellerId())")
     BoardResponseDto productToBoardResponseDto(Product product , Board board);
 
 }

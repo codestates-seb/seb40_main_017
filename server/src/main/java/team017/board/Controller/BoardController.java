@@ -35,9 +35,13 @@ public class BoardController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-//
-//    //게시글 삭제
-//    @DeleteMapping("/{board_id}")
+
+    //게시글 삭제
+    @DeleteMapping("/{board_id}")
+    public ResponseEntity deleteBoard(){
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 //
 //    //특정 상품 조회(상품 페이지)
 //    @GetMapping("/{board_id}")
