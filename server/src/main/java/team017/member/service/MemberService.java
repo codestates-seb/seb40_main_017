@@ -31,6 +31,17 @@ public class MemberService {
 
 		return memberRepository.save(member);
 	}
+	/* 회원 수정 (멤버 파트) */
+	public Member updateMember(long memberId, Member member) {
+		Member findMember = findVerifiedMember(memberId);
+
+		Optional.ofNullable(member.getName()).ifPresent(name -> findMember.setName(name));
+		Optional.ofNullable(member.getPhone()).ifPresent(phone -> findMember.setPhone(phone));
+		Optional.ofNullable(member.getAddress()).ifPresent(address -> findMember.setAddress(address));
+		Optional.ofNullable(member.getPassword()).ifPresent(password -> findMember.setPassword(password));
+
+		return memberRepository.save(findMember);
+	}
 
 	/* 회원 탈퇴 */
 	public void deleteMember(long memberId) {
