@@ -6,7 +6,9 @@ public enum ExceptionCode {
 
 	MEMBER_NOT_FOUND(404, "MEMBER not found"),
 	PASSWORD_NOT_MATCH(400, "비밀번호가 일치하지 않습니다."),
-	MEMBER_EXISTS(409, "Member exists");
+	MEMBER_EXISTS(409, "Member exists"),
+	UNAUTHORIZED_MEMBER(403, "not authorized user");
+
 
 	@Getter
 	private int status;
