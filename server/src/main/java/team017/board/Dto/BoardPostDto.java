@@ -30,4 +30,5 @@ public class BoardPostDto {
     @NotBlank
     private int category;
 
+
 }
