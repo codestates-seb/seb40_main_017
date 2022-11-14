@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
+import team017.global.Exception.BusinessLogicException;
+import team017.global.Exception.ExceptionCode;
 import team017.member.dto.MemberDto;
 import team017.member.dto.SellerPatchDto;
 import team017.member.entity.Member;
@@ -32,7 +34,7 @@ public class SellerController {
 	@GetMapping("/{seller_id}")
 	public ResponseEntity getSeller(@PathVariable("seller_id") @Positive long sellerId) {
 		Seller seller = sellerService.findVerifiedSeller(sellerId);
-		Member member = memberService.findVerifiedMember(seller.getMember().getMemberId());
+		Member member = seller.getMember();
 		MemberDto.SellerDto response = mapper.memberToSellerDto(member, seller);
 
 		return ResponseEntity.ok(response);
@@ -40,8 +42,16 @@ public class SellerController {
 
 	/* 판매자 정보 수정 */
 	@PatchMapping("/{seller_id}")
-	public ResponseEntity patchSeller(@PathVariable("seller-id") @Positive long sellerId,
+	public ResponseEntity patchSeller(@PathVariable("seller_id") @Positive long sellerId,
 			@RequestBody SellerPatchDto sellerPatchDto) {
-		return null;
+		if (sellerId != sellerPatchDto.getSellerId()) {
+			throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND);
+		}
+		long memberId = sellerService.findVerifiedSeller(sellerId).getMember().getMemberId();
+		Member member = memberService.updateMember(memberId, mapper.sellerPatchDtoToMember(sellerPatchDto));
+		Seller seller = sellerService.updateSeller(mapper.sellerPatchDtoToSeller(sellerPatchDto));
+		MemberDto.SellerDto response = mapper.memberToSellerDto(member, seller);
+
+		return ResponseEntity.ok(response);
 	}
 }
