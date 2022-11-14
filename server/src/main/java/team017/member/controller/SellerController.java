@@ -35,23 +35,18 @@ public class SellerController {
 	public ResponseEntity getSeller(@PathVariable("seller_id") @Positive long sellerId) {
 		Seller seller = sellerService.findVerifiedSeller(sellerId);
 		Member member = seller.getMember();
-		MemberDto.SellerDto response = mapper.memberToSellerDto(member, seller);
 
-		return ResponseEntity.ok(response);
+		return ResponseEntity.ok(mapper.memberToSellerDto(member, seller));
 	}
 
 	/* 판매자 정보 수정 */
 	@PatchMapping("/{seller_id}")
 	public ResponseEntity patchSeller(@PathVariable("seller_id") @Positive long sellerId,
 			@RequestBody SellerPatchDto sellerPatchDto) {
-		if (sellerId != sellerPatchDto.getSellerId()) {
-			throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND);
-		}
-		long memberId = sellerService.findVerifiedSeller(sellerId).getMember().getMemberId();
+		Seller seller = sellerService.updateSeller(sellerId, mapper.sellerPatchDtoToSeller(sellerPatchDto));
+		long memberId = seller.getMember().getMemberId();
 		Member member = memberService.updateMember(memberId, mapper.sellerPatchDtoToMember(sellerPatchDto));
-		Seller seller = sellerService.updateSeller(mapper.sellerPatchDtoToSeller(sellerPatchDto));
-		MemberDto.SellerDto response = mapper.memberToSellerDto(member, seller);
 
-		return ResponseEntity.ok(response);
+		return ResponseEntity.ok(mapper.memberToSellerDto(member, seller));
 	}
 }
