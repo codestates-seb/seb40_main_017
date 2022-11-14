@@ -2,6 +2,7 @@ package team017.product.Service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import team017.board.Dto.BoardPatchDto;
 import team017.global.Exception.BusinessLogicException;
 import team017.global.Exception.ExceptionCode;
 import team017.product.Entity.Product;

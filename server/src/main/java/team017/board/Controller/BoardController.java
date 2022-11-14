@@ -18,7 +18,7 @@ public class BoardController {
 
     private final BoardService boardService;
 
-    //게시판 등록
+    //게시글 등록
     @PostMapping()
     public ResponseEntity postBoard(@RequestBody BoardPostDto boardPostDto){
 
@@ -27,12 +27,14 @@ public class BoardController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    //게시판 수정
+    //게시글 수정
     @PatchMapping("/{board_id}")
     public ResponseEntity patchBoard(   @PathVariable("board_id") long boardId,
                                         @RequestBody BoardPatchDto boardPatchDto){
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        BoardResponseDto response = boardService.updateBoard(boardId, boardPatchDto);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 

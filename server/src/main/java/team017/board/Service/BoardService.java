@@ -2,17 +2,22 @@ package team017.board.Service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import team017.board.Dto.BoardPatchDto;
 import team017.board.Dto.BoardPostDto;
 import team017.board.Dto.BoardResponseDto;
 import team017.board.Entity.Board;
 import team017.board.Mapper.BoardMapper;
 import team017.board.Repository.BoardRepository;
+import team017.global.Exception.BusinessLogicException;
+import team017.global.Exception.ExceptionCode;
 import team017.member.entity.Seller;
 import team017.member.service.SellerService;
 import team017.product.Entity.Product;
 import team017.product.Mapper.ProductMapper;
 import team017.product.Repository.ProductRepository;
 import team017.product.Service.ProductService;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -63,6 +68,37 @@ public class BoardService {
     }
 
 
+    public BoardResponseDto updateBoard(long boardId, BoardPatchDto boardPatchDto) {
+
+        //boardId 존재 여부 확인
+        Board findBoard = findVerifiedBoard(boardPatchDto.getBoardId());
+
+        //상품 update
+        Product product = updateProduct(findBoard, boardPatchDto);
+
+        //게시글 update
+
+
+
+
+
+
+    }
+
+    public Product updateProduct(Board board, BoardPatchDto boardPatchDto) {
+
+        //
+        Product product = productRepository.fin
+                productMapper.boardPatchDtoToProduct(boardPatchDto);
+        return productRepository.save(product);
+    }
+
+    public Board findVerifiedBoard(long boardId) {
+        Optional<Board> optionalBoard = boardRepository.findById(boardId);
+        Board findboard = optionalBoard.orElseThrow(()-> new BusinessLogicException(ExceptionCode.BOARD_NOT_FOUND));
+        return findboard;
+
+    }
 
 
 }
