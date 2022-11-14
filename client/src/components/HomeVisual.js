@@ -5,7 +5,6 @@ import 'swiper/swiper-bundle.min.css';
 import 'swiper/swiper.min.css';
 
 const Homevisual = styled.div`
-  position: relative;
   background: var(--green);
   box-sizing: border-box;
   width: 100%;
@@ -15,21 +14,7 @@ const Homevisual = styled.div`
   justify-content: center;
   padding-left: 150px;
   overflow: hidden;
-  .cursor {
-    width: 3rem;
-    height: 3rem;
-    border: 2px solid var(--black);
-    border-radius: 50%;
-    position: absolute;
-    z-index: 1000;
-    transform: translate(-50%, -50%);
-    pointer-events: none;
-    transition: all 0.3s ease;
-    transition-property: background, transform;
-    transform-origin: 100% 100%;
-    backdrop-filter: sepia(20%);
-    background-size: cover;
-  }
+
   .text {
     display: flex;
     flex-direction: column;
@@ -115,12 +100,15 @@ const Homevisual = styled.div`
 
 function HomeVisual() {
   const [swiper, setSwiper] = useState(null);
+
   const visualRef = useRef(null);
   const headerRef = useRef(null);
   const darkheaderRef = useRef(null);
+
   const colors = ['#5d9061', '#d26a51', '#aba35a', '#5561c7'];
   const whiteTexts = ['신선한 농산물', '유기농 채소', '맛있는 우리쌀', '건강한 먹거리'];
   const darkerTexts = ['바로 직거래', '친환경 채소', '건강한 면역력', '생산자 직배송'];
+
   const handleSwiperChange = (swiper) => {
     swiper.slideNext();
   };
@@ -140,7 +128,6 @@ function HomeVisual() {
 
   return (
     <Homevisual ref={visualRef} onClick={handleChange}>
-      <div className="cursor"></div>
       <div className="text effect">
         <h1 className="text-white effect" ref={headerRef}>
           {' '}
