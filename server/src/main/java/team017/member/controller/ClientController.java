@@ -37,9 +37,8 @@ public class ClientController {
 	public ResponseEntity getClient(@PathVariable("client_id") @Positive long clientId) {
 		Client client = clientService.findVerifiedClient(clientId);
 		Member member = memberService.findVerifiedMember(client.getMember().getMemberId());
-		MemberDto.ClientDto response = mapper.memberToClientDto(member, client);
 
-		return ResponseEntity.ok(response);
+		return ResponseEntity.ok(mapper.memberToClientDto(member, client));
 	}
 
 
@@ -47,16 +46,11 @@ public class ClientController {
 	@PatchMapping("/{client_id}")
 	public ResponseEntity patchClient(@PathVariable("client_id") @Positive long clientId,
 			@RequestBody ClientPatchDto clientPatchDto) {
-		if (clientId != clientPatchDto.getClientId()) {
-			throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND);
-		}
 
-		/* 현재는 소비자의 역할이 없으므로 따로 서비스를 만들지 않음. */
-		Client client = clientService.findVerifiedClient(clientId);
+		Client client = clientService.updateClient(clientId, mapper.clientPatchDtoToClient(clientPatchDto));
 		long memberId = client.getMember().getMemberId();
 		Member member = memberService.updateMember(memberId, mapper.clientPatchDtoToMember(clientPatchDto));
-		MemberDto.ClientDto response = mapper.memberToClientDto(member, client);
 
-		return ResponseEntity.ok(response);
+		return ResponseEntity.ok(mapper.memberToClientDto(member, client));
 	}
 }
