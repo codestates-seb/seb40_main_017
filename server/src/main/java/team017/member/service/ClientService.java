@@ -19,4 +19,19 @@ public class ClientService {
 		Client findClient = optionalClient.orElseThrow(() -> new RuntimeException("Client Not Found"));
 		return findClient;
 	}
+
+	/* 소비자 정보 수정 */
+	public Client updateClient(long clientId, Client client) {
+		correctClient(clientId, client.getClientId());
+		Client findClient = findVerifiedClient(client.getClientId());
+
+		return clientRepository.save(findClient);
+	}
+
+	/*url clientId와 dto clientId 일치 판별*/
+	public void correctClient(long clientId, long getId) {
+		if (clientId != getId) {
+			throw new RuntimeException("회원 정보를 확인하세요.");
+		}
+	}
 }
