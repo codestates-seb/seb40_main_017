@@ -45,6 +45,13 @@ const SellerPostContent = styled.div`
     color: var(--white);
   }
   .content {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    input {
+      width: 300px;
+      height: 30px;
+    }
   }
 `;
 
@@ -59,16 +66,16 @@ function SellerPostPage() {
         <div className="headtext">이미지</div>
         <div>2</div>
         <div className="headtext">제목</div>
-        <div>
-          <input></input>
+        <div className="content">
+          <input placeholder="제목"></input>
         </div>
         <div className="headtext">판매수량</div>
-        <div>
-          <input></input>
+        <div className="content">
+          <input placeholder="판매수량"></input>
         </div>
         <div className="headtext">상품가격</div>
-        <div>
-          <input></input>
+        <div className="content">
+          <input placeholder="상품가격"></input>
         </div>
         <div className="headtext">카테고리</div>
         <div>0</div>
