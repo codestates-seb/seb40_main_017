@@ -28,7 +28,6 @@ public class BoardService {
 
     private final SellerService sellerService;
     private final ProductRepository productRepository;
-    private final ProductService productService;
     private final ProductMapper productMapper;
     private final BoardRepository boardRepository;
     private final BoardMapper boardMapper;

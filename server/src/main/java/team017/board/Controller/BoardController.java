@@ -29,8 +29,8 @@ public class BoardController {
 
     //게시글 수정
     @PatchMapping("/{board_id}")
-    public ResponseEntity patchBoard(   @PathVariable("board_id") long boardId,
-                                        @RequestBody BoardPatchDto boardPatchDto){
+    public ResponseEntity patchBoard( @PathVariable("board_id") long boardId,
+                                      @RequestBody BoardPatchDto boardPatchDto){
 
         BoardResponseDto response = boardService.updateBoard(boardId, boardPatchDto);
 
@@ -59,18 +59,21 @@ public class BoardController {
 
     }
 
+    //카테고리 별 조회
+    @GetMapping("/{category}")
+    public ResponseEntity GetBoardCategory(@PathVariable("category") int category){
+        BoardResponseDto
 
-//    //전체 상품 조회
-//    @GetMapping()
-//    public ResponseEntity GetBoards(){
-//
-//    }
-//
-//    //카테고리 별 조회
-//    @GetMapping("/{category}")
-//    public ResponseEntity GetBoards(@PathVariable("category") int category){
-//
-//    }
+
+    }
+
+
+    //전체 상품 조회
+    @GetMapping()
+    public ResponseEntity GetBoards(){
+
+    }
+
 
 
 
