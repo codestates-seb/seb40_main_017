@@ -107,7 +107,7 @@ function HomeVisual() {
 
   const colors = ['#5d9061', '#d26a51', '#aba35a', '#5561c7'];
   const whiteTexts = ['신선한 농산물', '유기농 채소', '맛있는 우리쌀', '건강한 먹거리'];
-  const darkerTexts = ['바로 직거래', '친환경 채소', '건강한 면역력', '생산자 직배송'];
+  const darkerTexts = ['바로 직거래', '친환경 채소', '건강한 면역력', '식탁의 즐거움'];
 
   const handleSwiperChange = (swiper) => {
     swiper.slideNext();
