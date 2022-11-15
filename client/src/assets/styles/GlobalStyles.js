@@ -28,6 +28,7 @@ const GlobalStyle = createGlobalStyle`
     --white: #fff;
     --off-white: #f0e9df;
     --orange: #d26a51;
+    --light-orange: #f24e1e;
     --yellow: #aba35a;
     --blue: #5561c7;
     --green: #5d9061;
