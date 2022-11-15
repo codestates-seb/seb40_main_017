@@ -19,9 +19,7 @@ import team017.member.service.SellerService;
 import team017.product.Entity.Product;
 import team017.product.Mapper.ProductMapper;
 import team017.product.Repository.ProductRepository;
-import team017.product.Service.ProductService;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -166,12 +164,6 @@ public class BoardService {
 
     }
 
-//    public Page<Board> findBoards(int page, int size) {
-//        PageRequest pageRequest = PageRequest.of(page,size);
-//        return boardRepository.findAllByBoardOrderByCreatedAtDesc(pageRequest);
-//
-//    }
-//
 //    public Page<Board> findBoardCategory(int category, int page, int size) {
 //        PageRequest pageRequest = PageRequest.of(page,size);
 //        return boardRepository.findAllByBoardOrderByCreatedAtDesc(pageRequest);
@@ -195,17 +187,12 @@ public class BoardService {
 //    }
 
 
-//    public BoardResponseDto getBoards(int page, int size) {
-//
-//        PageRequest pageRequest = PageRequest.of(page,size, Sort.by("createdAt"));
-//        Page<Board> boardPage= boardRepository.findAll(pageRequest);
-//        List<Board> boardList = boardPage.getContent();
-//
-//       // boardList.
-//
-//        //boardMapper.productToBoardResponseDto()
-//
-//    }
+    public Page<Board> findBoards(int page, int size) {
+
+        return boardRepository.findAll(PageRequest.of(page, size, Sort.by("createdAt").descending()));
+    }
+
+
 
 }
 

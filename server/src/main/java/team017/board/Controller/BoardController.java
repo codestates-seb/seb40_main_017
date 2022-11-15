@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.*;
 import team017.board.Dto.BoardPatchDto;
 import team017.board.Dto.BoardPostDto;
 import team017.board.Dto.BoardResponseDto;
+import team017.board.Dto.BoardTotalResponseDto;
 import team017.board.Entity.Board;
 import team017.board.Mapper.BoardMapper;
 import team017.board.Service.BoardService;
 import team017.global.response.MultiResponseDto;
-import team017.global.response.PageInfo;
 
 import javax.validation.constraints.Positive;
 import java.util.List;
@@ -68,8 +68,6 @@ public class BoardController {
 
 //    //카테고리 별 조회
 //    @GetMapping("/{category}")
-//    public ResponseEntity GetBoardCategory(@PathVariable("category") int category){
-//        BoardResponseDto
 //    public ResponseEntity GetBoardCategory(@PathVariable("category") int category,
 //                                           @Positive @RequestParam int page,
 //                                           @Positive @RequestParam int size){
@@ -81,24 +79,20 @@ public class BoardController {
 //
 //
 //    }
-//
-//
-//    //전체 상품 조회
-//    @GetMapping()
-//    public ResponseEntity GetBoards(){
-//
-//    }
-//    public ResponseEntity GetBoards(@Positive @RequestParam int page,
-//                                    @Positive @RequestParam int size){
-//
-//        BoardResponseDto response = boardService.getBoards(page, size);
-//
-//        return new ResponseEntity<>(response,HttpStatus.OK);
-//    }
 
 
+    //전체 상품 조회
+    @GetMapping()
+    public ResponseEntity GetBoards(@Positive @RequestParam int page,
+                                    @Positive @RequestParam int size){
 
+        Page<Board> boardsPage = boardService.findBoards(page- 1, size);
+        List<Board> boardList = boardsPage.getContent();
+        List<BoardTotalResponseDto> response = boardMapper.productToBoardToalResponseDto(boardList);
 
+        return new ResponseEntity<>(
+                new MultiResponseDto<>(response , boardsPage), HttpStatus.OK);
+    }
 
 }
 
