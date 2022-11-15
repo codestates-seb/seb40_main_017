@@ -1,6 +1,9 @@
 package team017.board.Service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import team017.board.Dto.BoardPatchDto;
 import team017.board.Dto.BoardPostDto;
@@ -18,6 +21,7 @@ import team017.product.Mapper.ProductMapper;
 import team017.product.Repository.ProductRepository;
 import team017.product.Service.ProductService;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -161,6 +165,46 @@ public class BoardService {
 
     }
 
+//    public Page<Board> findBoards(int page, int size) {
+//        PageRequest pageRequest = PageRequest.of(page,size);
+//        return boardRepository.findAllByBoardOrderByCreatedAtDesc(pageRequest);
+//
+//    }
+//
+//    public Page<Board> findBoardCategory(int category, int page, int size) {
+//        PageRequest pageRequest = PageRequest.of(page,size);
+//        return boardRepository.findAllByBoardOrderByCreatedAtDesc(pageRequest);
+//
+//    }
+//
+//    public BoardResponseDto getBoardCategory(int category, int page, int size) {
+//        Page<Board> boardPage = findBoardCategory(category,page -1, size);
+//        List<Board> boardList = boardPage.getContent();
+//
+//        List<Product> productList =
+//        //1안
+//        //List<BoardResponseDto> response = boardMapper.productToBoardResponseDto(boardList, productList)
+//
+//        //2안
+//        //MultiResponseDto<List<Board>,List<Product> >
+//
+//        //3안
+//        //Board안에 product를 list로
+//
+//    }
+
+
+//    public BoardResponseDto getBoards(int page, int size) {
+//
+//        PageRequest pageRequest = PageRequest.of(page,size, Sort.by("createdAt"));
+//        Page<Board> boardPage= boardRepository.findAll(pageRequest);
+//        List<Board> boardList = boardPage.getContent();
+//
+//       // boardList.
+//
+//        //boardMapper.productToBoardResponseDto()
+//
+//    }
 
 }
 
