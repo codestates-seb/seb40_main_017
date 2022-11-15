@@ -27,7 +27,6 @@ import java.util.Optional;
 public class BoardService {
 
     // 상품은 재고 수정 하지 못함, 상품은 게시글을 통해서만 수정가능!
-
     private final SellerService sellerService;
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
@@ -68,7 +67,6 @@ public class BoardService {
 //        return findProduct;
 
     }
-
 
     public BoardResponseDto updateBoard(long boardId, BoardPatchDto boardPatchDto) {
 
@@ -135,7 +133,6 @@ public class BoardService {
 
     }
 
-
     public BoardResponseDto getBoard(long boardId) {
 
         //게시판 존재 여부 화인
@@ -164,35 +161,12 @@ public class BoardService {
 
     }
 
-//    public Page<Board> findBoardCategory(int category, int page, int size) {
-//        PageRequest pageRequest = PageRequest.of(page,size);
-//        return boardRepository.findAllByBoardOrderByCreatedAtDesc(pageRequest);
-//
-//    }
-//
-//    public BoardResponseDto getBoardCategory(int category, int page, int size) {
-//        Page<Board> boardPage = findBoardCategory(category,page -1, size);
-//        List<Board> boardList = boardPage.getContent();
-//
-//        List<Product> productList =
-//        //1안
-//        //List<BoardResponseDto> response = boardMapper.productToBoardResponseDto(boardList, productList)
-//
-//        //2안
-//        //MultiResponseDto<List<Board>,List<Product> >
-//
-//        //3안
-//        //Board안에 product를 list로
-//
-//    }
-
-
     public Page<Board> findBoards(int page, int size) {
-
         return boardRepository.findAll(PageRequest.of(page, size, Sort.by("createdAt").descending()));
     }
 
-
-
+    public Page<Board> findBoardsCategory(int category, int page, int size) {
+        return  boardRepository.findBoardsByProduct_Category(PageRequest.of(page, size, Sort.by("createdAt").descending()), category);
+    }
 }
 

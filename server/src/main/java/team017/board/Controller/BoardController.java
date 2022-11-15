@@ -17,7 +17,6 @@ import team017.global.response.MultiResponseDto;
 import javax.validation.constraints.Positive;
 import java.util.List;
 
-
 @RequestMapping("/boards")
 @RestController
 @AllArgsConstructor
@@ -56,7 +55,7 @@ public class BoardController {
     }
 
     //단일 상품 조회
-    //sellPhotoList
+    //++sellPhotoList
     @GetMapping("/{board_id}")
     public ResponseEntity GetBoard(@PathVariable("board_id") long boardId){
 
@@ -66,20 +65,19 @@ public class BoardController {
 
     }
 
-//    //카테고리 별 조회
-//    @GetMapping("/{category}")
-//    public ResponseEntity GetBoardCategory(@PathVariable("category") int category,
-//                                           @Positive @RequestParam int page,
-//                                           @Positive @RequestParam int size){
-//
-//        BoardResponseDto response = boardService.getBoardCategory( category, page, size);
-//
-//        return new ResponseEntity<>(
-//                new MultiResponseDto<>(),HttpStatus.OK);
-//
-//
-//    }
+    //카테고리 별 조회
+    @GetMapping("/category/{category}")
+    public ResponseEntity GetBoardCategory(@PathVariable("category") int category,
+                                           @Positive @RequestParam int page,
+                                           @Positive @RequestParam int size){
 
+        Page<Board> boardsPage = boardService.findBoardsCategory(category, page- 1, size);
+        List<Board> boardList = boardsPage.getContent();
+        List<BoardTotalResponseDto> response = boardMapper.productToBoardToalResponseDto(boardList);
+
+        return new ResponseEntity<>(
+                new MultiResponseDto<>(response , boardsPage), HttpStatus.OK);
+    }
 
     //전체 상품 조회
     @GetMapping()

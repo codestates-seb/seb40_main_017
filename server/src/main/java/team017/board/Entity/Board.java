@@ -33,9 +33,6 @@ public class Board extends Auditable {
     @Column(nullable = false )
     private int view;
 
-//    @Column(nullable = false )
-//    private String status; //판매 상태
-
 //    @Column
 //    private List<String> imageList = new ArrayList<>();
 
