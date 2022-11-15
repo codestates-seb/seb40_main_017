@@ -15,6 +15,8 @@ public class BoardResponseDto {
 
     private Long sellerId;
 
+    private String name;
+
     private String title;
 
     private String content;
@@ -25,9 +27,11 @@ public class BoardResponseDto {
 
     private int category; //상품분류 (과일 :1 , 채소: 2, 곡물: 3,  견과류: 4)
 
+    private Long sellPhotoId;
+
     private String status; //판매 상태
 
-    private int viewCount;
+    private int view;
 
     private LocalDateTime createdAt;
 

@@ -28,7 +28,6 @@ public class BoardService {
 
     private final SellerService sellerService;
     private final ProductRepository productRepository;
-    private final ProductService productService;
     private final ProductMapper productMapper;
     private final BoardRepository boardRepository;
     private final BoardMapper boardMapper;
@@ -134,4 +133,34 @@ public class BoardService {
     }
 
 
+    public BoardResponseDto getBoard(long boardId) {
+
+        //게시판 존재 여부 화인
+        Board findBoard = findVerifiedBoard(boardId);
+
+        //판매자 존재 여부 확인
+        Seller findSeller = sellerService.findVerifiedSeller(findBoard.getSeller().getSellerId());
+
+        //상품 존재 여부 확인
+        Product findProduct = findVerifiedProduct(findBoard.getProduct());
+
+        //조회수 ++
+        addView(findBoard);
+
+        BoardResponseDto responseDto = boardMapper.productToBoardResponseDto(findProduct , findBoard);
+
+        return  responseDto;
+    }
+
+    private void addView(Board board) {
+       Board findBoard = findVerifiedBoard(board.getBoardId());
+       int viewCnt = findBoard.getView();
+       viewCnt++;
+       findBoard.setView(viewCnt);
+       boardRepository.save(findBoard);
+
+    }
+
+
 }
+

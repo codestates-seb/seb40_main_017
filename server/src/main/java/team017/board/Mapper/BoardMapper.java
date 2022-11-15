@@ -15,6 +15,7 @@ public interface BoardMapper {
 
     @Mapping(target = "status", expression = "java(product.getStatus())")
     @Mapping(target = "sellerId", expression = "java(board.getSeller().getSellerId())")
+    @Mapping(target = "name", expression = "java(board.getSeller().getMember().getName())")
     BoardResponseDto productToBoardResponseDto(Product product , Board board);
 
 }
