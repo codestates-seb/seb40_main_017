@@ -7,6 +7,7 @@ const Homeinfobox = styled.div`
   height: 740px;
   display: flex;
   justify-content: center;
+  padding: 30px;
   position: relative;
   .farmer {
     position: absolute;
