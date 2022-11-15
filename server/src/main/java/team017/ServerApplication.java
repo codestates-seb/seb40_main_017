@@ -8,7 +8,7 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @EnableJpaAuditing
-@SpringBootApplication // (exclude = {SecurityAutoConfiguration.class})
+@SpringBootApplication
 public class ServerApplication extends SpringBootServletInitializer {
 
 	public static void main(String[] args) {

@@ -10,6 +10,8 @@ public enum ExceptionCode {
 	BOARD_NOT_FOUND(404, "BOARD not found"),
 
 	PASSWORD_NOT_MATCH(400, "비밀번호가 일치하지 않습니다."),
+	UNAUTHORIZED_MEMBER(403, "not authorized user"),
+	COMMENT_NOT_FOUND(404, "Comment not found"),
 
 	/* Security Error Message */
 	UNAUTHORIZED(401, "유효하지 않은 인증입니다."),

@@ -68,6 +68,8 @@ public class BoardController {
 
 //    //카테고리 별 조회
 //    @GetMapping("/{category}")
+//    public ResponseEntity GetBoardCategory(@PathVariable("category") int category){
+//        BoardResponseDto
 //    public ResponseEntity GetBoardCategory(@PathVariable("category") int category,
 //                                           @Positive @RequestParam int page,
 //                                           @Positive @RequestParam int size){
@@ -83,6 +85,9 @@ public class BoardController {
 //
 //    //전체 상품 조회
 //    @GetMapping()
+//    public ResponseEntity GetBoards(){
+//
+//    }
 //    public ResponseEntity GetBoards(@Positive @RequestParam int page,
 //                                    @Positive @RequestParam int size){
 //
@@ -90,7 +95,6 @@ public class BoardController {
 //
 //        return new ResponseEntity<>(response,HttpStatus.OK);
 //    }
-
 
 
 

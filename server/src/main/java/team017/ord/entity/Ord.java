@@ -24,10 +24,11 @@ public class Ord {
 	@Column(length = 13, nullable = false, unique = true)
 	private String phone;
 
-	// @Enumerated(value = EnumType.STRING)
-	// @Column()
-	// private String status;
+	@Column
+	private int productNum;
 
+	@Column
+	private int totalPrice;
 	/* 💖판매자 - 주문 다대일 연관 관계 : 판매자 참조 */
 	@ManyToOne
 	@JoinColumn(name = "seller_id")
@@ -42,4 +43,26 @@ public class Ord {
 	@ManyToOne
 	@JoinColumn(name = "product_id")
 	private Product product;
+
+	@Column
+	@Enumerated(EnumType.STRING)
+	private OrdStatus status;
+
+	public enum OrdStatus {
+
+		ORD_REQUEST(1, "주문 요청"),
+		ORD_CONFIRM(2, "주문 확정"),
+		ORD_COMPLETE(3, "주문 처리 완료"),
+		ORD_CANCEL(4, "주문 취소");
+
+		@Getter
+		private int Number;
+		@Getter
+		private String Description;
+
+		OrdStatus(int number, String description) {
+			Number = number;
+			Description = description;
+		}
+	}
 }
