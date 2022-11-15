@@ -29,8 +29,8 @@ public class BoardController {
 
     //게시글 수정
     @PatchMapping("/{board_id}")
-    public ResponseEntity patchBoard(   @PathVariable("board_id") long boardId,
-                                        @RequestBody BoardPatchDto boardPatchDto){
+    public ResponseEntity patchBoard( @PathVariable("board_id") long boardId,
+                                      @RequestBody BoardPatchDto boardPatchDto){
 
         BoardResponseDto response = boardService.updateBoard(boardId, boardPatchDto);
 
@@ -47,12 +47,32 @@ public class BoardController {
     }
 
 
-//
-//    //특정 상품 조회(상품 페이지)
-//    @GetMapping("/{board_id}")
-//
-//    //전체 상품 조회
-//    @GetMapping()
+
+    //단일 상품 조회
+    //sellPhotoList
+    @GetMapping("/{board_id}")
+    public ResponseEntity GetBoard(@PathVariable("board_id") long boardId){
+
+        BoardResponseDto response = boardService.getBoard(boardId);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+
+    }
+
+    //카테고리 별 조회
+    @GetMapping("/{category}")
+    public ResponseEntity GetBoardCategory(@PathVariable("category") int category){
+        BoardResponseDto
+
+
+    }
+
+
+    //전체 상품 조회
+    @GetMapping()
+    public ResponseEntity GetBoards(){
+
+    }
 
 
 
