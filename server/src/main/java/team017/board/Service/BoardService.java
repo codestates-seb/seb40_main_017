@@ -165,7 +165,6 @@ public class BoardService {
 
     }
 
-
 //    public Page<Board> findBoards(int page, int size) {
 //        PageRequest pageRequest = PageRequest.of(page,size);
 //        return boardRepository.findAllByBoardOrderByCreatedAtDesc(pageRequest);
