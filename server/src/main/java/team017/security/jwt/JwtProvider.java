@@ -46,31 +46,31 @@ public class JwtProvider {
 
 		/* 권한 가져오기 */
 		String authorities = authentication.getAuthorities().stream()
-			.map(GrantedAuthority::getAuthority)
-			.collect(Collectors.joining(","));
+				.map(GrantedAuthority::getAuthority)
+				.collect(Collectors.joining(","));
 		long now = (new Date()).getTime();
 
 		/* Access Token 생성 */
 		Date accessTokenExpiration = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
 		String accessToken = Jwts.builder()
-			.setSubject(authentication.getName())
-			.claim(AUTHORITIES_KEY, authorities)
-			.setExpiration(accessTokenExpiration)
-			.signWith(key, SignatureAlgorithm.HS512)
-			.compact();
+				.setSubject(authentication.getName())
+				.claim(AUTHORITIES_KEY, authorities)
+				.setExpiration(accessTokenExpiration)
+				.signWith(key, SignatureAlgorithm.HS512)
+				.compact();
 
 		/* Refresh Token 생성 */
 		String refreshToken = Jwts.builder()
-			.setExpiration(new Date(now + REFRESH_TOKEN_EXPIRE_TIME))
-			.signWith(key, SignatureAlgorithm.HS512)
-			.compact();
+				.setExpiration(new Date(now + REFRESH_TOKEN_EXPIRE_TIME))
+				.signWith(key, SignatureAlgorithm.HS512)
+				.compact();
 
 		return TokenDto.builder()
-			.grantType(BEARER_TYPE)
-			.accessToken(accessToken)
-			.accessTokenExpiresIn(accessTokenExpiration.getTime())
-			.refreshToken(refreshToken)
-			.build();
+				.grantType(BEARER_TYPE)
+				.accessToken(accessToken)
+				.accessTokenExpiresIn(accessTokenExpiration.getTime())
+				.refreshToken(refreshToken)
+				.build();
 	}
 
 	public Authentication getAuthentication(String accessToken) {
@@ -84,9 +84,9 @@ public class JwtProvider {
 
 		/* claim 에서 권한 가져오기 */
 		Collection<? extends GrantedAuthority> authorities =
-			Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
-				.map(SimpleGrantedAuthority::new)
-				.collect(Collectors.toList());
+				Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
+						.map(SimpleGrantedAuthority::new)
+						.collect(Collectors.toList());
 
 		/* UserDetails 객체를 만들어 Authentication 리턴 */
 		UserDetails principal = new User(claims.getSubject(), "", authorities);
