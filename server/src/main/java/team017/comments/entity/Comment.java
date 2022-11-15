@@ -14,7 +14,7 @@ import javax.persistence.*;
 public class Comment extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long commentID;
+    private Long commentId;
 
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID")
@@ -24,7 +24,7 @@ public class Comment extends Auditable {
     @Column(nullable = false)
     private String context;
 
-    private String commentUsername;
+    private String commentMemberName;
 
     @ManyToOne
     @JoinColumn(name = "BOARD_ID")

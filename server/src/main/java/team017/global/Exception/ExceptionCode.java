@@ -11,7 +11,8 @@ public enum ExceptionCode {
 
 	PASSWORD_NOT_MATCH(400, "비밀번호가 일치하지 않습니다."),
 	MEMBER_EXISTS(409, "Member exists"),
-	UNAUTHORIZED_MEMBER(403, "not authorized user");
+	UNAUTHORIZED_MEMBER(403, "not authorized user"),
+	COMMENT_NOT_FOUND(404, "Comment not found");
 
 
 	@Getter

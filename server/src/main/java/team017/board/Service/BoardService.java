@@ -107,6 +107,7 @@ public class BoardService {
         return productRepository.save(findProduct);
     }
 
+
     public Product findVerifiedProduct(Product product) {
         Optional<Product> optionalProduct = productRepository.findById(product.getProductId());
         Product findProduct = optionalProduct.orElseThrow(()-> new BusinessLogicException(ExceptionCode.PRODUCT_NOT_FOUND));

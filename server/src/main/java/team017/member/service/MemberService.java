@@ -52,6 +52,7 @@ public class MemberService {
 		return memberRepository.save(findMember);
 	}
 
+
 	/* 회원 탈퇴 */
 	public void deleteMember(long memberId) {
 		Member member = findVerifiedMember(memberId);
@@ -65,6 +66,7 @@ public class MemberService {
 			throw new BusinessLogicException(ExceptionCode.MEMBER_EXISTS);
 		}
 	}
+
 
 	/* 존재하는 회원인지 확인 */
 	public Member findVerifiedMember(long memberId) {
@@ -87,5 +89,13 @@ public class MemberService {
 		if (! target.equalsIgnoreCase("CLIENT") && ! target.equalsIgnoreCase("SELLER")) {
 			throw new RuntimeException("역할이 잘못되었습니다.");
 		}
+	}
+
+	/* 이름 가져오기 */
+	public String getMemberName(Long memberId){
+		Member member = findVerifiedMember(memberId);
+		String foundMemberName = member.getName();
+
+		return foundMemberName;
 	}
 }
