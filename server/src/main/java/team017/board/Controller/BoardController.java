@@ -1,6 +1,7 @@
 package team017.board.Controller;
 
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -8,7 +9,13 @@ import team017.board.Dto.BoardPatchDto;
 import team017.board.Dto.BoardPostDto;
 import team017.board.Dto.BoardResponseDto;
 import team017.board.Entity.Board;
+import team017.board.Mapper.BoardMapper;
 import team017.board.Service.BoardService;
+import team017.global.response.MultiResponseDto;
+import team017.global.response.PageInfo;
+
+import javax.validation.constraints.Positive;
+import java.util.List;
 
 
 @RequestMapping("/boards")
@@ -17,6 +24,7 @@ import team017.board.Service.BoardService;
 public class BoardController {
 
     private final BoardService boardService;
+    private final BoardMapper boardMapper;
 
     //게시글 등록
     @PostMapping()
@@ -41,12 +49,11 @@ public class BoardController {
     //게시글 삭제
     @DeleteMapping("/{board_id}")
     public ResponseEntity deleteBoard(@PathVariable("board_id") long boardId){
+
         boardService.deleteBoard(boardId);
 
         return new ResponseEntity<>("Success",HttpStatus.OK);
     }
-
-
 
     //단일 상품 조회
     //sellPhotoList
@@ -59,20 +66,30 @@ public class BoardController {
 
     }
 
-    //카테고리 별 조회
-    @GetMapping("/{category}")
-    public ResponseEntity GetBoardCategory(@PathVariable("category") int category){
-        BoardResponseDto
-
-
-    }
-
-
-    //전체 상품 조회
-    @GetMapping()
-    public ResponseEntity GetBoards(){
-
-    }
+//    //카테고리 별 조회
+//    @GetMapping("/{category}")
+//    public ResponseEntity GetBoardCategory(@PathVariable("category") int category,
+//                                           @Positive @RequestParam int page,
+//                                           @Positive @RequestParam int size){
+//
+//        BoardResponseDto response = boardService.getBoardCategory( category, page, size);
+//
+//        return new ResponseEntity<>(
+//                new MultiResponseDto<>(),HttpStatus.OK);
+//
+//
+//    }
+//
+//
+//    //전체 상품 조회
+//    @GetMapping()
+//    public ResponseEntity GetBoards(@Positive @RequestParam int page,
+//                                    @Positive @RequestParam int size){
+//
+//        BoardResponseDto response = boardService.getBoards(page, size);
+//
+//        return new ResponseEntity<>(response,HttpStatus.OK);
+//    }
 
 
 
