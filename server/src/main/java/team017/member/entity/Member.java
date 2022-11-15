@@ -13,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,6 +23,7 @@ import lombok.Setter;
 @Entity
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class Member {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

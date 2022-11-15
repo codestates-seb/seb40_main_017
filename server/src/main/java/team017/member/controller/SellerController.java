@@ -33,7 +33,7 @@ public class SellerController {
 	/* 판매자 마이 페이지 조회 */
 	@GetMapping("/{seller_id}")
 	public ResponseEntity getSeller(@PathVariable("seller_id") @Positive long sellerId) {
-		Seller seller = sellerService.findVerifiedSeller(sellerId);
+		Seller seller = sellerService.findSeller(sellerId);
 		Member member = seller.getMember();
 
 		return ResponseEntity.ok(mapper.memberToSellerDto(member, seller));
