@@ -37,7 +37,7 @@ public class S3Uploader {
 
         amazonS3.putObject(bucket, s3FileName,multipartFile.getInputStream(),objMeta); //S3 API 메소드 이용해서 S3에 파일 업로드
 
-        return amazonS3.getUrl(bucket,s3FileName).toString(); //getUrl로 S3에 업로드도니 사진 URL 가져기
+        return amazonS3.getUrl(bucket,s3FileName).toString(); //getUrl로 S3에 업로드된 사진 URL 가져오기
     }
 
     //S2로 업로드

@@ -19,9 +19,4 @@ public class FileUploadController {
 //        return s3Uploader.upload(multipartFile, "main-project");
         return s3Uploader.upload(multipartFile);
     }
-
-    @GetMapping("/test")
-    public String index(){
-        return "test";
-    }
 }
