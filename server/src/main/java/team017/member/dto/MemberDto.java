@@ -13,6 +13,7 @@ public class MemberDto {
 
 	@Getter
 	@AllArgsConstructor
+	@NoArgsConstructor
 	public static class Post {
 
 		/* 이메일 형식을 지켜서 작성해야 한다. */
@@ -49,7 +50,7 @@ public class MemberDto {
 	@Getter
 	@Setter
 	@NoArgsConstructor
-	public static class ClientDto{
+	public static class ClientResponseDto{
 		private long memberId;
 		private long clientId;
 		private String email;
@@ -62,7 +63,7 @@ public class MemberDto {
 	@Getter
 	@Setter
 	@NoArgsConstructor
-	public static class SellerDto{
+	public static class SelleResponseDto{
 		private long memberId;
 		private long sellerId;
 		private String email;

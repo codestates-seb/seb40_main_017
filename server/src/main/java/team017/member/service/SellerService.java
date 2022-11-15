@@ -3,6 +3,7 @@ package team017.member.service;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import team017.global.Exception.BusinessLogicException;
@@ -12,6 +13,7 @@ import team017.member.entity.Seller;
 import team017.member.repository.SellerRepository;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class SellerService {
 	private final SellerRepository sellerRepository;
@@ -24,6 +26,14 @@ public class SellerService {
 		return findSeller;
 	}
 
+	/* 생산자 조회 */
+	@Transactional(readOnly = true)
+	public Seller findSeller(long sellerId) {
+		Seller seller = findVerifiedSeller(sellerId);
+
+		return seller;
+	}
+
 	/* 생산자 정보 수정 */
 	public Seller updateSeller(long sellerId, Seller seller) {
 		correctSeller(sellerId, seller.getSellerId());
@@ -33,7 +43,7 @@ public class SellerService {
 		return sellerRepository.save(findSeller);
 	}
 
-	/* url 값과 아이디 값 일치 판별*/
+	/* url sellerId와 dto sellerId 값 일치 판별*/
 	public void correctSeller(long sellerId, long getId) {
 		if (sellerId != getId) {
 			throw new RuntimeException("회원 정보를 확인하세요.");
