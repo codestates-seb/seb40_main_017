@@ -1,7 +1,5 @@
 package team017.member.mapper;
 
-import java.util.List;
-
 import org.mapstruct.Mapper;
 
 import team017.member.dto.ClientPatchDto;
@@ -13,11 +11,14 @@ import team017.member.entity.Seller;
 
 @Mapper(componentModel = "spring")
 public interface MemberMapper {
+	/* 등록 */
 	Member memberDtoToMember(MemberDto.Post post);
 
-	MemberDto.ClientDto memberToClientDto(Member member, Client client);
+	/* 응답 */
+	MemberDto.ClientResponseDto memberToClientDto(Member member, Client client);
+	MemberDto.SelleResponseDto memberToSellerDto(Member member, Seller seller);
 
-	MemberDto.SellerDto memberToSellerDto(Member member, Seller seller);
+	/* 수정 */
 	Member sellerPatchDtoToMember(SellerPatchDto sellerPatchDto);
 	Member clientPatchDtoToMember(ClientPatchDto clientPatchDto);
 	Seller sellerPatchDtoToSeller(SellerPatchDto sellerPatchDto);

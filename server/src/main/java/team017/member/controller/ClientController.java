@@ -35,8 +35,8 @@ public class ClientController {
 	/* 소비자 마이 페이지 조회 */
 	@GetMapping("/{client_id}")
 	public ResponseEntity getClient(@PathVariable("client_id") @Positive long clientId) {
-		Client client = clientService.findVerifiedClient(clientId);
-		Member member = memberService.findVerifiedMember(client.getMember().getMemberId());
+		Client client = clientService.findClient(clientId);
+		Member member = client.getMember();
 
 		return ResponseEntity.ok(mapper.memberToClientDto(member, client));
 	}

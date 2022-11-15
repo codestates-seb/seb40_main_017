@@ -5,12 +5,15 @@ spring:
     username: root
     password: 6720
 
+
   jpa:
     open-in-view: true
-    show-sql: true
     hibernate:
-      format_sql: true
       ddl-auto: create
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
   logging:
     level:
       org:
@@ -29,3 +32,11 @@ cloud:
       static: ap-northeast-2
     stack:
       auto: false
+jwt:
+  secret-key: ${SECRET_KEY}
+  access-token-expiration-minutes: 30
+  refresh-token-expiration-minutes: 420
+server:
+  servlet:
+    encoding:
+      force-response: true
