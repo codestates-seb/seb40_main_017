@@ -13,6 +13,8 @@ public enum ExceptionCode {
 	UNAUTHORIZED_MEMBER(403, "not authorized user"),
 	COMMENT_NOT_FOUND(404, "Comment not found"),
 
+	REVIEW_NOT_FOUND(404, "리뷰가 존재하지 않습니다."),
+
 	/* Security Error Message */
 	UNAUTHORIZED(401, "유효하지 않은 인증입니다."),
 	LOGIN_ERROR(401, "로그인에 실패하였습니다."),

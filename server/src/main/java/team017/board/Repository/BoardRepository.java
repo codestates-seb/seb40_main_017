@@ -10,8 +10,6 @@ import java.util.Optional;
 
 @Repository
 public interface BoardRepository extends JpaRepository<Board, Long> {
-
     Page<Board> findBoardsByProduct_Category(PageRequest pageRequest , int category );
-
 
 }

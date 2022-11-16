@@ -1,19 +1,71 @@
 package team017.review.controller;
 
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+import team017.global.response.MultiResponseDto;
+import team017.review.dto.ReviewPatchDto;
+import team017.review.dto.ReviewPostDto;
+import team017.review.entity.Review;
+import team017.review.mapper.ReviewMapper;
 import team017.review.service.ReviewService;
+
+import javax.validation.Valid;
+import javax.validation.constraints.Positive;
+import java.util.List;
 
 @RestController
 @RequestMapping("/boards/{board_id}")
+@Validated
 @RequiredArgsConstructor
 public class ReviewController {
 
     private final ReviewService reviewService;
 
+    private final ReviewMapper reviewMapper;
 
 
+    @PostMapping("/reviews")
+    public ResponseEntity postReview(@Valid @RequestBody ReviewPostDto reviewPostDto) {
+        Review review = reviewService.createReview(
+                reviewMapper.reviewPostDtoToReview(reviewPostDto), reviewPostDto.getClientId());
+
+        return new ResponseEntity<>((
+                reviewMapper.reviewToReviewResponseDto(review)), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/reviews")
+    public ResponseEntity getReview(@Positive @RequestParam int page,
+                                    @Positive @RequestParam int size) {
+        Page<Review> reviewPage = reviewService.findReviews(page - 1, size);
+        List<Review> reviewList = reviewPage.getContent();
+
+        return new ResponseEntity<>(
+                new MultiResponseDto<>(reviewMapper.reviewToReviewResponseDtos(reviewList), reviewPage), HttpStatus.OK
+        );
+    }
+
+    @PatchMapping("/reviews/{review-id}")
+    public ResponseEntity patchReview(@PathVariable("review-id") @Positive Long reviewId,
+                                      @Valid @RequestBody ReviewPatchDto reviewPatchDto) {
+        reviewPatchDto.setReviewId(reviewId);
+        Review review = reviewService.updateReview(
+                reviewMapper.reviewPatchDtoToReview(reviewPatchDto), reviewPatchDto.getClientId());
+
+        return new ResponseEntity<>(reviewMapper.reviewToReviewResponseDto(review), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/reviews/{review-id}")
+    public ResponseEntity deleteReview(@PathVariable("review-Id") @Positive Long reviewId,
+                                       @Positive @RequestParam Long clientId){
+        reviewService.deleteReview(reviewId, clientId);
+        String message = "Success!";
+
+        return ResponseEntity.ok(message);
+    }
 }

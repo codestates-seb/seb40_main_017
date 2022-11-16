@@ -1,4 +1,4 @@
-package team017.comments.dto;
+package team017.review.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,15 +8,19 @@ import javax.validation.constraints.NotNull;
 
 @Getter
 @NoArgsConstructor
-public class CommentPostDto {
-    @NotNull
-    private Long memberId;
+public class ReviewPostDto {
 
     @NotNull
+    private Long clientId;
+
     private Long boardId;
 
     @NotNull
-    @Length(min = 10, max = 65535, message = "댓글은 최소 10자를 입력하여야 합니다.")
+    @Length(min = 8, max = 65535, message = "리뷰는 최소 8자를 입력하여야 합니다.")
     private String context;
 
+    private String image;
+
+    @NotNull
+    private int star;
 }

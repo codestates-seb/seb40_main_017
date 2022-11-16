@@ -26,8 +26,7 @@ public class Review extends Auditable {
     private String image;
 
     @Column(nullable = false)
-    private Double star;
-
+    private int star;
     /* 💝 소비자 - 리뷰 다대일 연관 관계 : 소비자 참조 */
     @ManyToOne
     @JoinColumn(name = "client_id")
@@ -39,7 +38,7 @@ public class Review extends Auditable {
     private Board board;
 
     @Builder
-    public Review(Long reviewId, String context, String image, Double star) {
+    public Review(Long reviewId, String context, String image, int star) {
         this.reviewId = reviewId;
         this.context = context;
         this.image = image;

@@ -1,13 +1,18 @@
 package team017.comments.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import team017.board.Service.BoardService;
 import team017.comments.entity.Comment;
 import team017.comments.repository.CommentRepository;
 import team017.global.Exception.BusinessLogicException;
 import team017.global.Exception.ExceptionCode;
+import team017.member.entity.Member;
 import team017.member.service.MemberService;
+import team017.product.Entity.Product;
 
 import javax.transaction.Transactional;
 import java.util.Optional;
@@ -38,8 +43,8 @@ public class CommentService {
         Comment foundComment = findComment(comment.getCommentId());
         verifyWriter(memberId, comment.getMember().getMemberId());
 
-//        Optional.ofNullable(comment.getContext())
-//                .isPresent(foundComment::setContext);
+        Optional.ofNullable(comment.getContext()).ifPresent(context -> foundComment.setContext(context));
+
 
         return commentRepository.save(foundComment);
     }
@@ -70,5 +75,9 @@ public class CommentService {
 
     private void verifiedBoard(Comment comment) {
         boardService.findVerifiedBoard(comment.getBoard().getBoardId());
+    }
+
+    public Page<Comment> findComments(int page, int size){
+        return commentRepository.findAll(PageRequest.of(page, size, Sort.by("createdAt").descending()));
     }
 }

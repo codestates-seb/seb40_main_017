@@ -113,11 +113,11 @@ public class BoardService {
     }
 
     private void addView(Board board) {
-       Board findBoard = findVerifiedBoard(board.getBoardId());
-       int viewCnt = findBoard.getView();
-       viewCnt++;
-       findBoard.setView(viewCnt);
-       boardRepository.save(findBoard);
+        Board findBoard = findVerifiedBoard(board.getBoardId());
+        int viewCnt = findBoard.getView();
+        viewCnt++;
+        findBoard.setView(viewCnt);
+        boardRepository.save(findBoard);
 
     }
 
@@ -129,4 +129,3 @@ public class BoardService {
         return  boardRepository.findBoardsByProduct_Category(PageRequest.of(page, size, Sort.by("createdAt").descending()), category);
     }
 }
-

@@ -3,21 +3,10 @@ package team017.member.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import team017.comments.entity.Comment;
 
 @Getter
 @Entity
@@ -51,6 +40,7 @@ public class Member {
 	/* security 이용하여 역할 추가 */
 	@ElementCollection(fetch = FetchType.EAGER)
 	private List<String> roles = new ArrayList<>();
+
 
 	/* 💜 소비자 - 회원 일대일 연관 관계 : 회원 참조*/
 	@OneToOne(mappedBy = "member", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
