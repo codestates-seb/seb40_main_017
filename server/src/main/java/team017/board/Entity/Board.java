@@ -37,7 +37,10 @@ public class Board extends Auditable {
 //    private List<String> imageList = new ArrayList<>();
 
     @Column(nullable = false)
-    private double avg ;
+    private int sold_stock; //팔린 갯수
+
+    @Column(nullable = false)
+    private double avg ; //별점의 평균
 
     /* 🍋게시판 - 상품 일대일 연관 관계 : 상품 참조*/
     @OneToOne

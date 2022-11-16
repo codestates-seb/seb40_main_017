@@ -38,4 +38,9 @@ public class BoardResponseDto {
 
     private LocalDateTime modifiedAt;
 
+    private double avg ; //별점의 평균
+
+    private int sold_stock; //팔린 갯수
+
+
 }
