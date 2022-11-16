@@ -2,15 +2,30 @@ package team017.security.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import lombok.RequiredArgsConstructor;
+import team017.security.handler.MemberAccessDeniedHandler;
+import team017.security.handler.MemberAuthenticationEntryPoint;
+import team017.security.jwt.JwtProvider;
+import team017.security.jwt.JwtSecurityConfig;
 
 @Configuration
+@EnableWebSecurity(debug = true)
+@RequiredArgsConstructor
 public class SecurityConfig {
+	private final JwtProvider jwtProvider;
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+	}
 
-	/* 권한 부여를 위해 1차적으로만 security 작업 */
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http
@@ -21,7 +36,17 @@ public class SecurityConfig {
 			.and()
 			.formLogin().disable()
 			.httpBasic().disable()
-			.authorizeRequests().anyRequest().permitAll();
+			.apply(new JwtSecurityConfig(jwtProvider))
+			.and()
+			.authorizeHttpRequests(authorize -> authorize
+				// .antMatchers(HttpMethod.POST, "/members/signup").permitAll()
+				// .antMatchers(HttpMethod.POST, "/login").permitAll()
+				// .anyRequest().authenticated()
+				.anyRequest().permitAll()
+			)
+			.exceptionHandling()
+			.authenticationEntryPoint(new MemberAuthenticationEntryPoint())
+			.accessDeniedHandler(new MemberAccessDeniedHandler());
 
 		return http.build();
 	}

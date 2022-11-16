@@ -1,6 +1,5 @@
 package team017.security.jwt;
 
-import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Arrays;
 import java.util.Collection;
@@ -23,9 +22,9 @@ import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.io.Encoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
+import team017.security.jwt.dto.TokenDto;
 
 @Slf4j
 @Component
@@ -48,6 +47,7 @@ public class JwtProvider {
 		String authorities = authentication.getAuthorities().stream()
 				.map(GrantedAuthority::getAuthority)
 				.collect(Collectors.joining(","));
+		log.info("### 권한 : {}", authorities);
 		long now = (new Date()).getTime();
 
 		/* Access Token 생성 */
@@ -58,6 +58,7 @@ public class JwtProvider {
 				.setExpiration(accessTokenExpiration)
 				.signWith(key, SignatureAlgorithm.HS512)
 				.compact();
+		accessToken = BEARER_TYPE + accessToken;
 
 		/* Refresh Token 생성 */
 		String refreshToken = Jwts.builder()
@@ -90,6 +91,7 @@ public class JwtProvider {
 
 		/* UserDetails 객체를 만들어 Authentication 리턴 */
 		UserDetails principal = new User(claims.getSubject(), "", authorities);
+		log.info("#### 권한 : {}", principal.getAuthorities().toString());
 
 		return new UsernamePasswordAuthenticationToken(principal, "", authorities);
 	}
