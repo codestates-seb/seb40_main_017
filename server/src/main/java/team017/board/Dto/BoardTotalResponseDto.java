@@ -1,6 +1,8 @@
 package team017.board.Dto;
 
 import lombok.*;
+import team017.product.Entity.Product;
+
 
 @Getter
 @Setter
