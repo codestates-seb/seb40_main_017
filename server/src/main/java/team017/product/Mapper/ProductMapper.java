@@ -9,7 +9,6 @@ import team017.product.Entity.Product;
 
 @Mapper(componentModel = "spring")
 public interface ProductMapper {
-
     Product boardPostDtoToProduct(BoardPostDto boardPostDto);
 
 }

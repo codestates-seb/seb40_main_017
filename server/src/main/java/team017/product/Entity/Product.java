@@ -28,14 +28,15 @@ public class Product {
     @Column(nullable = false)
     private int price;
 
-    @ColumnDefault(value ="'selling'")
-    private String status; //판매 상태
+    @ColumnDefault(value ="'PRD_SELLING'")
+    @Enumerated(EnumType.STRING)
+    private ProductStatus status; //판매 상태
 
     @Column(nullable = false)
     private int stock;
 
     @Column(nullable = false)
-    private int category; //상품분류 (과일 :1 , 채소: 2, 곡물: 3,  견과류: 4)
+    private int category;
 
 
     /* 🍋게시판 - 상품 일대일 연관 관계 : 상품 참조*/
@@ -67,4 +68,49 @@ public class Product {
             ord.setProduct(this);
         }
     }
+
+    public enum ProductStatus{
+        PRD_SELLING("1", "판매중"),
+        PRD_SOLDOUT("2", "매진");
+
+        private String code;
+        private String value;
+
+        ProductStatus(String value, String code) {
+            this.code =code;
+            this.value = value;
+        }
+
+        public String getCode(){
+            return code;
+        }
+        public String getValue(){
+            return value;
+        }
+
+    }
+
+//    public enum CategoryType{
+//        FRUITS("1", "과일"),
+//        VEGETABLES("2", "채소"),
+//        GRANINS("3" , "곡물"),
+//        NUTS("4", "견과류");
+//
+//        private String code;
+//        private String value;
+//
+//        CategoryType(String value, String code) {
+//            this.code =code;
+//            this.value = value;
+//        }
+//
+//        public String getCode(){
+//            return code;
+//        }
+//        public String getValue(){
+//            return value;
+//        }
+//
+//    }
+
 }
