@@ -36,14 +36,14 @@
  	}
 
  	/* Not Found */
- 	@ExceptionHandler
- 	@ResponseStatus(HttpStatus.NOT_FOUND)
- 	public ErrorResponse handleResourceNotFoundException(RuntimeException exception) {
- 		log.error("# NOT FOUND : {}", exception);
- 		final ErrorResponse response = ErrorResponse.of(HttpStatus.NOT_FOUND, exception.getMessage());
-
- 		return response;
- 	}
+ 	// @ExceptionHandler
+ 	// @ResponseStatus(HttpStatus.NOT_FOUND)
+ 	// public ErrorResponse handleResourceNotFoundException(RuntimeException exception) {
+ 	// 	log.error("# NOT FOUND : {}", exception);
+ 	// 	final ErrorResponse response = ErrorResponse.of(HttpStatus.NOT_FOUND, exception.getMessage());
+	 //
+ 	// 	return response;
+ 	// }
 
  	/* BusinessLogin Exception */
  	@ExceptionHandler

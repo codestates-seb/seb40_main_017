@@ -30,10 +30,11 @@ public class Seller {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long sellerId;
 
-	/* 역할은 아마 CustomAuthorityUtil 만들어서 사용하지 않을까 */
-
 	@Column
 	private String introduce;
+
+	@Column
+	private String imageUrl;
 
 	/* 🌸 판매자 - 회원 일대일 연관 관계 : 회원 참조 */
 	@OneToOne
@@ -46,19 +47,6 @@ public class Seller {
 
 		if (member.getSeller() != this) {
 			member.setSeller(this);
-		}
-	}
-
-	/* 🌼판매자 - 판매자 이미지 일대일 연관 관계 : 판매자 참조 */
-	@OneToOne(mappedBy = "seller", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-	private SellerImage sellerImage;
-
-	/* 🌼판매자 - 이미지 연관 관계 편의 메서드*/
-	public void setSellerImage(SellerImage sellerImage) {
-		this.sellerImage = sellerImage;
-
-		if (sellerImage.getSeller() != this) {
-			sellerImage.setSeller(this);
 		}
 	}
 
@@ -106,4 +94,17 @@ public class Seller {
 			ord.setSeller(this);
 		}
 	}
+
+	// /* 🌼판매자 - 판매자 이미지 일대일 연관 관계 : 판매자 참조 */
+	// @OneToOne(mappedBy = "seller", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+	// private SellerImage sellerImage;
+	//
+	// /* 🌼판매자 - 이미지 연관 관계 편의 메서드*/
+	// public void setSellerImage(SellerImage sellerImage) {
+	// 	this.sellerImage = sellerImage;
+	//
+	// 	if (sellerImage.getSeller() != this) {
+	// 		sellerImage.setSeller(this);
+	// 	}
+	// }
 }

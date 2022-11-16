@@ -11,6 +11,7 @@ import team017.comments.entity.Comment;
 @Getter
 @Entity
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Member {
@@ -24,7 +25,7 @@ public class Member {
 	@Column(length = 45, nullable = false, unique = true)
 	private String email;
 
-	@Column(length = 45, nullable = false)
+	@Column(nullable = false)
 	private String password;
 
 	@Column(length = 45, nullable = false)
@@ -33,6 +34,10 @@ public class Member {
 	@Column(length = 45, nullable = false)
 	private String address;
 
+	/* 소셜 로그인을 추가하면서 해당 판별을 위한 프로바이더 타입 추가 */
+	@Enumerated(EnumType.STRING)
+	private ProviderType providerType;
+
 	/* Authority 로 일일히 확인하기 어려우니 컬럼 추가 */
 	@Column
 	private String role;
@@ -40,7 +45,6 @@ public class Member {
 	/* security 이용하여 역할 추가 */
 	@ElementCollection(fetch = FetchType.EAGER)
 	private List<String> roles = new ArrayList<>();
-
 
 	/* 💜 소비자 - 회원 일대일 연관 관계 : 회원 참조*/
 	@OneToOne(mappedBy = "member", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
@@ -66,5 +70,12 @@ public class Member {
 		if (seller.getMember() != this) {
 			seller.setMember(this);
 		}
+	}
+
+	public Member(String name, String email, ProviderType providerType) {
+		this.name = name;
+		this.email = email;
+		this.providerType = providerType;
+		// this.role = role;
 	}
 }

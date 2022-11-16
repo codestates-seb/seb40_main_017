@@ -3,7 +3,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/17farm?serverTimezone=UTC&characterEncoding=UTF-8
     username: root
-    password: 6720
+    password: ${MY_SQL_PASSWORD}
 
 
   jpa:
@@ -33,9 +33,9 @@ cloud:
     stack:
       auto: false
 jwt:
-  secret-key: ${SECRET_KEY}
-  access-token-expiration-minutes: 30
-  refresh-token-expiration-minutes: 420
+  secret-key: MakeASecretKeyINeedALongLongSentencesButItsTooHardIWannaDoLoginSuccessWhyThisIsShortIWANNALOGIN
+#  access-token-expiration-minutes: 30
+#  refresh-token-expiration-minutes: 420
 server:
   servlet:
     encoding:
