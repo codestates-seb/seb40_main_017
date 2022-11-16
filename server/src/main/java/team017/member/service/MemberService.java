@@ -3,6 +3,7 @@ package team017.member.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -15,11 +16,18 @@ import team017.member.repository.MemberRepository;
 import team017.security.utils.CustomAuthorityUtils;
 
 @Service
-@RequiredArgsConstructor
 public class MemberService {
 
 	private final MemberRepository memberRepository;
 	private final CustomAuthorityUtils authorityUtils;
+	private final PasswordEncoder passwordEncoder;
+
+	public MemberService(MemberRepository memberRepository, CustomAuthorityUtils authorityUtils,
+		PasswordEncoder passwordEncoder) {
+		this.memberRepository = memberRepository;
+		this.authorityUtils = authorityUtils;
+		this.passwordEncoder = passwordEncoder;
+	}
 
 	/* 회원 가입 */
 	public Member createMember(Member member) {
@@ -31,11 +39,13 @@ public class MemberService {
 		if (member.getRole().equalsIgnoreCase("seller")) {
 			member.setSeller(new Seller());
 		}
+		/* 비밀번호 암호화 */
+		String encryptedPassword = passwordEncoder.encode(member.getPassword());
+		member.setPassword(encryptedPassword);
 
 		/* 대문자로 저장 */
 		member.setRole(member.getRole().toUpperCase());
 		member.setRoles(roles);
-		/* 비밀번호 암호화는 테스트 후에 추가 예정 */
 
 		return memberRepository.save(member);
 	}
@@ -47,7 +57,8 @@ public class MemberService {
 		Optional.ofNullable(member.getName()).ifPresent(name -> findMember.setName(name));
 		Optional.ofNullable(member.getPhone()).ifPresent(phone -> findMember.setPhone(phone));
 		Optional.ofNullable(member.getAddress()).ifPresent(address -> findMember.setAddress(address));
-		Optional.ofNullable(member.getPassword()).ifPresent(password -> findMember.setPassword(password));
+		Optional.ofNullable(member.getPassword())
+			.ifPresent(password -> findMember.setPassword(passwordEncoder.encode(password)));
 
 		return memberRepository.save(findMember);
 	}

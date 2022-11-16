@@ -1,27 +1,38 @@
-package team017.security.filter;
+package team017.security.jwt;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.security.SignatureException;
 import lombok.RequiredArgsConstructor;
 import team017.security.jwt.JwtProvider;
+import team017.security.utils.CustomAuthorityUtils;
 
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
 
-	public static final String AUTHORIZATION_HEADER = "Authorization";
-	public static final String BEARER_PREFIX = "Bearer";
 	private final JwtProvider jwtProvider;
 
+	@Override
+	protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+		String authorization = request.getHeader("Authorization");
+
+		return authorization == null || !authorization.startsWith("Bearer");
+	}
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
 		FilterChain filterChain) throws ServletException, IOException {
@@ -42,13 +53,13 @@ public class JwtFilter extends OncePerRequestFilter {
 	private String resolveToken(HttpServletRequest request) {
 
 		/* Header 에서 Authorization 값 가져오기 */
-		String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
+		String bearerToken = request.getHeader("Authorization");
 
 		/* bearToken 이 문자열을 가지고 있고, Bearer 로 시작하면 조건문 실행 */
-		if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
+		if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer")) {
 
 			/* Bearer(6글자, 인덱스 5번까지)를 지우고 그 다음 6번째 인덱스부터 리턴 */
-			return bearerToken.substring(6);
+			return bearerToken.substring("Bearer".length());
 		}
 		return null;
 	}

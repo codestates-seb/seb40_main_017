@@ -1,11 +1,9 @@
-package team017.security.service;
+package team017.security.jwt;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Map;
 
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
@@ -14,6 +12,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import team017.member.entity.Member;
+import team017.security.utils.CustomAuthorityUtils;
 
 @Getter
 @Setter
@@ -24,7 +23,7 @@ public class MemberDetail implements UserDetails, OAuth2User {
 	private final String email;
 	private final String name;
 	private final String password;
-	private final Collection<GrantedAuthority> authorities;
+	private final CustomAuthorityUtils authorities;
 	private Map<String, Object> attributes;
 
 	/* MemberDetail Create Method */
@@ -33,7 +32,7 @@ public class MemberDetail implements UserDetails, OAuth2User {
 			member.getEmail(),
 			member.getName(),
 			member.getPassword(),
-			Collections.singletonList(new SimpleGrantedAuthority(member.getRoles().get(0)))
+			(CustomAuthorityUtils)member.getRoles()
 		);
 	}
 
@@ -51,7 +50,7 @@ public class MemberDetail implements UserDetails, OAuth2User {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return authorities;
+		return (Collection<? extends GrantedAuthority>) authorities;
 	}
 
 	/* 로그인에서 UserName 은 이메일 */
