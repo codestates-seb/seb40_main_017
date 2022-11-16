@@ -8,9 +8,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import team017.board.Entity.Board;
 import team017.global.response.MultiResponseDto;
 import team017.review.dto.ReviewPatchDto;
 import team017.review.dto.ReviewPostDto;
+import team017.review.dto.ReviewResponseDto;
 import team017.review.entity.Review;
 import team017.review.mapper.ReviewMapper;
 import team017.review.service.ReviewService;
@@ -20,7 +22,7 @@ import javax.validation.constraints.Positive;
 import java.util.List;
 
 @RestController
-@RequestMapping("/boards/{board_id}")
+@RequestMapping("/boards")
 @Validated
 @RequiredArgsConstructor
 public class ReviewController {
@@ -30,8 +32,10 @@ public class ReviewController {
     private final ReviewMapper reviewMapper;
 
 
-    @PostMapping("/reviews")
-    public ResponseEntity postReview(@Valid @RequestBody ReviewPostDto reviewPostDto) {
+    @PostMapping("/{board-id}/reviews")
+    public ResponseEntity postReview(@PathVariable("board-id") @Positive Long boardId,
+                                     @Valid @RequestBody ReviewPostDto reviewPostDto) {
+        reviewPostDto.setBoardId(boardId);
         Review review = reviewService.createReview(
                 reviewMapper.reviewPostDtoToReview(reviewPostDto), reviewPostDto.getClientId());
 
@@ -42,6 +46,7 @@ public class ReviewController {
     @GetMapping("/reviews")
     public ResponseEntity getReview(@Positive @RequestParam int page,
                                     @Positive @RequestParam int size) {
+
         Page<Review> reviewPage = reviewService.findReviews(page - 1, size);
         List<Review> reviewList = reviewPage.getContent();
 
@@ -61,8 +66,10 @@ public class ReviewController {
     }
 
     @DeleteMapping("/reviews/{review-id}")
-    public ResponseEntity deleteReview(@PathVariable("review-Id") @Positive Long reviewId,
-                                       @Positive @RequestParam Long clientId){
+    public ResponseEntity deleteReview(
+            @PathVariable("review-id") @Positive Long reviewId,
+            @Positive @RequestParam Long clientId) {
+
         reviewService.deleteReview(reviewId, clientId);
         String message = "Success!";
 

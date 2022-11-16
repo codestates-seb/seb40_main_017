@@ -21,8 +21,8 @@ import java.util.Optional;
 @Transactional
 @Service
 public class CommentService {
-    private final CommentRepository commentRepository;
     private final MemberService memberService;
+    private final CommentRepository commentRepository;
     private final BoardService boardService;
 
     public Comment createComment(Comment comment, Long memberId) {
@@ -30,7 +30,7 @@ public class CommentService {
         verifiedMember(comment);
         comment.setCommentMemberName(memberService.getMemberName(memberId));
         comment.setBoard(boardService.findVerifiedBoard(comment.getBoard().getBoardId()));
-        verifiedMember(comment);
+        verifiedBoard(comment);
 
         return commentRepository.save(comment);
     }
@@ -41,7 +41,7 @@ public class CommentService {
 
     public Comment updateComment(Comment comment, Long memberId) {
         Comment foundComment = findComment(comment.getCommentId());
-        verifyWriter(memberId, comment.getMember().getMemberId());
+        verifyWriter(memberId, foundComment.getMember().getMemberId());
 
         Optional.ofNullable(comment.getContext()).ifPresent(context -> foundComment.setContext(context));
 

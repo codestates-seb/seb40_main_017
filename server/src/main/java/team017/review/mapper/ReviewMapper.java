@@ -17,7 +17,7 @@ public interface ReviewMapper {
             return null;
         }
         Client.ClientBuilder client = Client.builder();
-        client.build();
+        client.clientId(reviewPostDto.getClientId());
 
         Board board = new Board();
         board.setBoardId(reviewPostDto.getBoardId());
@@ -58,7 +58,7 @@ public interface ReviewMapper {
         }
 
         Client.ClientBuilder client = Client.builder();
-        client.build();
+        client.clientId(review.getClient().getClientId());
 
         review.setReviewId(review.getReviewId());
 
@@ -67,9 +67,11 @@ public interface ReviewMapper {
 
         ReviewResponseDto reviewResponseDto = new ReviewResponseDto();
         reviewResponseDto.setClientId(client.build().getClientId());
+        reviewResponseDto.setReviewId(review.getReviewId());
         reviewResponseDto.setBoardId(board.getBoardId());
         reviewResponseDto.setContext(review.getContext());
         reviewResponseDto.setName(review.getClient().getMember().getName());
+        reviewResponseDto.setImage(review.getImage());
         reviewResponseDto.setCreatedAt(review.getCreatedAt());
         reviewResponseDto.setModifiedAt(review.getModifiedAt());
 
@@ -77,4 +79,5 @@ public interface ReviewMapper {
     }
 
     List<ReviewResponseDto> reviewToReviewResponseDtos(List<Review> reviews);
+
 }
