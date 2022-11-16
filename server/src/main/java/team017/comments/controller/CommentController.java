@@ -2,6 +2,7 @@ package team017.comments.controller;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -11,13 +12,15 @@ import team017.comments.dto.CommentPostDto;
 import team017.comments.entity.Comment;
 import team017.comments.mapper.CommentMapper;
 import team017.comments.service.CommentService;
+import team017.global.response.MultiResponseDto;
 import team017.global.response.SingleResponseDto;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
+import java.util.List;
 
 @RestController
-@RequestMapping("comment/{board-id}")
+@RequestMapping("comment")
 @AllArgsConstructor
 @Validated
 @Slf4j
@@ -28,35 +31,41 @@ public class CommentController {
     private final CommentMapper commentMapper;
 
     @PostMapping
-    public ResponseEntity postComment(@Valid @RequestBody CommentPostDto commentPostDto){
+    public ResponseEntity postComment(@Valid @RequestBody CommentPostDto commentPostDto) {
         Comment comment = commentService.createComment(
                 commentMapper.commentPostDtoToComment(commentPostDto), commentPostDto.getMemberId());
 
         return new ResponseEntity<>((commentMapper.commentToCommentResponseDto(comment)), HttpStatus.CREATED);
     }
-    @GetMapping
-    public ResponseEntity getComment(@PathVariable("comment-Id") @Positive Long commentId){
-        Comment comment = commentService.findComment(commentId);
 
-        return new ResponseEntity<>((commentMapper.commentToCommentResponseDto(comment)),HttpStatus.OK);
+    @GetMapping("/{comment-Id}")
+    public ResponseEntity getComment(@PathVariable("comment-Id") @Positive Long commentId,
+                                     @Positive @RequestParam int page,
+                                     @Positive @RequestParam int size) {
+        Page<Comment> commentPage = commentService.findComments(page - 1, size);
+        List<Comment> commentList = commentPage.getContent();
+
+        return new ResponseEntity<>(
+                new MultiResponseDto<>(commentMapper.commentToCommentResponseDtos(commentList),
+                        commentPage), HttpStatus.OK);
     }
 
-    @PatchMapping("/comment-id")
+    @PatchMapping("/{comment-Id}")
     public ResponseEntity patchComment(@PathVariable("comment-Id") @Positive Long commentId,
-                                       @Valid @RequestBody CommentPatchDto commentPatchDto){
+                                       @Valid @RequestBody CommentPatchDto commentPatchDto) {
         commentPatchDto.setCommentId(commentId);
         Comment comment = commentService.updateComment(
                 commentMapper.commentPatchDtoToComment(commentPatchDto), commentPatchDto.getMemberId());
 
-        return new ResponseEntity<>((commentMapper.commentToCommentResponseDto(comment)),HttpStatus.OK);
+        return new ResponseEntity<>((commentMapper.commentToCommentResponseDto(comment)), HttpStatus.OK);
     }
 
-    @DeleteMapping("/comment-id")
+    @DeleteMapping("/{comment-Id}")
     public ResponseEntity deleteComment(@PathVariable("comment-Id") @Positive Long commentId,
-                                        @Positive @RequestParam Long memberId){
+                                        @Positive @RequestParam Long memberId) {
         commentService.deleteComment(commentId, memberId);
+        String message = "Success!";
 
-        return new ResponseEntity<>(
-                new SingleResponseDto<>("delete success"), HttpStatus.NO_CONTENT);
+        return ResponseEntity.ok(message);
     }
 }

@@ -65,43 +65,11 @@ public class BoardController {
 
     }
 
-<<<<<<< HEAD
-//    //카테고리 별 조회
-//    @GetMapping("/{category}")
-//    public ResponseEntity GetBoardCategory(@PathVariable("category") int category){
-//        BoardResponseDto
-//    public ResponseEntity GetBoardCategory(@PathVariable("category") int category,
-//                                           @Positive @RequestParam int page,
-//                                           @Positive @RequestParam int size){
-//
-//        BoardResponseDto response = boardService.getBoardCategory( category, page, size);
-//
-//        return new ResponseEntity<>(
-//                new MultiResponseDto<>(),HttpStatus.OK);
-//
-//
-//    }
-//
-//
-//    //전체 상품 조회
-//    @GetMapping()
-//    public ResponseEntity GetBoards(){
-//
-//    }
-//    public ResponseEntity GetBoards(@Positive @RequestParam int page,
-//                                    @Positive @RequestParam int size){
-//
-//        BoardResponseDto response = boardService.getBoards(page, size);
-//
-//        return new ResponseEntity<>(response,HttpStatus.OK);
-//    }
-=======
     //카테고리 별 조회
     @GetMapping("/category/{category}")
     public ResponseEntity GetBoardCategory(@PathVariable("category") int category,
                                            @Positive @RequestParam int page,
                                            @Positive @RequestParam int size){
->>>>>>> b50ab6527f08f6829773a90182ae4ccb3aa11be9
 
         Page<Board> boardsPage = boardService.findBoardsCategory(category, page- 1, size);
         List<Board> boardList = boardsPage.getContent();
@@ -120,12 +88,9 @@ public class BoardController {
         List<Board> boardList = boardsPage.getContent();
         List<BoardTotalResponseDto> response = boardMapper.productToBoardToalResponseDto(boardList);
 
-<<<<<<< HEAD
-=======
         return new ResponseEntity<>(
                 new MultiResponseDto<>(response , boardsPage), HttpStatus.OK);
     }
 
->>>>>>> b50ab6527f08f6829773a90182ae4ccb3aa11be9
 }
 

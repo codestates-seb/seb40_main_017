@@ -13,5 +13,4 @@ import javax.transaction.Transactional;
 public class ReviewService {
     private ReviewRepository reviewRepository;
 
-
 }

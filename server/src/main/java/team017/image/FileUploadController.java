@@ -15,8 +15,7 @@ public class FileUploadController {
 //    private final S3Upload s3Upload;
     @PostMapping("/upload")
     @ResponseBody
-    public String upload(@RequestParam("images") MultipartFile multipartFile) throws IOException {
-//        return s3Uploader.upload(multipartFile, "main-project");
-        return s3Uploader.upload(multipartFile);
+    public String upload(@RequestParam("data") MultipartFile multipartFile) throws IOException {
+        return s3Uploader.upload(multipartFile); //data로 넘어오는 이미지 MultipartFile을 S#UploaderService로 전달
     }
 }

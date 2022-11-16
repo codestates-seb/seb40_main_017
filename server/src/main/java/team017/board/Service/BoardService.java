@@ -19,9 +19,7 @@ import team017.member.service.SellerService;
 import team017.product.Entity.Product;
 import team017.product.Mapper.ProductMapper;
 import team017.product.Repository.ProductRepository;
-import team017.product.Service.ProductService;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -29,7 +27,6 @@ import java.util.Optional;
 public class BoardService {
 
     // 상품은 재고 수정 하지 못함, 상품은 게시글을 통해서만 수정가능!
-
     private final SellerService sellerService;
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
@@ -70,7 +67,6 @@ public class BoardService {
 //        return findProduct;
 
     }
-
 
     public BoardResponseDto updateBoard(long boardId, BoardPatchDto boardPatchDto) {
 
@@ -137,7 +133,6 @@ public class BoardService {
 
     }
 
-
     public BoardResponseDto getBoard(long boardId) {
 
         //게시판 존재 여부 화인
@@ -158,54 +153,19 @@ public class BoardService {
     }
 
     private void addView(Board board) {
-       Board findBoard = findVerifiedBoard(board.getBoardId());
-       int viewCnt = findBoard.getView();
-       viewCnt++;
-       findBoard.setView(viewCnt);
-       boardRepository.save(findBoard);
+        Board findBoard = findVerifiedBoard(board.getBoardId());
+        int viewCnt = findBoard.getView();
+        viewCnt++;
+        findBoard.setView(viewCnt);
+        boardRepository.save(findBoard);
 
     }
 
-//    public Page<Board> findBoards(int page, int size) {
-//        PageRequest pageRequest = PageRequest.of(page,size);
-//        return boardRepository.findAllByBoardOrderByCreatedAtDesc(pageRequest);
-//
-//    }
-//
-//    public Page<Board> findBoardCategory(int category, int page, int size) {
-//        PageRequest pageRequest = PageRequest.of(page,size);
-//        return boardRepository.findAllByBoardOrderByCreatedAtDesc(pageRequest);
-//
-//    }
-//
-//    public BoardResponseDto getBoardCategory(int category, int page, int size) {
-//        Page<Board> boardPage = findBoardCategory(category,page -1, size);
-//        List<Board> boardList = boardPage.getContent();
-//
-//        List<Product> productList =
-//        //1안
-//        //List<BoardResponseDto> response = boardMapper.productToBoardResponseDto(boardList, productList)
-//
-//        //2안
-//        //MultiResponseDto<List<Board>,List<Product> >
-//
-//        //3안
-//        //Board안에 product를 list로
-//
-//    }
+    public Page<Board> findBoards(int page, int size) {
+        return boardRepository.findAll(PageRequest.of(page, size, Sort.by("createdAt").descending()));
+    }
 
-
-//    public BoardResponseDto getBoards(int page, int size) {
-//
-//        PageRequest pageRequest = PageRequest.of(page,size, Sort.by("createdAt"));
-//        Page<Board> boardPage= boardRepository.findAll(pageRequest);
-//        List<Board> boardList = boardPage.getContent();
-//
-//       // boardList.
-//
-//        //boardMapper.productToBoardResponseDto()
-//
-//    }
-
+    public Page<Board> findBoardsCategory(int category, int page, int size) {
+        return  boardRepository.findBoardsByProduct_Category(PageRequest.of(page, size, Sort.by("createdAt").descending()), category);
+    }
 }
-
