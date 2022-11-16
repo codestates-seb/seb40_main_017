@@ -1,8 +1,6 @@
 package team017.board.Dto;
 
 import lombok.*;
-import team017.product.Entity.Product;
-
 
 @Getter
 @Setter
@@ -25,4 +23,7 @@ public class BoardTotalResponseDto {
     private int stock;
 
     private int category; //상품분류 (과일 :1 , 채소: 2, 곡물: 3,  견과류: 4)
+
+    private double avg ; //별점의 평균
+
 }
