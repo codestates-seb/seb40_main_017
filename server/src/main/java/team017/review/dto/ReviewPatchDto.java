@@ -12,6 +12,8 @@ public class ReviewPatchDto {
 
     private Long reviewId;
 
+    private Long boardId;
+
     @Length(max = 65535, message = "최대 글자 수를 초과하였습니다.")
     private String context;
 

@@ -13,6 +13,8 @@ public class ReviewPostDto {
     @NotNull
     private Long clientId;
 
+    private Long boardId;
+
     @NotNull
     @Length(min = 8, max = 65535, message = "리뷰는 최소 8자를 입력하여야 합니다.")
     private String context;

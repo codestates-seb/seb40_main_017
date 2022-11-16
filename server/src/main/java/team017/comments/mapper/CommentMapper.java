@@ -77,5 +77,4 @@ public interface CommentMapper {
      }
 
      List<CommentResponseDto> commentToCommentResponseDtos(List<Comment> comments);
-
 }

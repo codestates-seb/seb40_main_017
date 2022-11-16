@@ -57,7 +57,7 @@ public class CommentController {
         Comment comment = commentService.updateComment(
                 commentMapper.commentPatchDtoToComment(commentPatchDto), commentPatchDto.getMemberId());
 
-        return new ResponseEntity<>((commentMapper.commentToCommentResponseDto(comment)), HttpStatus.OK);
+        return new ResponseEntity<>(commentMapper.commentToCommentResponseDto(comment), HttpStatus.OK);
     }
 
     @DeleteMapping("/{comment-Id}")
