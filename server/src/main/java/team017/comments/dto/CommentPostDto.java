@@ -19,9 +19,4 @@ public class CommentPostDto {
     @Length(min = 10, max = 65535, message = "댓글은 최소 10자를 입력하여야 합니다.")
     private String context;
 
-    public CommentPostDto(Long memberId, Long boardId, String context) {
-        this.memberId = memberId;
-        this.boardId = boardId;
-        this.context = context;
-    }
 }
