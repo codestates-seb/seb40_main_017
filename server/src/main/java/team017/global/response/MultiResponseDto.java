@@ -2,8 +2,6 @@ package team017.global.response;
 
 import lombok.Getter;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import team017.board.Dto.BoardResponseDto;
 
 import java.util.List;
 
