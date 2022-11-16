@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import team017.product.Entity.Product;
 
 import javax.validation.constraints.NotBlank;
 
@@ -22,7 +23,7 @@ public class BoardPatchDto {
 
     private int price;
 
-    private String status;
+    private Product.ProductStatus status;
 
     private int category;
 

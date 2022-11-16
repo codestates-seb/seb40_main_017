@@ -19,6 +19,7 @@ import team017.member.service.SellerService;
 import team017.product.Entity.Product;
 import team017.product.Mapper.ProductMapper;
 import team017.product.Repository.ProductRepository;
+import team017.product.Service.ProductService;
 
 import java.util.Optional;
 
@@ -28,8 +29,8 @@ public class BoardService {
 
     // 상품은 재고 수정 하지 못함, 상품은 게시글을 통해서만 수정가능!
     private final SellerService sellerService;
+    private final ProductService productService;
     private final ProductRepository productRepository;
-    private final ProductMapper productMapper;
     private final BoardRepository boardRepository;
     private final BoardMapper boardMapper;
 
@@ -39,7 +40,7 @@ public class BoardService {
         Seller findSeller = sellerService.findVerifiedSeller(boardPostDto.getSellerId());
 
         //상품 등록
-        Product product = createProduct(findSeller,boardPostDto);
+        Product product = productService.createProduct(findSeller,boardPostDto);
 
         //게시글 등록
         Board board = boardMapper.boardPostDtoToBoard(boardPostDto);
@@ -51,22 +52,6 @@ public class BoardService {
         return boardResponseDto;
     }
 
-    public Product createProduct(Seller seller, BoardPostDto boardPostDto) {
-        Product product = productMapper.boardPostDtoToProduct(boardPostDto);
-        product.setStatus("selling");
-        product.setSeller(seller);
-        return productRepository.save(product);
-
-//        System.out.print("product 상태 메시지:");
-//        System.out.println(product.getStatus());
-
-//        //product의 status 문제로 추가
-//        Product findProduct= productService.findVerifiedProduct(product.getProductId());
-//        System.out.print("findProduct 상태 메시지:");
-//        System.out.println(findProduct.getStatus());
-//        return findProduct;
-
-    }
 
     public BoardResponseDto updateBoard(long boardId, BoardPatchDto boardPatchDto) {
 
@@ -74,7 +59,7 @@ public class BoardService {
         Board findBoard = findVerifiedBoard(boardPatchDto.getBoardId());
 
         //상품 update
-        Product updatedProduct = updateProduct(findBoard, boardPatchDto);
+        Product updatedProduct = productService.updateProduct(findBoard, boardPatchDto);
 
         //게시글 update (단, 재고는 update 되지 않음)
         Optional.ofNullable(boardPatchDto.getContent())
@@ -90,46 +75,22 @@ public class BoardService {
 
     }
 
-    public Product updateProduct(Board findBoard, BoardPatchDto boardPatchDto) {
-
-        //productId 확인
-        Product findProduct = findVerifiedProduct(findBoard.getProduct());
-
-        //상품 update
-        Optional.ofNullable(boardPatchDto.getPrice())
-                .ifPresent(price -> findProduct.setPrice(price));
-        Optional.ofNullable(boardPatchDto.getStatus())
-                .ifPresent(status ->findProduct.setStatus(status));
-        Optional.ofNullable(boardPatchDto.getCategory())
-                .ifPresent(category -> findProduct.setCategory(category));
-
-
-        return productRepository.save(findProduct);
-    }
-
-
-    public Product findVerifiedProduct(Product product) {
-        Optional<Product> optionalProduct = productRepository.findById(product.getProductId());
-        Product findProduct = optionalProduct.orElseThrow(()-> new BusinessLogicException(ExceptionCode.PRODUCT_NOT_FOUND));
-        return findProduct;
-    }
-
-    public Board findVerifiedBoard(long boardId) {
-        Optional<Board> optionalBoard = boardRepository.findById(boardId);
-        Board findBoard = optionalBoard.orElseThrow(()-> new BusinessLogicException(ExceptionCode.BOARD_NOT_FOUND));
-        return findBoard;
-
-    }
-
     public void deleteBoard(long boardId) {
         Board findBoard = findVerifiedBoard(boardId);
-        Product findProduct = findVerifiedProduct(findBoard.getProduct());
+        Product findProduct = productService.findVerifiedProduct(findBoard.getProduct());
 
         //상품 삭제
         boardRepository.delete(findBoard);
 
         //게시글 삭제
         productRepository.delete(findProduct);
+
+    }
+
+    public Board findVerifiedBoard(long boardId) {
+        Optional<Board> optionalBoard = boardRepository.findById(boardId);
+        Board findBoard = optionalBoard.orElseThrow(()-> new BusinessLogicException(ExceptionCode.BOARD_NOT_FOUND));
+        return findBoard;
 
     }
 
@@ -142,7 +103,7 @@ public class BoardService {
         Seller findSeller = sellerService.findVerifiedSeller(findBoard.getSeller().getSellerId());
 
         //상품 존재 여부 확인
-        Product findProduct = findVerifiedProduct(findBoard.getProduct());
+        Product findProduct = productService.findVerifiedProduct(findBoard.getProduct());
 
         //조회수 ++
         addView(findBoard);

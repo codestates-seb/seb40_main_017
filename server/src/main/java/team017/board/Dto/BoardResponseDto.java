@@ -1,5 +1,6 @@
 package team017.board.Dto;
 import lombok.*;
+import team017.product.Entity.Product;
 
 import java.time.LocalDateTime;
 @Getter
@@ -29,7 +30,7 @@ public class BoardResponseDto {
 
     private Long sellPhotoId;
 
-    private String status; //판매 상태
+    private Product.ProductStatus status; //판매 상태
 
     private int view;
 
