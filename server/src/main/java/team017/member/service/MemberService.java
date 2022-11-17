@@ -109,4 +109,14 @@ public class MemberService {
 
 		return foundMemberName;
 	}
+
+	/* 이메일로 멤버 가져오기 */
+	public Long findMemberIdByEmail(String email) {
+		Member member = memberRepository.findMemberByEmail(email);
+		if (member == null) {
+			throw new RuntimeException("회원이 존재하지 않습니다.");
+		}
+
+		return member.getMemberId();
+	}
 }

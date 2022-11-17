@@ -76,7 +76,7 @@
  	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
  	public ErrorResponse handleException(Exception exception) {
  		log.error("# handle Exception : ", exception);
- 		final ErrorResponse response = ErrorResponse.of(HttpStatus.INTERNAL_SERVER_ERROR);
+ 		final ErrorResponse response = ErrorResponse.of(HttpStatus.INTERNAL_SERVER_ERROR, exception.getMessage());
 
  		return response;
  	}

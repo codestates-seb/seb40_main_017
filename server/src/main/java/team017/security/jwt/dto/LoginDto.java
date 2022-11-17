@@ -31,14 +31,14 @@ public class LoginDto {
 		}
 	}
 
-	@Getter
-	@AllArgsConstructor
-	@NoArgsConstructor
-	public static class Response {
-		private long memberId;
-
-		public static Response of(Member member) {
-			return new Response(member.getMemberId());
-		}
-	}
+	// @Getter
+	// @AllArgsConstructor
+	// @NoArgsConstructor
+	// public static class Response {
+	// 	private long memberId;
+	//
+	// 	public static Response of(Member member) {
+	// 		return new Response(member.getMemberId());
+	// 	}
+	// }
 }
