@@ -19,8 +19,8 @@ import lombok.Setter;
 @Entity
 public class RefreshToken {
 	// @Id
-	// @GeneratedValue(strategy = GenerationType.IDENTITY)
-	// private Long refreshTokenId;
+	// @Column(name = "refresh_id")
+	// private String id;
 
 	@Id
 	@Column(name = "refresh_key")

@@ -1,4 +1,4 @@
-package team017.security.service;
+package team017.security.jwt;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
-import team017.member.repository.MemberRepository;
 import team017.security.jwt.JwtProvider;
+// import team017.security.auth.AuthToken;
 import team017.security.jwt.dto.LoginDto;
 import team017.security.jwt.dto.TokenDto;
 import team017.security.jwt.dto.TokenRequestDto;
@@ -17,10 +17,11 @@ import team017.security.refresh.RefreshTokenRepository;
 
 @Service
 @RequiredArgsConstructor
-public class AuthService {
+public class JwtService {
 
 	private final AuthenticationManagerBuilder authenticationManagerBuilder;
 	private final JwtProvider jwtProvider;
+	// private final AuthToken authToken;
 	private final RefreshTokenRepository refreshTokenRepository;
 
 	/* 로그인 하면, Token 발급 */
@@ -36,6 +37,7 @@ public class AuthService {
 
 		/* 로그인 기반으로 "JWT" 토큰 생성 */
 		TokenDto tokenDto = jwtProvider.generatedTokenDto(authentication);
+		// TokenDto tokenDto = authToken.generatedTokenDto(authentication);
 
 		/* Refresh Token 저장 */
 		RefreshToken refreshToken =
@@ -57,9 +59,13 @@ public class AuthService {
 		if (!jwtProvider.validateToken(tokenRequestDto.getRefreshToken())) {
 			throw new RuntimeException("유효하지 않은 RefreshToken 입니다.");
 		}
+		// if (!authToken.validateToken(tokenRequestDto.getRefreshToken())) {
+		// 	throw new RuntimeException("유효하지 않은 RefreshToken 입니다.");
+		// }
 
 		/* 인증 정보에서 Key 값(email) 가져오기 */
 		Authentication authentication = jwtProvider.getAuthentication(tokenRequestDto.getAccessToken());
+		// Authentication authentication = authToken.getAuthentication(tokenRequestDto.getAccessToken());
 
 		/* Key 값으로 Refresh Token 가져오기 */
 		RefreshToken refreshToken =
@@ -73,6 +79,7 @@ public class AuthService {
 
 		/* 새로운 토큰 생성 */
 		TokenDto tokenDto = jwtProvider.generatedTokenDto(authentication);
+		// TokenDto tokenDto = authToken.generatedTokenDto(authentication);
 
 		/* 저장 정보 업데이트 */
 		RefreshToken newRefreshToken = refreshToken.updateValue(tokenDto.getRefreshToken());
