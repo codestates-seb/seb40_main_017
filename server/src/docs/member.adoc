@@ -1,0 +1,39 @@
+## 17시 내고향 회원 관리
+:sectnums:
+:toc: left
+:toclevels: 4
+:toc-title: Table of Contents
+:source-highlighter: prettify
+
+***
+== 회원 가입
+.curl-request
+include::{snippets}/post-member/curl-request.adoc[]
+
+.http-request
+include::{snippets}/post-member/http-request.adoc[]
+
+.request-fields
+include::{snippets}/post-member/request-fields.adoc[]
+
+.http-response
+include::{snippets}/post-member/http-response.adoc[]
+
+.response-fields
+include::{snippets}/post-member/response-fields.adoc[]
+
+***
+== 회원 탈퇴
+.curl-request
+include::{snippets}/delete-member/curl-request.adoc[]
+
+.http-request
+include::{snippets}/delete-member/http-request.adoc[]
+
+.http-response
+include::{snippets}/delete-member/http-response.adoc[]
+
+.response-body
+include::{snippets}/delete-member/response-body.adoc[]
+
+
