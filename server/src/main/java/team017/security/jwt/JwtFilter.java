@@ -20,12 +20,14 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.security.SignatureException;
 import lombok.RequiredArgsConstructor;
 import team017.security.jwt.JwtProvider;
+// import team017.security.auth.AuthToken;
 import team017.security.utils.CustomAuthorityUtils;
 
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
 
 	private final JwtProvider jwtProvider;
+	// private final AuthToken authToken;
 
 	@Override
 	protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
@@ -45,6 +47,10 @@ public class JwtFilter extends OncePerRequestFilter {
 			Authentication authentication = jwtProvider.getAuthentication(jwt);
 			SecurityContextHolder.getContext().setAuthentication(authentication);
 		}
+		// if (StringUtils.hasText(jwt) && authToken.validateToken(jwt)) {
+		// 	Authentication authentication = authToken.getAuthentication(jwt);
+		// 	SecurityContextHolder.getContext().setAuthentication(authentication);
+		// }
 
 		/* 필터 체인 전달 요청 */
 		filterChain.doFilter(request, response);

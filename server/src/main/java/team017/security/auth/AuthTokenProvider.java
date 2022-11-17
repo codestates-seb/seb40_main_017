@@ -11,16 +11,18 @@
 // import org.springframework.security.core.GrantedAuthority;
 // import org.springframework.security.core.authority.SimpleGrantedAuthority;
 // import org.springframework.security.core.userdetails.User;
+// import org.springframework.stereotype.Component;
 //
 // import io.jsonwebtoken.Claims;
 // import io.jsonwebtoken.security.Keys;
+// import lombok.RequiredArgsConstructor;
 // import lombok.extern.slf4j.Slf4j;
 //
 // @Slf4j
+// // @Component
 // public class AuthTokenProvider {
 //
 // 	private final Key key;
-// 	private static final String AUTHORITIES_KEY = "role";
 //
 // 	/* Secret Key 생성 -> Jwt Config */
 // 	public AuthTokenProvider(String secret) {
@@ -47,7 +49,7 @@
 // 			/* Claim 에서 권한 가져오기 */
 // 			Claims claims = authToken.getTokenClaims();
 // 			Collection<? extends GrantedAuthority> authorities =
-// 				Arrays.stream(new String[]{claims.get(AUTHORITIES_KEY).toString()})
+// 				Arrays.stream(new String[]{claims.get("role").toString()})
 // 					.map(SimpleGrantedAuthority::new)
 // 					.collect(Collectors.toList());
 //

@@ -4,7 +4,27 @@ spring:
     url: jdbc:mysql://localhost:3306/17farm?serverTimezone=UTC&characterEncoding=UTF-8
     username: root
     password: 6720
-
+    password: ${MY_SQL_PASSWORD}
+#  security:
+#    oauth2:
+#      client:
+#        registration:
+#          kakao:
+#            clientId: ${KAKAO_CLIENT_ID}
+#            clientSecret: ${KAKAO_SECRET_KEY}
+#            clientAuthenticationMethod: post
+#            authorizationGrantType: authorization_code
+#            redirectUri: http://localhost:8080/login/oauth2/code/kakao # "{baseUrl}/{action}/oauth2/code/{registrationId}"
+#            scope:
+#              - profile_nickname
+#              - account_email
+#            clientName: Kakao
+#        provider:
+#          kakao:
+#            authorizationUri: https://kauth.kakao.com/oauth/authorize
+#            tokenUri: https://kauth.kakao.com/oauth/token
+#            userInfoUri: https://kapi.kakao.com/v2/user/me
+#            userNameAttribute: id
 
   jpa:
     open-in-view: true
@@ -34,8 +54,15 @@ cloud:
       auto: false
 jwt:
   secret-key: MakeASecretKeyINeedALongLongSentencesButItsTooHardIWannaDoLoginSuccessWhyThisIsShortIWANNALOGIN
-#  access-token-expiration-minutes: 30
-#  refresh-token-expiration-minutes: 420
+
+#app:
+#  auth:
+#    tokenSecret: BlahBlahBlahBlahBlahBlahBlahBlahBlahBlah
+#    tokenExpiry: 1800000
+#    refreshTokenExpiry: 604800000
+#  oauth2:
+#    authorizedRedirectUris:
+#      - http://localhost:3000/oauth/redirect
 server:
   servlet:
     encoding:

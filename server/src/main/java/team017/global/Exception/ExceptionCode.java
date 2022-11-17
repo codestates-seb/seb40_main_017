@@ -19,7 +19,9 @@ public enum ExceptionCode {
 	UNAUTHORIZED(401, "유효하지 않은 인증입니다."),
 	LOGIN_ERROR(401, "로그인에 실패하였습니다."),
 	FORBIDDEN(403, "접근 권한이 없습니다."),
-	MEMBER_EXISTS(409, "이미 존재하는 이메일입니다.");
+	MEMBER_EXISTS(409, "이미 존재하는 이메일입니다."),
+
+	ORDER_NOT_FOUND(404, "Order not found");
 
 	@Getter
 	private int status;

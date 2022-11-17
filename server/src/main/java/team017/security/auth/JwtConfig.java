@@ -6,7 +6,7 @@
 //
 // import team017.security.auth.AuthTokenProvider;
 //
-// // @Configuration
+// @Configuration
 // public class JwtConfig {
 // 	@Value("${jwt.secret-key}")
 // 	private String secretKey;
