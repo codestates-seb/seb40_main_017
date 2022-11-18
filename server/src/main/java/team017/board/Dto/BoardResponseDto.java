@@ -3,6 +3,8 @@ import lombok.*;
 import team017.product.Entity.Product;
 
 import java.time.LocalDateTime;
+import java.util.List;
+
 @Getter
 @Setter
 @Builder
@@ -28,8 +30,6 @@ public class BoardResponseDto {
 
     private int category; //상품분류 (과일 :1 , 채소: 2, 곡물: 3,  견과류: 4)
 
-    private Long sellPhotoId;
-
     private Product.ProductStatus status; //판매 상태
 
     private int view;
@@ -42,5 +42,8 @@ public class BoardResponseDto {
 
     private int sold_stock; //팔린 갯수
 
+    private String mainImage;
+
+    //private List<String> contentImage;
 
 }
