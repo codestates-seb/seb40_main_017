@@ -33,9 +33,6 @@ public class Board extends Auditable {
     @Column(nullable = false )
     private int view;
 
-//    @Column
-//    private List<String> imageList = new ArrayList<>();
-
     @Column(nullable = false)
     private int sold_stock; //팔린 갯수
 

@@ -31,5 +31,7 @@ public class BoardPostDto {
     @NotBlank
     private int category;
 
+    private String mainImage;
 
+    //private String contentImage;
 }
