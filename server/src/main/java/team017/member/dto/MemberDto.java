@@ -72,5 +72,6 @@ public class MemberDto {
 		private String address;
 		private String role;
 		private String introduce;
+		private String imageUrl;
 	}
 }

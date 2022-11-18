@@ -1,4 +1,4 @@
-package team017.security.jwt;
+package team017.security.provider.service;
 
 import java.util.Collection;
 import java.util.Map;

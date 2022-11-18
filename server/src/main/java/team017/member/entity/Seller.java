@@ -51,9 +51,10 @@ public class Seller {
 	}
 
 	@Builder
-	public Seller(Long sellerId, String introduce) {
+	public Seller(Long sellerId, String introduce, String imageUrl) {
 		this.sellerId = sellerId;
 		this.introduce = introduce;
+		this.imageUrl = imageUrl;
 	}
 
 	/* 🧡게시판 - 판매자 일대다 연관 관계 : 판매자 참조 */

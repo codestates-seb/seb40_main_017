@@ -36,7 +36,7 @@ public class Member {
 
 	/* 소셜 로그인을 추가하면서 해당 판별을 위한 프로바이더 타입 추가 */
 	@Enumerated(EnumType.STRING)
-	private ProviderType providerType = ProviderType.LOCAL;
+	private ProviderType providerType;
 
 	/* Authority 로 일일히 확인하기 어려우니 컬럼 추가 */
 	@Column

@@ -6,21 +6,17 @@ import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import lombok.RequiredArgsConstructor;
-// import team017.security.auth.AuthToken;
-// import team017.security.auth.AuthTokenProvider;
-import team017.security.jwt.JwtFilter;
-import team017.security.jwt.JwtProvider;
+import team017.security.provider.SecurityFilter;
+import team017.security.provider.SecurityProvider;
+import team017.security.utils.CustomAuthorityUtils;
 
 @RequiredArgsConstructor
 public class JwtSecurityConfig extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {
-	private final JwtProvider jwtProvider;
-	// private final AuthToken authToken;
+	private final SecurityProvider securityProvider;
 
 	@Override
 	public void configure(HttpSecurity http) {
-		// JwtFilter customFilter = new JwtFilter(authToken);
-		JwtFilter customFilter = new JwtFilter(jwtProvider);
+		SecurityFilter customFilter = new SecurityFilter(securityProvider);
 		http.addFilterBefore(customFilter, UsernamePasswordAuthenticationFilter.class);
 	}
-
 }

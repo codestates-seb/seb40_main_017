@@ -1,4 +1,4 @@
-package team017.security.jwt.dto;
+package team017.security.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
