@@ -32,7 +32,7 @@ const Logo = styled(Link)`
   color: var(--white);
   line-height: 80px;
   font-size: 30px;
-  margin-left: 20px;
+  margin-left: 100px;
   cursor: pointer;
 `;
 
