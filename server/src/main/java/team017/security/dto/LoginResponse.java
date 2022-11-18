@@ -1,4 +1,4 @@
-package team017.security.jwt.dto;
+package team017.security.dto;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -8,5 +8,6 @@ import lombok.Getter;
 public class LoginResponse {
 	private long memberId;
 	private String authorization;
-	private String refresh;
+	private String name;
+	private String role;
 }
