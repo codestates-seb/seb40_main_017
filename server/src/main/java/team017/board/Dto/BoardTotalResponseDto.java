@@ -26,4 +26,6 @@ public class BoardTotalResponseDto {
 
     private double avg ; //별점의 평균
 
+    private String mainImage;
+
 }

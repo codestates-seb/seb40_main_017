@@ -27,6 +27,8 @@ public class BoardPatchDto {
 
     private int category;
 
-    private Long sellPhotoId;
+    private String mainImage;
+
+    //private String contentImage;
 
 }
