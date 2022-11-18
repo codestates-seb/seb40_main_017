@@ -60,7 +60,7 @@ function CropCard(props) {
   return (
     <div>
       <Container>
-        <CropImage src={lettuce} alt="양배추" />
+        <CropImage src={lettuce} alt="상추" />
         <CropInfo>
           <p>{props.crops.title}</p>
           <p>5,700원</p>

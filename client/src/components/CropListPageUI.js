@@ -70,6 +70,8 @@ function CropListPageUI() {
         <CropCard crops={crops[0]} />
         <CropCard crops={crops[0]} />
         <CropCard crops={crops[0]} />
+        <CropCard crops={crops[0]} />
+        <CropCard crops={crops[0]} />
         {/* {crops.map((a, i) => {
           <CropCard key={i}></CropCard>;
         })} */}
