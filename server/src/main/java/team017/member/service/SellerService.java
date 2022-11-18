@@ -39,6 +39,7 @@ public class SellerService {
         correctSeller(sellerId, seller.getSellerId());
         Seller findSeller = findVerifiedSeller(seller.getSellerId());
         Optional.ofNullable(seller.getIntroduce()).ifPresent(introduce -> findSeller.setIntroduce(introduce));
+        Optional.ofNullable(seller.getImageUrl()).ifPresent(image -> findSeller.setImageUrl(image));
 
         return sellerRepository.save(findSeller);
     }

@@ -5,12 +5,13 @@ import java.util.Optional;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import lombok.RequiredArgsConstructor;
 import team017.global.Exception.BusinessLogicException;
 import team017.global.Exception.ExceptionCode;
 import team017.member.entity.Client;
 import team017.member.entity.Member;
+import team017.member.entity.ProviderType;
 import team017.member.entity.Seller;
 import team017.member.repository.MemberRepository;
 import team017.security.utils.CustomAuthorityUtils;
@@ -46,6 +47,7 @@ public class MemberService {
 		/* 대문자로 저장 */
 		member.setRole(member.getRole().toUpperCase());
 		member.setRoles(roles);
+		member.setProviderType(ProviderType.LOCAL);
 
 		return memberRepository.save(member);
 	}
@@ -111,12 +113,12 @@ public class MemberService {
 	}
 
 	/* 이메일로 멤버 가져오기 */
-	public Long findMemberIdByEmail(String email) {
+	public Member findMemberByEmail(String email) {
 		Member member = memberRepository.findMemberByEmail(email);
 		if (member == null) {
 			throw new RuntimeException("회원이 존재하지 않습니다.");
 		}
 
-		return member.getMemberId();
+		return member;
 	}
 }

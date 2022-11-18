@@ -15,7 +15,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-// @AllArgsConstructor
 @Entity
 public class RefreshToken {
 	// @Id
@@ -34,6 +33,8 @@ public class RefreshToken {
 		this.key = key;
 		this.value = value;
 	}
+	// @Builder
+	// public RefreshToken(String key)
 
 	public RefreshToken updateValue(String token) {
 		this.value = token;
