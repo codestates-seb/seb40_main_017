@@ -4,6 +4,8 @@ import CropDetail from '../../assets/styles/img/CropDetail.png';
 import { AiOutlinePlusCircle, AiOutlineMinusCircle } from 'react-icons/ai';
 import StarRate from '../../components/StarRate';
 import { Link } from 'react-scroll';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const Background = styled.div`
   background-color: var(--off-white);
@@ -81,12 +83,12 @@ const Minus = styled(AiOutlinePlusCircle)`
 
 const GreenButton = styled.button`
   all: unset;
+  margin-top: 20px;
   background-color: var(--green);
   color: var(--white);
   width: 30px;
   padding: 20px 90px;
   border-radius: 5px;
-  margin-left: 380px;
   cursor: pointer;
 `;
 
@@ -129,19 +131,66 @@ const MenuLink = styled.div`
   > div {
     padding: 60px 0;
   }
-  li {
+  h2 {
+    margin-bottom: 20px;
+  }
+  p {
+    width: 70px;
+    height: 100px;
+    line-height: 100px;
+  }
+  .firstlayout {
     border-bottom: 1px solid var(--light-gray);
-    padding: 20px 0;
+    margin-bottom: 50px;
   }
 `;
 
-const ContentBox = styled.div`
-  width: 500px;
-  height: 300px;
+const ContentBox = styled.textarea`
+  width: 700px;
+  height: 200px;
+  resize: none;
   border: 1px solid var(--light-gray);
 `;
 
+const Layout = styled.div`
+  display: flex;
+  text-align: center;
+  > :first-child {
+    margin-right: 30px;
+  }
+`;
+
+const SERVER_URL = 'http://localhost:4000/boards/reviews';
+
 function CropInfoPage() {
+  const [reviewList, setReviewList] = useState(null);
+  // const [commentList, setCommentList] = useState(null);
+
+  const fetchData = async () => {
+    const response = await axios.get(SERVER_URL);
+    setReviewList(response.data);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const onSubmitHandler = async (e) => {
+    e.preventDefault();
+    const context = e.target.context.value;
+    await axios.post(SERVER_URL, { context });
+    fetchData();
+    // fetch('http://localhost:4000/boards/reviews', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify({
+    //     context,
+    //   }),
+    // }).then(() => fetchData());
+  };
+
   return (
     <Background>
       <Container>
@@ -189,20 +238,29 @@ function CropInfoPage() {
             </div>
             <div id="b">
               <h2>후기</h2>
-              <ol>
-                <li>4</li>
-                <li>3</li>
-                <li>2</li>
-                <li>1</li>
-              </ol>
+              {reviewList?.map((review) => (
+                <ol key={review.reviewId}>
+                  {/* reviewId 가 undefined여서 unique key prop 오류가 뜨는거 같아서 서버연결해서 확인해봐야함 */}
+                  <li>{review.reviewId}</li>
+                  <li>{review.context}</li>
+                  <li>{review.name}</li>
+                  <li>{review.createdAt}</li>
+                </ol>
+              ))}
             </div>
             <div id="c">
               <h2>후기작성</h2>
-              <div>별점</div>
-              <StarRate />
-              <p>상세리뷰</p>
-              <ContentBox></ContentBox>
-              <GreenButton>등록하기</GreenButton>
+              <Layout className="firstlayout">
+                <p>별점</p>
+                <StarRate />
+              </Layout>
+              <Layout>
+                <p>상세리뷰</p>
+                <form onSubmit={onSubmitHandler}>
+                  <input name="context" />
+                  <input type="submit" value="등록하기" />
+                </form>
+              </Layout>
             </div>
             <div id="d">
               <h2>문의</h2>
@@ -215,7 +273,10 @@ function CropInfoPage() {
             </div>
             <div id="e">
               <h2>문의작성</h2>
-              <ContentBox></ContentBox>
+              <Layout>
+                <p>문의</p>
+                <ContentBox></ContentBox>
+              </Layout>
               <GreenButton>등록하기</GreenButton>
             </div>
           </MenuLink>
