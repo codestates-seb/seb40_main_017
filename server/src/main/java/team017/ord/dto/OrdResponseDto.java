@@ -4,6 +4,7 @@ package team017.ord.dto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import team017.ord.entity.Ord;
 
 @Getter
 @Setter
@@ -14,6 +15,8 @@ public class OrdResponseDto {
     private Long clientId;
 
     private Long boardId;
+
+    private Ord.OrdStatus ordStatus;
 
     private String address;
 
