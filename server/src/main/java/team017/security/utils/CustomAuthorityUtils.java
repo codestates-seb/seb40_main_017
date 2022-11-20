@@ -8,8 +8,6 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
-import team017.member.dto.MemberDto;
-
 @Component
 public class CustomAuthorityUtils {
 	private final List<GrantedAuthority> CLIENT_ROLES = AuthorityUtils.createAuthorityList("ROLE_CLIENT");
@@ -22,11 +20,11 @@ public class CustomAuthorityUtils {
 	public List<GrantedAuthority> createAuthorities(String role) {
 		if (role.equalsIgnoreCase("[CLIENT]")) {
 			return CLIENT_ROLES;
-		}
-		else if (role.equalsIgnoreCase("[SELLER]")) {
+		} else if (role.equalsIgnoreCase("[SELLER]")) {
 			return SELLER_ROLES;
-		}
-		else throw new RuntimeException("잘못된 접근입니다.");
+		} else if (role.equalsIgnoreCase("[SOCIAL]")) {
+			return SOCIAL_ROLES;
+		} else throw new RuntimeException("잘못된 접근입니다.");
 	}
 
 	public List<GrantedAuthority> createAuthorities(List<String> roles) {
@@ -40,10 +38,10 @@ public class CustomAuthorityUtils {
 	public List<String> createRoles(String roles) {
 		if (roles.equalsIgnoreCase("CLIENT")) {
 			return CLIENT_ROLES_STRING;
-		}
-		else if (roles.equalsIgnoreCase("SELLER")) {
+		} else if (roles.equalsIgnoreCase("SELLER")) {
 			return SELLER_ROLES_STRING;
-		}
-		else throw new RuntimeException("잘못된 접근입니다.");
+		} else if (roles.equalsIgnoreCase("SOCIAL")) {
+			return SOCIAL_ROLES_STRING;
+		} else throw new RuntimeException("잘못된 접근입니다.");
 	}
 }

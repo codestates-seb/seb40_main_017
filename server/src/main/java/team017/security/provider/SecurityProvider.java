@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -38,7 +37,7 @@ public class SecurityProvider{
 	private final Key key;
 	private final CustomAuthorityUtils authorityUtils;
 
-	private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 60;
+	private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 6;
 	private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7;
 	private static final String AUTHORITIES_KEY = "role";
 	private static final String BEARER_TYPE = "Bearer ";
@@ -52,7 +51,7 @@ public class SecurityProvider{
 
 	public TokenDto generatedTokenDto(Authentication authentication) {
 
-		/* 권한 가져오기 */
+		/* 🐥 권한 가져오기 */
 		String authorities = authentication.getAuthorities().stream()
 			.map(GrantedAuthority::getAuthority)
 			.collect(Collectors.joining(","));
@@ -61,10 +60,10 @@ public class SecurityProvider{
 		Date accessTokenExpiration = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
 		Date refreshTokenExpiration = new Date(now + REFRESH_TOKEN_EXPIRE_TIME);
 
-		/* 1️⃣ Access Token 생성 */
+		/* 🐹 Access Token 생성 */
 		String accessToken = createAccessToken(authentication.getName(), authorities, accessTokenExpiration);
 
-		/* 2️⃣ Refresh Token 생성 */
+		/* 🦊 Refresh Token 생성 */
 		String refreshToken = createRefreshToken(authentication.getName(), refreshTokenExpiration);
 
 		return TokenDto.builder()
@@ -75,7 +74,7 @@ public class SecurityProvider{
 			.build();
 	}
 
-	/* 1️⃣ Access Token 생성 */
+	/* 🐹 Access Token 생성 */
 	public String createAccessToken(String username, String role, Date expiration) {
 		Map<String, Object> claims = new HashMap<>();
 		claims.put("username", username);
@@ -92,7 +91,7 @@ public class SecurityProvider{
 		return BEARER_TYPE + accessToken;
 	}
 
-	/* 2️⃣ Refresh Token 생성 */
+	/* 🦊 Refresh Token 생성 */
 	public String createRefreshToken(String username, Date expiration) {
 		return Jwts.builder()
 			.setSubject(username)
@@ -112,7 +111,7 @@ public class SecurityProvider{
 			throw new BusinessLogicException(ExceptionCode.NOT_FOUND_AUTHORITIES);
 		}
 
-		/* 권한이 있다면, 권한 가져오기 */
+		/* 🐥 권한이 있다면, 권한 가져오기 */
 		List<GrantedAuthority> authorities = authorityUtils.createAuthorities((String)claims.get(AUTHORITIES_KEY));
 
 		/* UserDetails 객체를 만들어 Authentication 리턴 */
