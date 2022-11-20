@@ -19,6 +19,7 @@ import team017.member.service.SellerService;
 import team017.product.Entity.Product;
 import team017.product.Repository.ProductRepository;
 import team017.product.Service.ProductService;
+import team017.review.repository.ReviewRepository;
 
 import java.util.Optional;
 
@@ -113,11 +114,10 @@ public class BoardService {
     }
 
     private void addView(Board board) {
-        Board findBoard = findVerifiedBoard(board.getBoardId());
-        int viewCnt = findBoard.getView();
+        int viewCnt = board.getView();
         viewCnt++;
-        findBoard.setView(viewCnt);
-        boardRepository.save(findBoard);
+        board.setView(viewCnt);
+        boardRepository.save(board);
 
     }
 

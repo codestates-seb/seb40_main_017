@@ -55,7 +55,6 @@ public class BoardController {
     }
 
     //단일 상품 조회
-    //++sellPhotoList
     @GetMapping("/{board_id}")
     public ResponseEntity GetBoard(@PathVariable("board_id") long boardId){
 

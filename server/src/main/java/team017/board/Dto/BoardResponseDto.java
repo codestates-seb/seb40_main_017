@@ -38,12 +38,11 @@ public class BoardResponseDto {
 
     private LocalDateTime modifiedAt;
 
-    private double avg ; //별점의 평균
+    private double reviewAvg ; //별점의 평균
 
-    private int sold_stock; //팔린 갯수
+    private int soldStock; //팔린 갯수
 
     private String mainImage;
 
-    //private List<String> contentImage;
 
 }

@@ -34,10 +34,10 @@ public class Board extends Auditable {
     private int view;
 
     @Column(nullable = false)
-    private int sold_stock; //팔린 갯수
+    private int soldStock; //팔린 갯수
 
     @Column(nullable = false)
-    private double avg ; //별점의 평균
+    private double reviewAvg ; //별점의 평균
 
 
     /* 🍋게시판 - 상품 일대일 연관 관계 : 상품 참조*/
@@ -62,9 +62,6 @@ public class Board extends Auditable {
     /* 🍉리뷰 - 판매자 일대다 연관 관계 : 판매자 참조 */
     @OneToMany(mappedBy = "board", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Review> reviewList = new ArrayList<>();
-
-
-
 
     /* 🍉리뷰 - 판매자 연관 관계 편의 메서드 */
     public void addReview (Review review) {
