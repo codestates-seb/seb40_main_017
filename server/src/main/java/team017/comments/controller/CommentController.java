@@ -38,11 +38,12 @@ public class CommentController {
         return new ResponseEntity<>((commentMapper.commentToCommentResponseDto(comment)), HttpStatus.CREATED);
     }
 
-    @GetMapping("/{comment-Id}")
-    public ResponseEntity getComment(@PathVariable("comment-Id") @Positive Long commentId,
+    @GetMapping("/{board-Id}")
+    public ResponseEntity getComment(@PathVariable("board-Id") @Positive Long boardId,
                                      @Positive @RequestParam int page,
                                      @Positive @RequestParam int size) {
-        Page<Comment> commentPage = commentService.findComments(page - 1, size);
+
+        Page<Comment> commentPage = commentService.findCommentByBoard(boardId,page - 1, size);
         List<Comment> commentList = commentPage.getContent();
 
         return new ResponseEntity<>(

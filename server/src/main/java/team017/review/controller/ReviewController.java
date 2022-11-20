@@ -43,11 +43,12 @@ public class ReviewController {
                 reviewMapper.reviewToReviewResponseDto(review)), HttpStatus.CREATED);
     }
 
-    @GetMapping("/reviews")
-    public ResponseEntity getReview(@Positive @RequestParam int page,
+    @GetMapping("/reviews/{board-id}")
+    public ResponseEntity getReview(@PathVariable("board-id") @Positive Long boardId,
+                                    @Positive @RequestParam int page,
                                     @Positive @RequestParam int size) {
 
-        Page<Review> reviewPage = reviewService.findReviews(page - 1, size);
+        Page<Review> reviewPage = reviewService.findReviewByBoards(boardId,page - 1, size);
         List<Review> reviewList = reviewPage.getContent();
 
         return new ResponseEntity<>(

@@ -6,6 +6,7 @@ import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import team017.comments.entity.Comment;
 import team017.global.audit.Auditable;
 import team017.member.entity.Seller;
 import team017.product.Entity.Product;

@@ -21,9 +21,7 @@ import java.util.Optional;
 public class ReviewService {
 
     private final ReviewRepository reviewRepository;
-
     private final ClientService clientService;
-
     private final BoardService boardService;
 
 
@@ -86,4 +84,7 @@ public class ReviewService {
         return reviewRepository.findAll(PageRequest.of(page, size, Sort.by("createdAt").descending()));
     }
 
+    public Page<Review> findReviewByBoards(Long boardId, int page, int size){
+        return reviewRepository.findByBoard_BoardId(boardId, PageRequest.of(page, size, Sort.by("createdAt").descending()));
+    }
 }
