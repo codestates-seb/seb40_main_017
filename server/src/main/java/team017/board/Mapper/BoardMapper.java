@@ -34,8 +34,6 @@ public interface BoardMapper {
             Board board = (Board) iter.next();
             Product product = board.getProduct();
             totalBoard.add(productToBoardTotalResponseDto(product, board));
-
-            totalBoard.stream().forEach(System.out::println);
         }
 
         return totalBoard;
