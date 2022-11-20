@@ -1,4 +1,6 @@
-package team017.security.provider;
+package team017.security.dto;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.mapstruct.Mapper;
 
@@ -17,6 +19,22 @@ public interface LoginMapper {
 			LoginResponse.builder()
 				.memberId(member.getMemberId())
 				.authorization(tokenDto.getAccessToken())
+				.name(member.getName())
+				.role(member.getRole())
+				.build();
+
+		return response;
+	}
+
+	default LoginResponse reGetPage(Member member, String token) {
+		if (member == null && token == null) {
+			return null;
+		}
+
+		LoginResponse response =
+			LoginResponse.builder()
+				.memberId(member.getMemberId())
+				.authorization(token)
 				.name(member.getName())
 				.role(member.getRole())
 				.build();
