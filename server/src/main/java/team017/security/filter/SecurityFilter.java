@@ -1,4 +1,4 @@
-package team017.security.provider;
+package team017.security.filter;
 
 import java.io.IOException;
 
@@ -13,7 +13,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import lombok.RequiredArgsConstructor;
-
+import team017.security.provider.SecurityProvider;
 
 @RequiredArgsConstructor
 public class SecurityFilter extends OncePerRequestFilter {

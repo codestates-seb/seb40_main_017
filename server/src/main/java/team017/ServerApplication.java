@@ -8,11 +8,8 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
-// import team017.security.config.AppProperties;
-
 @EnableJpaAuditing
 @SpringBootApplication
-// @EnableConfigurationProperties(AppProperties.class)
 public class ServerApplication extends SpringBootServletInitializer {
 
 	public static void main(String[] args) {

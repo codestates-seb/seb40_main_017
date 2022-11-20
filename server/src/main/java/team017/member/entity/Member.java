@@ -72,20 +72,13 @@ public class Member {
 		}
 	}
 
-	@Builder
-	public Member(String name, String email, String password,
+	public Member(String name, String email, //String password,
 		ProviderType providerType, String role, List<String> roles) {
 		this.name = name;
 		this.email = email;
-		this.password = password;
+		//this.password = password;
 		this.providerType = providerType;
 		this.role = role;
 		this.roles = roles;
-	}
-
-	public Member(String name, String email, ProviderType providerType) {
-		this.name = name;
-		this.email = email;
-		this.providerType = providerType;
 	}
 }

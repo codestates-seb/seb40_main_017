@@ -1,4 +1,4 @@
-package team017.security.provider;
+package team017.security.service;
 
 import java.util.Date;
 import java.util.Map;
@@ -10,12 +10,12 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import team017.member.entity.Member;
 import team017.security.dto.LoginRequestDto;
 import team017.security.dto.TokenDto;
 import team017.security.dto.TokenRequestDto;
@@ -25,19 +25,24 @@ import team017.security.refresh.RefreshTokenRepository;
 import team017.security.utils.CookieUtil;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class SecurityService {
 	private final AuthenticationManagerBuilder authenticationManagerBuilder;
 	private final SecurityProvider securityProvider;
 	private final RefreshTokenRepository refreshTokenRepository;
 
-	/* 자체 로그인 */
+	/* 🔴 자체 로그인 */
 	@Transactional
 	public TokenDto tokenLogin(LoginRequestDto loginRequest) {
+		log.info("로그인 아이디 : {}", loginRequest.getEmail());
+		log.error("로그인 아이디 : {}", loginRequest.getEmail());
 
 		/* 로그인 기반으로 "Authentication" 토큰 생성 */
 		UsernamePasswordAuthenticationToken authenticationToken = loginRequest.toAuthentication();
+		log.error("토큰 이름 : {}", authenticationToken.getName());
 
+		/* 이 인증 정보가 계속 null 발생 */
 		Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 
 		/* Access Token 및 Refresh Token 생성 */
@@ -54,15 +59,17 @@ public class SecurityService {
 		return tokenDto;
 	}
 
-	/* 소셜 로그인 */
+	/* 🟡 소셜 로그인 */
 	@Transactional
 	public TokenDto socialLogin(LoginRequestDto loginRequest) {
 
+		/* 로그인 기반으로 "Authentication" 토큰 생성 */
 		UsernamePasswordAuthenticationToken authenticationToken = loginRequest.toAuthentication();
 
 		Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 
-		SecurityContextHolder.getContext().setAuthentication(authentication);
+		/* 여기서 또 저장하는지 모르겠음 */
+		// SecurityContextHolder.getContext().setAuthentication(authentication);
 		// MemberPrincipal principal = (MemberPrincipal)authentication.getPrincipal();
 
 		/* 토큰 생성 -> 여기서 역할을 사용하기 때문에 이 전에 역할이 저장되어야 함 */
@@ -88,7 +95,7 @@ public class SecurityService {
 	}
 
 
-	/* 자체 로그인 토큰 재발급 */
+	/* 🔵 자체 로그인 토큰 재발급 */
 	@Transactional
 	public TokenDto tokenReissue(TokenRequestDto tokenRequestDto) {
 
@@ -121,7 +128,7 @@ public class SecurityService {
 		return tokenDto;
 	}
 
-	/* 소셜 로그인 리프레시 토큰 재발급 -> DB 에서만 관리 확인? */
+	/* 🟢 소셜 로그인 리프레시 토큰 재발급 -> DB 에서만 관리 확인? */
 	@Transactional
 	public TokenDto socialReissue(HttpServletRequest request, HttpServletResponse response) {
 
@@ -133,6 +140,7 @@ public class SecurityService {
 		}
 
 		Map<String, Object> claims = securityProvider.parseClaims(accessToken);
+
 		if (claims == null) {
 			throw new RuntimeException("만료되지 않은 토큰");
 		}
@@ -177,7 +185,7 @@ public class SecurityService {
 
 		TokenDto tokenDto =
 			TokenDto.builder()
-				.grantType("Bearer")
+				.grantType("Bearer ")
 				.accessToken(newAccessToken)
 				.refreshToken(refreshToken)
 				.accessTokenExpiresIn(newAccessTime.getTime())

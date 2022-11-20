@@ -1,4 +1,4 @@
-package team017.security.auth;
+package team017.security.service;
 
 import java.util.Collection;
 import java.util.Collections;
