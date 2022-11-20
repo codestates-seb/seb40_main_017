@@ -10,9 +10,7 @@ import team017.comments.entity.Comment;
 import team017.comments.repository.CommentRepository;
 import team017.global.Exception.BusinessLogicException;
 import team017.global.Exception.ExceptionCode;
-import team017.member.entity.Member;
 import team017.member.service.MemberService;
-import team017.product.Entity.Product;
 
 import javax.transaction.Transactional;
 import java.util.Optional;

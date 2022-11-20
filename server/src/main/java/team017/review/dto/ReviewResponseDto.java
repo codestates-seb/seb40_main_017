@@ -22,6 +22,8 @@ public class ReviewResponseDto {
 
     private String image;
 
+    private int star;
+
     private LocalDateTime createdAt;
 
     private LocalDateTime modifiedAt;

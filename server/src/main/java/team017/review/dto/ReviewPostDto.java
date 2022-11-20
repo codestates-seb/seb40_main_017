@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
+import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 
 @Getter
@@ -24,5 +25,6 @@ public class ReviewPostDto {
     private String image;
 
     @NotNull
+    @Max(5)
     private int star;
 }
