@@ -46,7 +46,7 @@ public class Ord {
 
 	@Column
 	@Enumerated(EnumType.STRING)
-	private OrdStatus status;
+	private OrdStatus status = OrdStatus.ORD_REQUEST;
 
 	public enum OrdStatus {
 

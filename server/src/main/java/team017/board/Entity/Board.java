@@ -6,8 +6,6 @@ import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
-import team017.comments.entity.Comment;
 import team017.global.audit.Auditable;
 import team017.member.entity.Seller;
 import team017.product.Entity.Product;
@@ -64,6 +62,9 @@ public class Board extends Auditable {
     /* 🍉리뷰 - 판매자 일대다 연관 관계 : 판매자 참조 */
     @OneToMany(mappedBy = "board", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Review> reviewList = new ArrayList<>();
+
+
+
 
     /* 🍉리뷰 - 판매자 연관 관계 편의 메서드 */
     public void addReview (Review review) {

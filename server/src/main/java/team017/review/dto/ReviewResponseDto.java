@@ -14,15 +14,18 @@ public class ReviewResponseDto {
 
     private Long boardId;
 
+    private Long reviewId;
+
     private String name;
 
     private String context;
 
     private String image;
 
+    private int star;
+
     private LocalDateTime createdAt;
 
     private LocalDateTime modifiedAt;
-
 
 }

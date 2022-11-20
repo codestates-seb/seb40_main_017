@@ -1,9 +1,6 @@
 package team017.review.entity;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import team017.board.Entity.Board;
 import team017.global.audit.Auditable;
 import team017.member.entity.Client;
@@ -27,21 +24,17 @@ public class Review extends Auditable {
 
     @Column(nullable = false)
     private int star;
+
+
     /* 💝 소비자 - 리뷰 다대일 연관 관계 : 소비자 참조 */
     @ManyToOne
-    @JoinColumn(name = "client_id")
+    @JoinColumn(name = "CLIENT_ID")
     private Client client;
 
-    /* 🍉리뷰 - 판매자 다대일 연관 관계 : 판매자 참조 */
+    /* 🍉게시판 - 리뷰 다대일 연관 관계 : 게시판 참조 */
     @ManyToOne
-    @JoinColumn(name = "board_id")
+    @JoinColumn(name = "BOARD_ID")
+    @ToString.Exclude
     private Board board;
 
-    @Builder
-    public Review(Long reviewId, String context, String image, int star) {
-        this.reviewId = reviewId;
-        this.context = context;
-        this.image = image;
-        this.star = star;
-    }
 }

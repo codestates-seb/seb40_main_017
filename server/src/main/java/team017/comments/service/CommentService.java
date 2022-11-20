@@ -10,9 +10,7 @@ import team017.comments.entity.Comment;
 import team017.comments.repository.CommentRepository;
 import team017.global.Exception.BusinessLogicException;
 import team017.global.Exception.ExceptionCode;
-import team017.member.entity.Member;
 import team017.member.service.MemberService;
-import team017.product.Entity.Product;
 
 import javax.transaction.Transactional;
 import java.util.Optional;
@@ -21,16 +19,16 @@ import java.util.Optional;
 @Transactional
 @Service
 public class CommentService {
-    private final CommentRepository commentRepository;
     private final MemberService memberService;
+    private final CommentRepository commentRepository;
     private final BoardService boardService;
 
     public Comment createComment(Comment comment, Long memberId) {
         comment.setMember(memberService.findVerifiedMember(memberId));
-        verifiedMember(comment);
+        verifiedMember(comment); //회원 존재 확인
         comment.setCommentMemberName(memberService.getMemberName(memberId));
         comment.setBoard(boardService.findVerifiedBoard(comment.getBoard().getBoardId()));
-        verifiedMember(comment);
+        verifiedBoard(comment); // 게시판 존재 확인
 
         return commentRepository.save(comment);
     }
@@ -41,7 +39,7 @@ public class CommentService {
 
     public Comment updateComment(Comment comment, Long memberId) {
         Comment foundComment = findComment(comment.getCommentId());
-        verifyWriter(memberId, comment.getMember().getMemberId());
+        verifyWriter(memberId, foundComment.getMember().getMemberId());
 
         Optional.ofNullable(comment.getContext()).ifPresent(context -> foundComment.setContext(context));
 

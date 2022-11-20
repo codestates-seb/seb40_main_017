@@ -46,6 +46,7 @@ public class Member {
 	@ElementCollection(fetch = FetchType.EAGER)
 	private List<String> roles = new ArrayList<>();
 
+
 	/* 💜 소비자 - 회원 일대일 연관 관계 : 회원 참조*/
 	@OneToOne(mappedBy = "member", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
 	private Client client;

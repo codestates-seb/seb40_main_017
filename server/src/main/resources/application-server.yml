@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://database-17farm.cgzeg2t2eys7.ap-northeast-2.rds.amazonaws.com:3306/mainproject?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: project_17farm
+    password:
+cloud:
+  aws:
+    credentials:
+      access-key:
+      secret-key:
+    s3:
+      bucket: jihoon-bucket
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false

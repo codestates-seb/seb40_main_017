@@ -6,7 +6,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import team017.board.Service.BoardService;
-import team017.comments.entity.Comment;
 import team017.global.Exception.BusinessLogicException;
 import team017.global.Exception.ExceptionCode;
 import team017.member.service.ClientService;
@@ -21,18 +20,19 @@ import java.util.Optional;
 @Transactional
 public class ReviewService {
 
-    private ReviewRepository reviewRepository;
+    private final ReviewRepository reviewRepository;
 
-    private ClientService clientService;
+    private final ClientService clientService;
 
-    private BoardService boardService;
+    private final BoardService boardService;
 
 
     public Review createReview(Review review, Long clientId) {
-        review.setClient(clientService.findVerifiedClient(clientId));
-        verifiedClient(review);
+
+        review.setClient(clientService.findClient(clientId));
+        verifiedClient(review); // 존재하는 회원인지 확인
         review.setBoard(boardService.findVerifiedBoard(review.getBoard().getBoardId()));
-        verifiedBoard(review);
+        verifiedBoard(review); // 존재하는 게시판인지 확인
 
         return reviewRepository.save(review);
     }
@@ -43,9 +43,13 @@ public class ReviewService {
 
     public Review updateReview(Review review, Long clientId){
         Review foundReview = findReview(review.getReviewId());
-        verifyWriter(clientId, review.getClient().getClientId());
+        verifyWriter(clientId, foundReview.getClient().getClientId()); // 작성자와 수정자가 같은지 확인
+
+//        verifySameBoard(review.getBoard().getBoardId(), foundReview.getBoard().getBoardId()); //수정하려는 게시판이 같은지 확인
+
 
         Optional.ofNullable(review.getContext()).ifPresent(context -> foundReview.setContext(context));
+        Optional.ofNullable(review.getImage()).ifPresent(image -> foundReview.setImage(image));
 
         return reviewRepository.save(foundReview);
     }

@@ -3,7 +3,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/17farm?serverTimezone=UTC&characterEncoding=UTF-8
     username: root
-    password: ${MY_SQL_PASSWORD}
+    password:
   security:
     oauth2:
       client:
