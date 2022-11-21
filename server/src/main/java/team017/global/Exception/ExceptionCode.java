@@ -21,6 +21,7 @@ public enum ExceptionCode {
 	NOT_FOUND_AUTHORITIES(404, "권한이 없는 토큰입니다."),
 	FORBIDDEN(403, "접근 권한이 없습니다."),
 	MEMBER_EXISTS(409, "이미 존재하는 이메일입니다."),
+	WRONG_ACCESS(400, "잘못된 접근입니다."),
 
 	ORDER_NOT_FOUND(404, "Order not found");
 
