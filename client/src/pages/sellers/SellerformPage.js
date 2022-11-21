@@ -1,7 +1,7 @@
-import { MultiStepProgressBar } from '../../components/MultiStepProgressBar';
+import { MultiStepProgressBar } from '../../components/sellerform/MultiStepProgressBar';
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
-import { MultiStepForm } from '../../components/MultiStepForm';
+import { MultiStepForm } from '../../components/sellerform/MultiStepForm';
 import { LineWobble } from '@uiball/loaders';
 
 const FormLayout = styled.div`
@@ -77,6 +77,7 @@ function SellerformPage() {
   const [index, setIndex] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
+    sellerid: '1',
     title: '',
     stock: '',
     price: '',
