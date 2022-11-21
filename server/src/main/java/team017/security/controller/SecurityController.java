@@ -58,12 +58,12 @@ public class SecurityController {
 
 		if(member.getRole().equals("SELLER")) {
 			LoginResponse.Seller sellerResponse =
-				mapper.loginSellerResponseDto(member, member.getSeller().getSellerId(), tokenDto);
+				mapper.loginSellerResponseDto(member, tokenDto);
 
 			return new ResponseEntity<>(sellerResponse, httpHeaders, HttpStatus.OK);
 		} else if (member.getRole().equals("CLIENT")) {
 			LoginResponse.Cilent clientResponse =
-				mapper.loginClientResponseDto(member, member.getClient().getClientId(), tokenDto);
+				mapper.loginClientResponseDto(member, tokenDto);
 
 			return new ResponseEntity<>(clientResponse, httpHeaders, HttpStatus.OK);
 		}
@@ -133,12 +133,12 @@ public class SecurityController {
 
 		if(member.getRole().equals("SELLER")) {
 			LoginResponse.Seller sellerResponse =
-				mapper.getSellerToken(member, member.getSeller().getSellerId(), accessToken);
+				mapper.getSellerToken(member,accessToken);
 
 			return new ResponseEntity<>(sellerResponse, HttpStatus.OK);
 		} else if (member.getRole().equals("CLIENT")) {
 			LoginResponse.Cilent clientResponse =
-				mapper.getClientToken(member, member.getClient().getClientId(), accessToken);
+				mapper.getClientToken(member, accessToken);
 
 			return new ResponseEntity<>(clientResponse, HttpStatus.OK);
 		}
