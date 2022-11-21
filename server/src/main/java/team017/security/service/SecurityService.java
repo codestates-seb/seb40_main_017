@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import team017.member.entity.Member;
 import team017.security.dto.LoginRequestDto;
 import team017.security.dto.TokenDto;
 import team017.security.dto.TokenRequestDto;
@@ -35,12 +34,9 @@ public class SecurityService {
 	/* 🔴 자체 로그인 */
 	@Transactional
 	public TokenDto tokenLogin(LoginRequestDto loginRequest) {
-		log.info("로그인 아이디 : {}", loginRequest.getEmail());
-		log.error("로그인 아이디 : {}", loginRequest.getEmail());
 
 		/* 로그인 기반으로 "Authentication" 토큰 생성 */
 		UsernamePasswordAuthenticationToken authenticationToken = loginRequest.toAuthentication();
-		log.error("토큰 이름 : {}", authenticationToken.getName());
 
 		/* 이 인증 정보가 계속 null 발생 */
 		Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
