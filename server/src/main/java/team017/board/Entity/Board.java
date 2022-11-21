@@ -6,7 +6,6 @@ import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import team017.comments.entity.Comment;
 import team017.global.audit.Auditable;
 import team017.member.entity.Seller;
 import team017.product.Entity.Product;
@@ -35,10 +34,10 @@ public class Board extends Auditable {
     private int view;
 
     @Column(nullable = false)
-    private int sold_stock; //팔린 갯수
+    private int soldStock; //팔린 갯수
 
     @Column(nullable = false)
-    private double avg ; //별점의 평균
+    private double reviewAvg ; //별점의 평균
 
 
     /* 🍋게시판 - 상품 일대일 연관 관계 : 상품 참조*/

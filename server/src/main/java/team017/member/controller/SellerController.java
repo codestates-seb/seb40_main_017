@@ -2,6 +2,7 @@ package team017.member.controller;
 
 import javax.validation.constraints.Positive;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -11,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
-import team017.global.Exception.BusinessLogicException;
-import team017.global.Exception.ExceptionCode;
+import team017.board.Dto.BoardForSellerMyPageDto;
+import team017.global.response.MultiSellerResponseDto;
 import team017.member.dto.MemberDto;
 import team017.member.dto.SellerPatchDto;
 import team017.member.entity.Member;
@@ -20,6 +21,8 @@ import team017.member.entity.Seller;
 import team017.member.mapper.MemberMapper;
 import team017.member.service.MemberService;
 import team017.member.service.SellerService;
+
+import java.util.List;
 
 /* 생산자 관련 컨트롤러 : 마이페이지 조회, 정보 수정 */
 @RestController
@@ -36,7 +39,11 @@ public class SellerController {
 		Seller seller = sellerService.findSeller(sellerId);
 		Member member = seller.getMember();
 
-		return ResponseEntity.ok(mapper.memberToSellerDto(member, seller));
+		List<BoardForSellerMyPageDto> boardList = sellerService.getSellerBoard(sellerId);
+		MemberDto.SelleResponseDto response = mapper.memberToSellerDto(member, seller);
+
+		return new ResponseEntity<>(
+				new MultiSellerResponseDto(response,boardList), HttpStatus.OK);
 	}
 
 	/* 판매자 정보 수정 */

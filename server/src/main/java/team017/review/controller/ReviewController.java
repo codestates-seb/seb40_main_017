@@ -48,7 +48,9 @@ public class ReviewController {
                                     @Positive @RequestParam int page,
                                     @Positive @RequestParam int size) {
 
+
         Page<Review> reviewPage = reviewService.findReviewByBoards(boardId,page - 1, size);
+
         List<Review> reviewList = reviewPage.getContent();
 
         return new ResponseEntity<>(

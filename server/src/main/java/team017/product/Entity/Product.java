@@ -8,7 +8,6 @@ import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import team017.board.Entity.Board;
-import team017.image.Entity.Image;
 import team017.member.entity.Seller;
 import team017.ord.entity.Ord;
 
@@ -69,19 +68,6 @@ public class Product {
 
         if (ord.getProduct() != this) {
             ord.setProduct(this);
-        }
-    }
-
-    /* 🍓상품 이미지 - 상품 일대다 연관 관계 : 상품 참조 */
-    @OneToMany(mappedBy = "imageId", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    private List<Image> imageList = new ArrayList<>();
-
-    /* 🍓상품 이미지 - 상품 연관 관계 편의 메서드*/
-    public void addImage(Image image){
-        imageList.add(image);
-
-        if(image.getProduct() != this){
-            image.setProduct(this);
         }
     }
 

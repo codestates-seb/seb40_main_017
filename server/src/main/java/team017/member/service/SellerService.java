@@ -1,14 +1,15 @@
 package team017.member.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
-import team017.global.Exception.BusinessLogicException;
-import team017.global.Exception.ExceptionCode;
-import team017.member.entity.Member;
+import team017.board.Dto.BoardForSellerMyPageDto;
+import team017.board.Entity.Board;
+import team017.board.Repository.BoardRepository;
 import team017.member.entity.Seller;
 import team017.member.repository.SellerRepository;
 
@@ -17,6 +18,7 @@ import team017.member.repository.SellerRepository;
 @RequiredArgsConstructor
 public class SellerService {
     private final SellerRepository sellerRepository;
+    private final BoardRepository boardRepository;
 
     /* 존재하는 생산자인지 확인 + 생산자 정보 리턴 */
     public Seller findVerifiedSeller(long sellerId) {
@@ -51,5 +53,10 @@ public class SellerService {
         }
     }
 
+    public List<BoardForSellerMyPageDto> getSellerBoard(long sellerId) {
+        List<BoardForSellerMyPageDto> sellerBoard = boardRepository.sellerBoard(sellerId);
+
+        return sellerBoard;
+    }
 }
 

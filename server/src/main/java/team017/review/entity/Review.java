@@ -25,7 +25,6 @@ public class Review extends Auditable {
     @Column(nullable = false)
     private int star;
 
-
     /* 💝 소비자 - 리뷰 다대일 연관 관계 : 소비자 참조 */
     @ManyToOne
     @JoinColumn(name = "CLIENT_ID")

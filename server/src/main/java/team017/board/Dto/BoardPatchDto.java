@@ -29,6 +29,4 @@ public class BoardPatchDto {
 
     private String mainImage;
 
-    //private String contentImage;
-
 }
