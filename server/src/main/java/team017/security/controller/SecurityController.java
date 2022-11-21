@@ -46,24 +46,19 @@ public class SecurityController {
 	/* 🔴 자체 토큰 로그인 */
 	@PostMapping("/login")
 	public ResponseEntity login(@RequestBody LoginRequestDto requestBody) {
-		log.info("#Controller 로그인 이메일 : {}", requestBody.getEmail());
-		// log.error("#Controller 로그인 이메일 : {}", requestBody.getEmail());
 		Member member = memberService.findMemberByEmail(requestBody.getEmail());
-		log.info("#Controller member 정보 : {}" , member.getName());
-		// log.error("#Controller member 정보 : {}" , member.getName());
 		TokenDto tokenDto = securityService.tokenLogin(requestBody);
 
-		HttpHeaders httpHeaders = new HttpHeaders();
-		httpHeaders.set("Authorization", tokenDto.getAccessToken());
+		HttpHeaders httpHeaders = setHeader(tokenDto.getAccessToken());
 
 		if(member.getRole().equals("SELLER")) {
 			LoginResponse.Seller sellerResponse =
-				mapper.loginSellerResponseDto(member, member.getSeller().getSellerId(), tokenDto);
+				mapper.loginSellerResponseDto(member, tokenDto);
 
 			return new ResponseEntity<>(sellerResponse, httpHeaders, HttpStatus.OK);
 		} else if (member.getRole().equals("CLIENT")) {
 			LoginResponse.Cilent clientResponse =
-				mapper.loginClientResponseDto(member, member.getClient().getClientId(), tokenDto);
+				mapper.loginClientResponseDto(member, tokenDto);
 
 			return new ResponseEntity<>(clientResponse, httpHeaders, HttpStatus.OK);
 		}
@@ -82,8 +77,7 @@ public class SecurityController {
 		CookieUtil.deleteCookie(request, response, "Refresh");
 		CookieUtil.addCookie(response, "Refresh", tokenDto.getRefreshToken(), cookieMaxAge);
 
-		HttpHeaders httpHeaders = new HttpHeaders();
-		httpHeaders.set("Authorization", tokenDto.getAccessToken());
+		HttpHeaders httpHeaders = setHeader(tokenDto.getAccessToken());
 
 		/* memberId 를 줘야하나? */
 		Member member = memberService.findMemberByEmail(requestDto.getEmail());
@@ -92,18 +86,12 @@ public class SecurityController {
 		return new ResponseEntity<>(responseDto, httpHeaders, HttpStatus.OK);
 	}
 
-	@GetMapping("/")
-	public String home() {
-		return "Hello 17farm!";
-	}
-
 	/* 🔵 자체 로그  토큰 재발급 */
 	@PostMapping("/reissue")
 	public ResponseEntity reissue(@RequestBody TokenRequestDto requestBody) {
 		TokenDto tokenDto = securityService.tokenReissue(requestBody);
 
-		HttpHeaders httpHeaders = new HttpHeaders();
-		httpHeaders.set("Authorization", tokenDto.getAccessToken());
+		HttpHeaders httpHeaders = setHeader(tokenDto.getAccessToken());
 		String message = "액세스 토큰 재발급 완료.";
 
 		return new ResponseEntity<>(message, httpHeaders, HttpStatus.OK);
@@ -114,8 +102,7 @@ public class SecurityController {
 	public ResponseEntity reToken(HttpServletRequest request, HttpServletResponse response) {
 		TokenDto tokenDto = securityService.socialReissue(request, response);
 
-		HttpHeaders httpHeaders = new HttpHeaders();
-		httpHeaders.set("Authorization", tokenDto.getAccessToken());
+		HttpHeaders httpHeaders = setHeader(tokenDto.getAccessToken());
 		String message = "액세스 토큰 재발급 완료.";
 
 		int cookieMaxAge = 1000 * 60 * 24 * 7 ;
@@ -125,24 +112,34 @@ public class SecurityController {
 		return new ResponseEntity<>(message, httpHeaders, HttpStatus.OK);
 	}
 
-	/* 새로 고침? */
+	/* 새로 고침 */
 	@GetMapping("/access")
 	public ResponseEntity reGet(HttpServletRequest request,Principal principal) {
 		String accessToken = request.getHeader("Authorization");
+		HttpHeaders httpHeaders = setHeader(accessToken);
 		Member member = memberService.findMemberByEmail(principal.getName());
 
 		if(member.getRole().equals("SELLER")) {
 			LoginResponse.Seller sellerResponse =
-				mapper.getSellerToken(member, member.getSeller().getSellerId(), accessToken);
+				mapper.getSellerToken(member,accessToken);
 
 			return new ResponseEntity<>(sellerResponse, HttpStatus.OK);
 		} else if (member.getRole().equals("CLIENT")) {
 			LoginResponse.Cilent clientResponse =
-				mapper.getClientToken(member, member.getClient().getClientId(), accessToken);
+				mapper.getClientToken(member, accessToken);
 
-			return new ResponseEntity<>(clientResponse, HttpStatus.OK);
+			return new ResponseEntity<>(clientResponse, httpHeaders, HttpStatus.OK);
 		}
 
 		throw new BusinessLogicException(ExceptionCode.WRONG_ACCESS);
+	}
+
+	/* 로그인 헤더 설정 */
+	private HttpHeaders setHeader(String token) {
+		HttpHeaders headers = new HttpHeaders();
+		HttpHeaders httpHeaders = new HttpHeaders();
+		httpHeaders.set("Authorization", token);
+
+		return headers;
 	}
 }
