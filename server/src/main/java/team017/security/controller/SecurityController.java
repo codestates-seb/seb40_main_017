@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import team017.global.Exception.BusinessLogicException;
+import team017.global.Exception.ExceptionCode;
 import team017.member.entity.Member;
 import team017.member.service.MemberService;
 import team017.security.dto.LoginRequestDto;
@@ -32,11 +34,11 @@ import team017.security.utils.CookieUtil;
 @Slf4j
 public class SecurityController {
 	/*
-	* 자체 로그인 : "/login"
-	* 소셜 로그인 : "/login/oauth"
-	* 자체 토큰 재발급 : "/reissue"
-	* 소셜 토큰 재발급 : "/reissue/oauth"
-	*/
+	 * 자체 로그인 : "/login"
+	 * 소셜 로그인 : "/login/oauth"
+	 * 자체 토큰 재발급 : "/reissue"
+	 * 소셜 토큰 재발급 : "/reissue/oauth"
+	 */
 	private final SecurityService securityService;
 	private final MemberService memberService;
 	private final LoginMapper mapper;
@@ -50,18 +52,29 @@ public class SecurityController {
 		log.info("#Controller member 정보 : {}" , member.getName());
 		// log.error("#Controller member 정보 : {}" , member.getName());
 		TokenDto tokenDto = securityService.tokenLogin(requestBody);
-		LoginResponse response = mapper.loginResponseDto(member, tokenDto);
 
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.set("Authorization", tokenDto.getAccessToken());
 
-		return new ResponseEntity<>(response, httpHeaders, HttpStatus.OK);
+		if(member.getRole().equals("SELLER")) {
+			LoginResponse.Seller sellerResponse =
+				mapper.loginSellerResponseDto(member, member.getSeller().getSellerId(), tokenDto);
+
+			return new ResponseEntity<>(sellerResponse, httpHeaders, HttpStatus.OK);
+		} else if (member.getRole().equals("CLIENT")) {
+			LoginResponse.Cilent clientResponse =
+				mapper.loginClientResponseDto(member, member.getClient().getClientId(), tokenDto);
+
+			return new ResponseEntity<>(clientResponse, httpHeaders, HttpStatus.OK);
+		}
+
+		throw new BusinessLogicException(ExceptionCode.LOGIN_ERROR);
 	}
 
 	/* 🟡 소셜 로그인 */
 	@PostMapping("/login/oauth")
 	public ResponseEntity social(HttpServletRequest request, HttpServletResponse response,
-			@RequestBody LoginRequestDto requestDto) {
+		@RequestBody LoginRequestDto requestDto) {
 
 		TokenDto tokenDto = securityService.socialLogin(requestDto);
 
@@ -69,12 +82,12 @@ public class SecurityController {
 		CookieUtil.deleteCookie(request, response, "Refresh");
 		CookieUtil.addCookie(response, "Refresh", tokenDto.getRefreshToken(), cookieMaxAge);
 
-		/* memberId 를 줘야하나? */
-		Member member = memberService.findMemberByEmail(requestDto.getEmail());
-		LoginResponse responseDto = mapper.loginResponseDto(member, tokenDto);
-
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.set("Authorization", tokenDto.getAccessToken());
+
+		/* memberId 를 줘야하나? */
+		Member member = memberService.findMemberByEmail(requestDto.getEmail());
+		LoginResponse.Member responseDto = mapper.socialLoginResponseDto(member, tokenDto);
 
 		return new ResponseEntity<>(responseDto, httpHeaders, HttpStatus.OK);
 	}
@@ -117,8 +130,19 @@ public class SecurityController {
 	public ResponseEntity reGet(HttpServletRequest request,Principal principal) {
 		String accessToken = request.getHeader("Authorization");
 		Member member = memberService.findMemberByEmail(principal.getName());
-		LoginResponse response = mapper.reGetPage(member, accessToken);
 
-		return new ResponseEntity<>(response, HttpStatus.OK);
+		if(member.getRole().equals("SELLER")) {
+			LoginResponse.Seller sellerResponse =
+				mapper.getSellerToken(member, member.getSeller().getSellerId(), accessToken);
+
+			return new ResponseEntity<>(sellerResponse, HttpStatus.OK);
+		} else if (member.getRole().equals("CLIENT")) {
+			LoginResponse.Cilent clientResponse =
+				mapper.getClientToken(member, member.getClient().getClientId(), accessToken);
+
+			return new ResponseEntity<>(clientResponse, HttpStatus.OK);
+		}
+
+		throw new BusinessLogicException(ExceptionCode.WRONG_ACCESS);
 	}
 }
