@@ -8,7 +8,6 @@ import team017.board.Dto.BoardTotalResponseDto;
 import team017.board.Entity.Board;
 import team017.product.Entity.Product;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -16,7 +15,6 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface BoardMapper {
     Board boardPostDtoToBoard(BoardPostDto boardPostDto);
-
     @Mapping(target = "status", expression = "java(product.getStatus())")
     @Mapping(target = "sellerId", expression = "java(board.getSeller().getSellerId())")
     @Mapping(target = "name", expression = "java(board.getSeller().getMember().getName())")
