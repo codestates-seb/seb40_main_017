@@ -75,7 +75,11 @@ public class CommentService {
         boardService.findVerifiedBoard(comment.getBoard().getBoardId());
     }
 
-    public Page<Comment> findComments(int page, int size){
+    public Page<Comment> findComments(int page, int size) {
         return commentRepository.findAll(PageRequest.of(page, size, Sort.by("createdAt").descending()));
+    }
+
+    public Page<Comment> findCommentByBoard(Long boardId, int page, int size) {
+        return commentRepository.findByBoard_BoardId(boardId, PageRequest.of(page, size, Sort.by("createdAt").descending()));
     }
 }

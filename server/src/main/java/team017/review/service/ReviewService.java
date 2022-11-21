@@ -24,12 +24,12 @@ public class ReviewService {
 
     private final ReviewRepository reviewRepository;
 
+
     private final ClientService clientService;
 
     private final BoardService boardService;
 
     private final BoardRepository boardRepository;
-
 
     public Review createReview(Review review, Long clientId) {
 
@@ -43,7 +43,7 @@ public class ReviewService {
         Board board = boardService.findVerifiedBoard(savedReview.getBoard().getBoardId());
         board.setReviewAvg(reviewRepository.findbyReviewAvg(board.getBoardId()));
         boardRepository.save(board);
-
+        
         return savedReview;
     }
 
@@ -96,4 +96,7 @@ public class ReviewService {
         return reviewRepository.findAll(PageRequest.of(page, size, Sort.by("createdAt").descending()));
     }
 
+    public Page<Review> findReviewByBoards(Long boardId, int page, int size){
+        return reviewRepository.findByBoard_BoardId(boardId, PageRequest.of(page, size, Sort.by("createdAt").descending()));
+    }
 }

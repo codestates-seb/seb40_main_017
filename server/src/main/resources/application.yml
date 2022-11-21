@@ -9,8 +9,8 @@ spring:
       client:
         registration:
           kakao:
-            clientId: ${KAKAO_CLIENT_ID}
-            clientSecret: ${KAKAO_SECRET_KEY}
+            clientId:
+            clientSecret:
             clientAuthenticationMethod: post
             authorizationGrantType: authorization_code
             redirectUri: http://localhost:8080/login/oauth2/code/kakao # "{baseUrl}/{action}/oauth2/code/{registrationId}"
@@ -24,7 +24,6 @@ spring:
             tokenUri: https://kauth.kakao.com/oauth/token
             userInfoUri: https://kapi.kakao.com/v2/user/me
             userNameAttribute: id
-
   jpa:
     open-in-view: true
     hibernate:
