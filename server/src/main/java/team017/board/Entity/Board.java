@@ -63,6 +63,9 @@ public class Board extends Auditable {
     @OneToMany(mappedBy = "board", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Review> reviewList = new ArrayList<>();
 
+
+
+
     /* 🍉리뷰 - 판매자 연관 관계 편의 메서드 */
     public void addReview (Review review) {
         reviewList.add(review);

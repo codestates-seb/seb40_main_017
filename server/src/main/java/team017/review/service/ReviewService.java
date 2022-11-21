@@ -24,11 +24,13 @@ public class ReviewService {
 
     private final ReviewRepository reviewRepository;
 
+
     private final ClientService clientService;
 
     private final BoardService boardService;
 
     private final BoardRepository boardRepository;
+
 
 
     public Review createReview(Review review, Long clientId) {
@@ -37,6 +39,7 @@ public class ReviewService {
         verifiedClient(review); // 존재하는 회원인지 확인
         review.setBoard(boardService.findVerifiedBoard(review.getBoard().getBoardId()));
         verifiedBoard(review); // 존재하는 게시판인지 확인
+
         Review savedReview = reviewRepository.save(review);
 
         //리뷰의 평균 저장
@@ -96,4 +99,7 @@ public class ReviewService {
         return reviewRepository.findAll(PageRequest.of(page, size, Sort.by("createdAt").descending()));
     }
 
+    public Page<Review> findReviewByBoards(Long boardId, int page, int size){
+        return reviewRepository.findByBoard_BoardId(boardId, PageRequest.of(page, size, Sort.by("createdAt").descending()));
+    }
 }
