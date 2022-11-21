@@ -70,6 +70,8 @@ public class BoardMapperImpl implements BoardMapper {
             boardResponseDto.viewCount( board.getViewCount() );
             boardResponseDto.createdAt( board.getCreatedAt() );
             boardResponseDto.modifiedAt( board.getModifiedAt() );
+            boardResponseDto.
+
         }
 
         return boardResponseDto.build();

@@ -32,6 +32,4 @@ public class BoardPostDto {
     private int category;
 
     private String mainImage;
-
-    //private String contentImage;
 }

@@ -5,6 +5,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import team017.board.Entity.Board;
+import team017.board.Repository.BoardRepository;
 import team017.board.Service.BoardService;
 import team017.global.Exception.BusinessLogicException;
 import team017.global.Exception.ExceptionCode;
@@ -26,6 +28,8 @@ public class ReviewService {
 
     private final BoardService boardService;
 
+    private final BoardRepository boardRepository;
+
 
     public Review createReview(Review review, Long clientId) {
 
@@ -33,8 +37,14 @@ public class ReviewService {
         verifiedClient(review); // 존재하는 회원인지 확인
         review.setBoard(boardService.findVerifiedBoard(review.getBoard().getBoardId()));
         verifiedBoard(review); // 존재하는 게시판인지 확인
+        Review savedReview = reviewRepository.save(review);
 
-        return reviewRepository.save(review);
+        //리뷰의 평균 저장
+        Board board = boardService.findVerifiedBoard(savedReview.getBoard().getBoardId());
+        board.setReviewAvg(reviewRepository.findbyReviewAvg(board.getBoardId()));
+        boardRepository.save(board);
+
+        return savedReview;
     }
 
     public Review findReview(Long reviewId){
