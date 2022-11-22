@@ -72,7 +72,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 		Collection<? extends GrantedAuthority> authorities = ((OidcUser) authentication.getPrincipal()).getAuthorities();
 
 		String role = "SOCIAL";
-		TokenDto tokenDto = securityProvider.generatedTokenDto(authentication);
+		TokenDto tokenDto = securityProvider.generatedTokenDto(authentication.getName());
 
 		/* DB 저장 */
 		RefreshToken userRefreshToken = refreshTokenRepository.findRefreshTokenByKey(userInfo.getEmail());

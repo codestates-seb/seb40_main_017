@@ -1,13 +1,10 @@
 package team017.security.provider;
 
 import java.security.Key;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,6 +25,8 @@ import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import team017.global.Exception.BusinessLogicException;
 import team017.global.Exception.ExceptionCode;
+import team017.member.entity.Member;
+import team017.member.repository.MemberRepository;
 import team017.security.dto.TokenDto;
 import team017.security.utils.CustomAuthorityUtils;
 
@@ -36,6 +35,7 @@ import team017.security.utils.CustomAuthorityUtils;
 public class SecurityProvider{
 	private final Key key;
 	private final CustomAuthorityUtils authorityUtils;
+	private final MemberRepository memberRepository;
 
 	private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 6;
 	private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7;
@@ -43,28 +43,29 @@ public class SecurityProvider{
 	private static final String BEARER_TYPE = "Bearer ";
 
 	/* 시크릿 키 */
-	public SecurityProvider(@Value("${jwt.secret-key}") String secretKey, CustomAuthorityUtils authorityUtils) {
+	public SecurityProvider(@Value("${jwt.secret-key}") String secretKey, CustomAuthorityUtils authorityUtils,
+		MemberRepository memberRepository) {
 		this.authorityUtils = authorityUtils;
+		this.memberRepository = memberRepository;
 		byte[] keyBytes = Decoders.BASE64.decode(secretKey);
 		this.key = Keys.hmacShaKeyFor(keyBytes);
 	}
 
-	public TokenDto generatedTokenDto(Authentication authentication) {
+	public TokenDto generatedTokenDto(String username) {
 
 		/* 🐥 권한 가져오기 */
-		String authorities = authentication.getAuthorities().stream()
-			.map(GrantedAuthority::getAuthority)
-			.collect(Collectors.joining(","));
+		Member member = memberRepository.findMemberByEmail(username);
+		String authorities = member.getRole();
 
 		long now = (new Date()).getTime();
 		Date accessTokenExpiration = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
 		Date refreshTokenExpiration = new Date(now + REFRESH_TOKEN_EXPIRE_TIME);
 
 		/* 🐹 Access Token 생성 */
-		String accessToken = createAccessToken(authentication.getName(), authorities, accessTokenExpiration);
+		String accessToken = createAccessToken(username, authorities, accessTokenExpiration);
 
 		/* 🦊 Refresh Token 생성 */
-		String refreshToken = createRefreshToken(authentication.getName(), refreshTokenExpiration);
+		String refreshToken = createRefreshToken(username, refreshTokenExpiration);
 
 		return TokenDto.builder()
 			.grantType(BEARER_TYPE)
@@ -88,7 +89,11 @@ public class SecurityProvider{
 				.setExpiration(expiration)
 				.compact();
 
-		return BEARER_TYPE + accessToken;
+		/* 배포 용 */
+		return accessToken;
+
+		/* 테스트 용*/
+		// return BEARER_TYPE + accessToken;
 	}
 
 	/* 🦊 Refresh Token 생성 */

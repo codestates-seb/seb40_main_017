@@ -18,11 +18,11 @@ public class CustomAuthorityUtils {
 	private final List<String> SOCIAL_ROLES_STRING = List.of("SOCIAL");
 
 	public List<GrantedAuthority> createAuthorities(String role) {
-		if (role.equalsIgnoreCase("[CLIENT]")) {
+		if (role.equalsIgnoreCase("CLIENT")) {
 			return CLIENT_ROLES;
-		} else if (role.equalsIgnoreCase("[SELLER]")) {
+		} else if (role.equalsIgnoreCase("SELLER")) {
 			return SELLER_ROLES;
-		} else if (role.equalsIgnoreCase("[SOCIAL]")) {
+		} else if (role.equalsIgnoreCase("SOCIAL")) {
 			return SOCIAL_ROLES;
 		} else throw new RuntimeException("잘못된 접근입니다.");
 	}

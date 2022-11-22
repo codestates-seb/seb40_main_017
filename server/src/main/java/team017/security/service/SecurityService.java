@@ -42,7 +42,7 @@ public class SecurityService {
 		Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 
 		/* Access Token 및 Refresh Token 생성 */
-		TokenDto tokenDto = securityProvider.generatedTokenDto(authentication);
+		TokenDto tokenDto = securityProvider.generatedTokenDto(authentication.getName());
 
 		/* Refresh Token 저장 */
 		RefreshToken refreshToken =
@@ -58,18 +58,10 @@ public class SecurityService {
 	/* 🟡 소셜 로그인 */
 	@Transactional
 	public TokenDto socialLogin(LoginRequestDto loginRequest) {
+		log.debug("# SecurityService Social Login 시작");
 
-		/* 로그인 기반으로 "Authentication" 토큰 생성 */
-		UsernamePasswordAuthenticationToken authenticationToken = loginRequest.toAuthentication();
-
-		Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-
-		/* 여기서 또 저장하는지 모르겠음 */
-		// SecurityContextHolder.getContext().setAuthentication(authentication);
-		// MemberPrincipal principal = (MemberPrincipal)authentication.getPrincipal();
-
-		/* 토큰 생성 -> 여기서 역할을 사용하기 때문에 이 전에 역할이 저장되어야 함 */
-		TokenDto tokenDto = securityProvider.generatedTokenDto(authentication);
+		/* 토큰 생성 -> 소셜이라는 권한 부여 */
+		TokenDto tokenDto = securityProvider.generatedTokenDto(loginRequest.getEmail());
 
 		RefreshToken userRefreshToken = refreshTokenRepository.findRefreshTokenByKey(loginRequest.getEmail());
 		if (userRefreshToken == null) {
@@ -114,7 +106,7 @@ public class SecurityService {
 		}
 
 		/* 새로운 토큰 생성 */
-		TokenDto tokenDto = securityProvider.generatedTokenDto(authentication);
+		TokenDto tokenDto = securityProvider.generatedTokenDto(authentication.getName());
 
 		/* 저장 정보 업데이트 */
 		RefreshToken newRefreshToken = refreshToken.updateValue(tokenDto.getRefreshToken());
