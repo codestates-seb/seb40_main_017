@@ -24,9 +24,11 @@ public interface OrdMapper {
 
         Ord ord = new Ord();
         ord.setClient(client.build());
-        ord.setClientName(ordPostDto.getClientName());
+        // ord.setClientName(ordPostDto.getClientName());
         ord.setAddress(ordPostDto.getAddress());
         ord.setPhone(ordPostDto.getPhone());
+        ord.setTotalPrice(ordPostDto.getTotalPrice());
+        ord.setTotalQuantity(ordPostDto.getTotalQuantity());
 
         return ord;
     }
@@ -62,7 +64,7 @@ public interface OrdMapper {
         ordResponseDto.setOrdId(ord.getOrdId());
         ordResponseDto.setClientId(client.build().getClientId());
         ordResponseDto.setBoardId(product.getProductId());
-        ordResponseDto.setName(ord.getClientName());
+        ordResponseDto.setName(ord.getClient().getMember().getName());
         ordResponseDto.setAddress(ord.getAddress());
         ordResponseDto.setPhone(ord.getPhone());
         ordResponseDto.setTotalPrice(ord.getTotalPrice());

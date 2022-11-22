@@ -31,7 +31,7 @@ public class OrdController {
     @PostMapping
     public ResponseEntity postOrd(@RequestBody @Valid OrdPostDto ordPostDto){
 
-        Ord ord = ordService.createOrd(ordMapper.ordPostDtoToOrd(ordPostDto), ordPostDto.getClientId());
+        Ord ord = ordService.createOrd(ordMapper.ordPostDtoToOrd(ordPostDto), ordPostDto.getClientId(), ordPostDto.getBoardId());
 
         return new ResponseEntity<>((ordMapper.ordToOrdResponseDto(ord)),HttpStatus.CREATED);
     }
