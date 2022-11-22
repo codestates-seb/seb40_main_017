@@ -19,12 +19,13 @@ import lombok.extern.slf4j.Slf4j;
 import team017.global.Exception.BusinessLogicException;
 import team017.global.Exception.ExceptionCode;
 import team017.member.entity.Member;
+import team017.member.entity.ProviderType;
 import team017.member.service.MemberService;
 import team017.security.dto.LoginRequestDto;
 import team017.security.dto.LoginResponse;
 import team017.security.dto.TokenDto;
-import team017.security.dto.TokenRequestDto;
 import team017.security.dto.LoginMapper;
+import team017.security.dto.TokenRequestDto;
 import team017.security.service.SecurityService;
 import team017.security.utils.CookieUtil;
 
@@ -47,6 +48,10 @@ public class SecurityController {
 	@PostMapping("/login")
 	public ResponseEntity login(@RequestBody LoginRequestDto requestBody) {
 		Member member = memberService.findMemberByEmail(requestBody.getEmail());
+		if (member.getProviderType() != ProviderType.LOCAL) {
+			throw new RuntimeException("잘못된 프로바이더입니다.");
+		}
+
 		TokenDto tokenDto = securityService.tokenLogin(requestBody);
 
 		HttpHeaders httpHeaders = setHeader(tokenDto.getAccessToken());
@@ -64,26 +69,6 @@ public class SecurityController {
 		}
 
 		throw new BusinessLogicException(ExceptionCode.LOGIN_ERROR);
-	}
-
-	/* 🟡 소셜 로그인 */
-	@PostMapping("/login/oauth")
-	public ResponseEntity social(HttpServletRequest request, HttpServletResponse response,
-		@RequestBody LoginRequestDto requestDto) {
-
-		TokenDto tokenDto = securityService.socialLogin(requestDto);
-
-		int cookieMaxAge = 1000 * 60 * 24 * 7;
-		CookieUtil.deleteCookie(request, response, "Refresh");
-		CookieUtil.addCookie(response, "Refresh", tokenDto.getRefreshToken(), cookieMaxAge);
-
-		HttpHeaders httpHeaders = setHeader(tokenDto.getAccessToken());
-
-		/* memberId 를 줘야하나? */
-		Member member = memberService.findMemberByEmail(requestDto.getEmail());
-		LoginResponse.Member responseDto = mapper.socialLoginResponseDto(member, tokenDto);
-
-		return new ResponseEntity<>(responseDto, httpHeaders, HttpStatus.OK);
 	}
 
 	/* 🔵 자체 로그  토큰 재발급 */
@@ -136,10 +121,9 @@ public class SecurityController {
 
 	/* 로그인 헤더 설정 */
 	private HttpHeaders setHeader(String token) {
-		HttpHeaders headers = new HttpHeaders();
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.set("Authorization", token);
 
-		return headers;
+		return httpHeaders;
 	}
 }

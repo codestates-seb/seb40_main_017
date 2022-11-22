@@ -17,6 +17,7 @@ import team017.member.repository.MemberRepository;
 import team017.security.utils.CustomAuthorityUtils;
 
 @Service
+@Transactional
 public class MemberService {
 
 	private final MemberRepository memberRepository;
@@ -31,6 +32,7 @@ public class MemberService {
 	}
 
 	/* 회원 가입 */
+	@Transactional
 	public Member createMember(Member member) {
 		verifyEmailExist(member.getEmail());
 		List<String> roles = authorityUtils.createRoles(member.getRole());
@@ -49,7 +51,7 @@ public class MemberService {
 		member.setRoles(roles);
 		member.setProviderType(ProviderType.LOCAL);
 
-		return memberRepository.save(member);
+		return memberRepository.saveAndFlush(member);
 	}
 
 	/* 회원 수정 (멤버 파트) */

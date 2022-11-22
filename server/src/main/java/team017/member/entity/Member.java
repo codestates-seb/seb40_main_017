@@ -25,14 +25,18 @@ public class Member {
 	@Column(length = 45, nullable = false, unique = true)
 	private String email;
 
-	@Column(nullable = false)
+	@Column
 	private String password;
 
-	@Column(length = 45, nullable = false)
+	@Column(length = 45)
 	private String phone;
 
-	@Column(length = 45, nullable = false)
+	@Column(length = 45)
 	private String address;
+
+	/* 소셜 로그인 아이디 추가 */
+	@Column
+	private String socialId;
 
 	/* 소셜 로그인을 추가하면서 해당 판별을 위한 프로바이더 타입 추가 */
 	@Enumerated(EnumType.STRING)
