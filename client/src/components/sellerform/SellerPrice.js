@@ -93,7 +93,7 @@ export const SellerPrice = ({ nextButton, formData, setFormData }) => {
             <span>상품 가격 ￦</span>
             <InputBox>
               <input placeholder="상품가격" name="price" type="number" {...register('price', { required: true })} />
-              <ErrorBox>{errors.price && <p>상품명을 적어 주세요</p>}</ErrorBox>
+              <ErrorBox>{errors.price && <p>상품가격을 적어 주세요</p>}</ErrorBox>
             </InputBox>
             <span> 카테 고리 </span>
             <InputBox>
