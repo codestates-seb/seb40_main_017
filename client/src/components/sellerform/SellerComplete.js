@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { FiCheckCircle } from 'react-icons/fi';
+// import axios from 'axios';
 
 const CompleteBox = styled.div`
   width: 100%;
@@ -34,9 +35,17 @@ const ButtonBox = styled.div`
   }
 `;
 
-export const SellerComplete = () => {
-  const handleOnClick = () => {
-    console.log('등록완료');
+export const SellerComplete = ({ formData }) => {
+  const handleOnClick = async () => {
+    // await axios({
+    //   url: `${process.env.REACT_APP_API_URL}/boards`,
+    //   method: 'post',
+    //   data: JSON.stringify(formData),
+    //   headers: { 'Content-Type': 'application/json' },
+    // })
+    //   .then((res) => console.log(res))
+    //   .catch((err) => console.log(err));
+    console.log(formData);
   };
 
   return (

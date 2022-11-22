@@ -77,17 +77,18 @@ function SellerformPage() {
   const [index, setIndex] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
-    sellerid: '1',
+    sellerId: 1,
     title: '',
     stock: '',
     price: '',
     category: '',
-    mainimage: '',
-    content: '',
+    mainImage: '이미지테스트',
+    content: '테스트',
   });
 
   useEffect(() => {
     console.log(formData);
+    // setFormData({ ...formData });
   }, [formData]);
   const prevButton = () => {
     if (index > 1) {

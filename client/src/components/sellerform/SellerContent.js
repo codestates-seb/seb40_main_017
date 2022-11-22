@@ -89,21 +89,24 @@ export const SellerContent = ({ nextButton, formData, setFormData, setIsLoading 
 
   const onChange = () => {
     const data = editorRef.current.getInstance().getMarkdown(); // 토스트 에디터 작성 내용 콘솔창 보이게 하기
-    console.log(data);
+    let contentData = { content: data };
+    setFormData({ ...formData, ...contentData });
   };
 
   const handleOnSubmit = async () => {
     if (window.confirm('등록완료하기')) {
-      const data = editorRef.current.getInstance().getMarkdown();
-      console.log(data);
       setIsLoading(true);
-      setFormData({ ...formData, content: data });
-      // setTimeout(() => {
-      //   setIsLoading(false);
-      // }, 3000);
-      await axios
-        .post(`${process.env.REACT_APP_API_URL}/boards`, JSON.stringify(formData), { headers: { 'Content-Type': 'application/json' } })
-        .then((res) => console.log(res));
+      await axios({
+        url: `${process.env.REACT_APP_API_URL}/boards`,
+        method: 'post',
+        data: JSON.stringify(formData),
+        headers: { 'Content-Type': 'application/json' },
+      })
+        .then((res) => console.log(res))
+        .catch((err) => console.log(err));
+
+      console.log('데이터 테스트');
+      console.log(formData);
       setIsLoading(false);
       nextButton();
     }

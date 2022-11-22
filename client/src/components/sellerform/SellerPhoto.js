@@ -159,7 +159,10 @@ export const SellerPhoto = ({ nextButton, formData, setFormData }) => {
       console.log(file[0]);
       await uploadFile(file[0]);
       console.log(link);
-      setFormData({ ...formData, mainimage: link });
+      let data = { mainImage: link };
+      console.log(data);
+      await setFormData({ ...formData, ...data });
+      console.log(formData);
       nextButton();
     }
   };
