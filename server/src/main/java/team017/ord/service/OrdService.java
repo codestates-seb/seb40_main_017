@@ -13,6 +13,7 @@ import team017.member.service.ClientService;
 import team017.member.service.SellerService;
 import team017.ord.entity.Ord;
 import team017.ord.repository.OrdRepository;
+import team017.product.Entity.Product;
 import team017.product.Service.ProductService;
 import team017.review.entity.Review;
 
@@ -33,8 +34,11 @@ public class OrdService {
     private final BoardService boardService;
 
     //    주문은 Client 만 할 수 있고, 판매자는 내역만 조회로 가져간다
-    public Ord createOrd(Ord ord, Long clientId) {
+    public Ord createOrd(Ord ord, Long clientId, long boardId) {
         ord.setClient(clientService.findVerifiedClient(clientId));
+        Product product = productService.findProduct(boardId);
+        ord.setProduct(product);
+        ord.setSeller(product.getBoard().getSeller());
         verifiedClient(ord);
         return ordRepository.save(ord);
     }

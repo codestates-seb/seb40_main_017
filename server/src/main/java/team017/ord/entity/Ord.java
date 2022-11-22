@@ -28,9 +28,9 @@ public class Ord extends Auditable {
 	@Column(length = 13, nullable = false, unique = true)
 	private String phone;
 
-	private String clientName;
+	// private String clientName;
 
-	private String board;
+	// private String board;
 
 	@Column
 	private int totalQuantity;
@@ -52,6 +52,7 @@ public class Ord extends Auditable {
 	@JoinColumn(name = "product_id")
 	private Product product;
 
+	/* 🍑상품 - 주문 연관 관계 편의 메서드 */
 	public void setProduct(Product product){
 		this.product = product;
 
