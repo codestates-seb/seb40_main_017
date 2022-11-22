@@ -6,6 +6,7 @@ import StarRate from '../../components/StarRate';
 import { Link } from 'react-scroll';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import Paging from '../../components/Paging';
 
 const Background = styled.div`
   background-color: var(--off-white);
@@ -145,12 +146,12 @@ const MenuLink = styled.div`
   }
 `;
 
-const ContentBox = styled.textarea`
-  width: 700px;
-  height: 200px;
-  resize: none;
-  border: 1px solid var(--light-gray);
-`;
+// const ContentBox = styled.textarea`
+//   width: 700px;
+//   height: 200px;
+//   resize: none;
+//   border: 1px solid var(--light-gray);
+// `;
 
 const Layout = styled.div`
   display: flex;
@@ -164,31 +165,39 @@ const SERVER_URL = 'http://localhost:4000/boards/reviews';
 
 function CropInfoPage() {
   const [reviewList, setReviewList] = useState(null);
-  // const [commentList, setCommentList] = useState(null);
+  const [commentList, setCommentList] = useState(null);
 
-  const fetchData = async () => {
+  //ReviewFetch
+  const GetReview = async () => {
     const response = await axios.get(SERVER_URL);
     setReviewList(response.data);
   };
-
   useEffect(() => {
-    fetchData();
+    GetReview();
   }, []);
 
-  const onSubmitHandler = async (e) => {
+  const ReviewOnSubmitHandler = async (e) => {
     e.preventDefault();
     const context = e.target.context.value;
     await axios.post(SERVER_URL, { context });
-    fetchData();
-    // fetch('http://localhost:4000/boards/reviews', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify({
-    //     context,
-    //   }),
-    // }).then(() => fetchData());
+    GetReview();
+  };
+
+  //CommentFetch
+  const GetComment = async () => {
+    const response = await axios.get(SERVER_URL);
+    setCommentList(response.data);
+  };
+
+  useEffect(() => {
+    GetComment();
+  }, []);
+
+  const CommentOnSubmitHandler = async (e) => {
+    e.preventDefault();
+    const context = e.target.context.value;
+    await axios.post(SERVER_URL, { context });
+    GetComment();
   };
 
   return (
@@ -219,10 +228,10 @@ function CropInfoPage() {
                 <li>상품설명</li>
               </Link>
               <Link to="b" spy={true} smooth={true}>
-                <li>후기</li>
+                <li>리뷰</li>
               </Link>
               <Link to="c" spy={false} smooth={true}>
-                <li>후기작성</li>
+                <li>리뷰작성</li>
               </Link>
               <Link to="d" spy={false} smooth={true}>
                 <li>문의</li>
@@ -237,7 +246,7 @@ function CropInfoPage() {
               <CropDetails src={CropDetail} alt="상품설명" />
             </div>
             <div id="b">
-              <h2>후기</h2>
+              <h2>리뷰</h2>
               {reviewList?.map((review) => (
                 <ol key={review.reviewId}>
                   {/* reviewId 가 undefined여서 unique key prop 오류가 뜨는거 같아서 서버연결해서 확인해봐야함 */}
@@ -247,35 +256,42 @@ function CropInfoPage() {
                   <li>{review.createdAt}</li>
                 </ol>
               ))}
+              <Paging />
             </div>
             <div id="c">
-              <h2>후기작성</h2>
+              <h2>리뷰작성</h2>
               <Layout className="firstlayout">
                 <p>별점</p>
                 <StarRate />
               </Layout>
               <Layout>
                 <p>상세리뷰</p>
-                <form onSubmit={onSubmitHandler}>
-                  <input name="context" />
+                <form onSubmit={ReviewOnSubmitHandler}>
+                  <textarea name="context" />
                   <input type="submit" value="등록하기" />
                 </form>
               </Layout>
             </div>
             <div id="d">
               <h2>문의</h2>
-              <ol>
-                <li>4</li>
-                <li>3</li>
-                <li>2</li>
-                <li>1</li>
-              </ol>
+              {commentList?.map((comment) => (
+                <ol key={comment.clientId}>
+                  {/* reviewId 가 undefined여서 unique key prop 오류가 뜨는거 같아서 서버연결해서 확인해봐야함 */}
+                  <li>{comment.commentId}</li>
+                  <li>{comment.context}</li>
+                  <li>{comment.name}</li>
+                  <li>{comment.createdAt}</li>
+                </ol>
+              ))}
             </div>
             <div id="e">
               <h2>문의작성</h2>
               <Layout>
                 <p>문의</p>
-                <ContentBox></ContentBox>
+                <form onSubmit={CommentOnSubmitHandler}>
+                  <input name="context" />
+                  <input type="submit" value="등록하기" />
+                </form>
               </Layout>
               <GreenButton>등록하기</GreenButton>
             </div>
