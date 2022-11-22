@@ -58,15 +58,16 @@ public class Product {
     @JoinColumn(name = "sellerId" , referencedColumnName = "sellerId")
     private Seller seller;
 
-    /* 🍑상품 - 주문 일대다 연관 관계 : 상품 참조 */
-    @OneToMany(mappedBy = "product", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    private List<Ord> ordList = new ArrayList<>();
+    /* 🍑상품 - 주문 일대일 연관 관계 : 상품 참조 */
+    @OneToOne
+    @JoinColumn(name = "ord_id")
+    private Ord ord;
 
     /* 🍑상품 - 주문 연관 관계 편의 메서드 */
-    public void addOrd(Ord ord) {
-        ordList.add(ord);
+    public void setOrd(Ord ord) {
+        this.ord = ord;
 
-        if (ord.getProduct() != this) {
+        if(ord.getProduct() != this){
             ord.setProduct(this);
         }
     }

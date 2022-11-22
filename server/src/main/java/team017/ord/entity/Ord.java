@@ -3,17 +3,21 @@ package team017.ord.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.LazyCollection;
+import team017.global.audit.Auditable;
 import team017.member.entity.Client;
 import team017.member.entity.Seller;
 import team017.product.Entity.Product;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
-public class Ord {
+public class Ord extends Auditable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long ordId;
@@ -24,8 +28,12 @@ public class Ord {
 	@Column(length = 13, nullable = false, unique = true)
 	private String phone;
 
+	private String clientName;
+
+	private String board;
+
 	@Column
-	private int productNum;
+	private int totalQuantity;
 
 	@Column
 	private int totalPrice;
@@ -39,10 +47,19 @@ public class Ord {
 	@JoinColumn(name = "client_id")
 	private Client client;
 
-	/* 🍑상품 - 주문 다대일 연관 관계 : 상품 참조 */
-	@ManyToOne
+	/* 🍑상품 - 주문 일대일 연관 관계 : 상품 참조 */
+	@OneToOne
 	@JoinColumn(name = "product_id")
 	private Product product;
+
+	public void setProduct(Product product){
+		this.product = product;
+
+		if(product.getOrd() != this){
+			product.setOrd(this);
+		}
+	}
+
 
 	@Column
 	@Enumerated(EnumType.STRING)

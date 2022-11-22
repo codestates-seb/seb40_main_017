@@ -50,7 +50,6 @@ public class ReviewService {
         Review foundReview = findReview(review.getReviewId());
         verifyWriter(clientId, foundReview.getClient().getClientId()); // 작성자와 수정자가 같은지 확인
 
-//        verifySameBoard(review.getBoard().getBoardId(), foundReview.getBoard().getBoardId()); //수정하려는 게시판이 같은지 확인
 
 
         Optional.ofNullable(review.getContext()).ifPresent(context -> foundReview.setContext(context));
