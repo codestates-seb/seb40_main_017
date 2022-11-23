@@ -7,9 +7,9 @@ import lombok.ToString;
 @Setter
 @ToString
 public class Amount {
-    private int total;
-    private int tax_free;
-    private int vat;
-    private int point;
-    private int discount;
+    private int total;      // 전체 금액
+    private int tax_free;   // 비과세 금액
+    private int vat;        // 부과세 금액
+    private int point;      // 사용한 포인트
+    private int discount;   // 할인 금액
 }
