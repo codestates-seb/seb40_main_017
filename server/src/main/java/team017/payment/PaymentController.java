@@ -1,10 +1,13 @@
 package team017.payment;
 
+import javax.validation.constraints.Positive;
+
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import team017.ord.dto.OrdResponseDto;
 import team017.ord.entity.Ord;
@@ -13,6 +16,7 @@ import team017.ord.service.OrdService;
 @Slf4j
 @Controller
 @AllArgsConstructor
+@Validated
 public class PaymentController {
 
     private final KakaoPayService kakaoPayService;
@@ -20,7 +24,7 @@ public class PaymentController {
 
     //결제 요청
     @GetMapping("/order/pay/{ord_id}")
-    public @ResponseBody ResponseEntity payReady(@PathVariable("ord_id") long ordId ) {
+    public @ResponseBody ResponseEntity payReady(@PathVariable("ord_id") @Positive long ordId ) {
 
         Ord findOrd = ordService.findVerifiedOrd(ordId);
 
@@ -47,6 +51,7 @@ public class PaymentController {
     // 결제 취소시 실행 url
     @GetMapping("/order/pay/cancel")
     public ResponseEntity payCancel() {
+        kakaoPayService.cancelOrFailPayment();
         log.info("결제 취소");
         return new ResponseEntity<>("결제 취소", HttpStatus.OK);
     }
@@ -54,6 +59,7 @@ public class PaymentController {
     // 결제 실패시 실행 url
     @GetMapping("/order/pay/fail")
     public ResponseEntity payFail() {
+        kakaoPayService.cancelOrFailPayment();
         log.info("결제 실패");
         return new ResponseEntity<>("결제 실패",HttpStatus.OK);
     }

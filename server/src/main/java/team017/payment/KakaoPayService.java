@@ -2,6 +2,8 @@ package team017.payment;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.http.HttpEntity;
@@ -23,6 +25,10 @@ public class KakaoPayService {
     private final OrdService ordService;
     private final OrdRepository ordRepository;
     private final OrdMapper ordMapper;
+
+    @Value("${spring.security.oauth2.client.registration.kakao.adminKey}")
+    private String adminKey;
+
     ReadyResponseDto readyResponseDto;
 
     // 결제 준비 메서드
@@ -90,10 +96,15 @@ public class KakaoPayService {
         return ordMapper.ordToOrdResponseDto(findOrd);
     }
 
+    /* 결제 취소 혹은 삭제 */
+    public void cancelOrFailPayment() {
+        ordService.deleteOrd(Long.parseLong(readyResponseDto.getPartner_order_id()));
+    }
+
     // 서버로 요청할 Header
     private HttpHeaders getHeaders() {
         HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", "KakaoAK a9c18e330d9802f3afea0cec40151852");
+        headers.set("Authorization", "KakaoAK " + adminKey);
         headers.set("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
 
         return headers;
