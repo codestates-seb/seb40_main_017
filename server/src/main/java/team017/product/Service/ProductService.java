@@ -49,4 +49,11 @@ public class ProductService {
         return findProduct;
     }
 
+    /* product */
+    public Product findProduct(long productId) {
+        Product product =
+            productRepository.findById(productId)
+                .orElseThrow(() -> new RuntimeException("찾을 수 없는 상품"));
+        return product;
+    }
 }
