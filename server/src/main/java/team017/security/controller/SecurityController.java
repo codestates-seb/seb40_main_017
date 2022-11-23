@@ -101,6 +101,7 @@ public class SecurityController {
 	@GetMapping("/access")
 	public ResponseEntity reGet(HttpServletRequest request,Principal principal) {
 		String accessToken = request.getHeader("Authorization");
+		accessToken = securityService.getAgainAccessToken(accessToken);
 		HttpHeaders httpHeaders = setHeader(accessToken);
 		Member member = memberService.findMemberByEmail(principal.getName());
 

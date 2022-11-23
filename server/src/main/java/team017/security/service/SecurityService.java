@@ -1,5 +1,6 @@
 package team017.security.service;
 
+import java.sql.Ref;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -112,6 +113,27 @@ public class SecurityService {
 		}
 
 		return member;
+	}
+
+	/* 엑세스 토큰 재발급 */
+	public String getAgainAccessToken(String accessToken) {
+		long validTime = securityProvider.getTokenClaims(accessToken).getExpiration().getTime();
+
+		/* 엑세스 토큰 시간이 10분 이내로 남았다면 토큰 재발급 */
+		if (validTime <= 1000 * 60 * 10) {
+			Authentication authentication = securityProvider.getAuthentication(accessToken);
+			RefreshToken refresh = refreshTokenRepository.findRefreshTokenByKey(authentication.getName());
+			if (refresh == null) {
+				throw new RuntimeException("리프레시 토큰이 존재하지 않습니다.");
+			}
+			long now = (new Date()).getTime();
+			Date expiration = new Date(now + securityProvider.getAccessTokenTime());
+			accessToken =
+				securityProvider.createAccessToken(authentication.getName(), authentication.getAuthorities().toString(), expiration);
+			log.info("권한 : {}", authentication.getAuthorities().toString());
+		}
+
+		return accessToken;
 	}
 
 
