@@ -3,7 +3,6 @@ package team017.ord.mapper;
 import org.mapstruct.Mapper;
 import team017.board.Entity.Board;
 import team017.member.entity.Client;
-import team017.ord.dto.OrdPatchDto;
 import team017.ord.dto.OrdPostDto;
 import team017.ord.dto.OrdResponseDto;
 import team017.ord.entity.Ord;
@@ -33,20 +32,20 @@ public interface OrdMapper {
         return ord;
     }
 
-    default Ord ordPatchDtoToOrd(OrdPatchDto ordPatchDto){
-        if( ordPatchDto == null){
-            return null;
-        }
-        Client.ClientBuilder client = Client.builder();
-        client.clientId(ordPatchDto.getClientId());
-
-        Ord ord = new Ord();
-        ord.setClient(client.build());
-        ord.setAddress(ordPatchDto.getAddress());
-        ord.setPhone(ordPatchDto.getPhone());
-
-        return ord;
-    }
+//    default Ord ordPatchDtoToOrd(OrdPatchDto ordPatchDto){
+//        if( ordPatchDto == null){
+//            return null;
+//        }
+//        Client.ClientBuilder client = Client.builder();
+//        client.clientId(ordPatchDto.getClientId());
+//
+//        Ord ord = new Ord();
+//        ord.setClient(client.build());
+//        ord.setAddress(ordPatchDto.getAddress());
+//        ord.setPhone(ordPatchDto.getPhone());
+//
+//        return ord;
+//    }
 
     default OrdResponseDto ordToOrdResponseDto(Ord ord){
         if( ord == null){

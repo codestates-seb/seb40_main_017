@@ -39,10 +39,11 @@ public class OrdService {
     //    주문은 Client 만 할 수 있고, 판매자는 내역만 조회로 가져간다
     public Ord createOrd(Ord ord, Long clientId, long boardId) {
         ord.setClient(clientService.findVerifiedClient(clientId));
-        Product product = findVerifiedProduct(boardId);
-        ord.setProduct(product);
-        ord.setSeller(product.getBoard().getSeller());
         verifiedClient(ord);
+        ord.setProduct(productService.findProduct(boardId));
+        findVerifiedProduct(boardId);
+        ord.setTotalPrice(productService.findProduct(boardId).getPrice() * productService.findProduct(boardId).getStock());
+        ord.setQuantity(productService.findProduct(boardId).getStock());
         return ordRepository.save(ord);
     }
 
@@ -53,12 +54,9 @@ public class OrdService {
     }
 
     //주문취소
-    public void deleteOrd(Long ordId, Long clientId){
+    public void deleteOrd(Long ordId){
         Ord foundOrd = findOrd(ordId);
-        Long postClientId = foundOrd.getClient().getClientId();
-        verifyWriter(postClientId, clientId);
-        foundOrd.setStatus(Ord.OrdStatus.ORD_CANCEL);
-        ordRepository.save(foundOrd);
+        ordRepository.delete(foundOrd);
     }
 
     public void verifyWriter(Long postUserId, Long editUserId) {
@@ -78,15 +76,7 @@ public class OrdService {
 
     public Product findVerifiedProduct(Long productId){
         Optional<Product> optionalProduct = productRepository.findById(productId);
-        Product findProduct = optionalProduct.orElseThrow(() -> new BusinessLogicException(ExceptionCode.ORDER_NOT_FOUND));
+        Product findProduct = optionalProduct.orElseThrow(() -> new BusinessLogicException(ExceptionCode.PRODUCT_NOT_FOUND));
         return findProduct;
-    }
-
-    private void verifiedProduct(Ord ord){
-        productService.findVerifiedProduct(ord.getProduct().getBoard().getProduct()).getProductId();
-    }
-
-    private void verifiedBoard(Review review) {
-        boardService.findVerifiedBoard(review.getBoard().getBoardId());
     }
 }
