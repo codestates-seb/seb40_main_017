@@ -3,6 +3,8 @@ import { FiMenu } from 'react-icons/fi';
 import { getUser } from '../features/user/userSlice';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import Sidebar from './Sidebar';
+import { useState } from 'react';
 
 const Headerbox = styled.header`
   width: 100%;
@@ -13,6 +15,9 @@ const Headerbox = styled.header`
   z-index: 10;
   display: flex;
   justify-content: space-between;
+  .active {
+    left: 0em;
+  }
 `;
 
 const Menu = styled(FiMenu)`
@@ -58,10 +63,20 @@ const UserInfo = styled.div`
 
 const Header = () => {
   const user = useSelector(getUser);
-
+  const [sidebar, setSidebar] = useState(false);
+  const handleOnClick = () => {
+    if (!sidebar) {
+      setSidebar(true);
+      document.getElementById('sidebar').classList.add('active');
+    } else {
+      setSidebar(false);
+      document.getElementById('sidebar').classList.remove('active');
+    }
+  };
   return (
     <Headerbox>
-      <Menu />
+      <Menu onClick={handleOnClick} />
+      <Sidebar />
       <Logo to="/">17시 내고향</Logo>
       <UserInfo>
         {user ? (
