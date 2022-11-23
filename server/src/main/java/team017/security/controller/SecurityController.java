@@ -36,7 +36,7 @@ import team017.security.utils.CookieUtil;
 public class SecurityController {
 	/*
 	 * 자체 로그인 : "/login"
-	 * 소셜 로그인 : "/login/oauth"
+	 * 소셜 로그인 : "/login/oauth/{provider_type}"
 	 * 자체 토큰 재발급 : "/reissue"
 	 * 소셜 토큰 재발급 : "/reissue/oauth"
 	 */

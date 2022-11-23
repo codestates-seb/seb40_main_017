@@ -3,15 +3,16 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/17farm?serverTimezone=UTC&characterEncoding=UTF-8
     username: root
-    password:
+    password: 
   security:
     oauth2:
       client:
         registration:
           kakao:
-            clientId:
-            clientSecret:
-            clientAuthenticationMethod: post
+            adminKey : ${KAKAO_ADMIN_KEY}
+            clientId: ${KAKAO_CLIENT_ID}
+            clientSecret: ${KAKAO_SECRET_KEY}
+            clientAuthenticationMethod: POST
             authorizationGrantType: authorization_code
             redirectUri: http://localhost:8080/login/oauth2/code/kakao # "{baseUrl}/{action}/oauth2/code/{registrationId}"
             scope:
