@@ -37,7 +37,7 @@ public class OrdController {
     }
 
     @DeleteMapping("{order-id}")
-    public ResponseEntity deleteOrd(@PathVariable("ord-id") @Positive Long ordId,
+    public ResponseEntity deleteOrd(@PathVariable("order-id") @Positive Long ordId,
                                     @Positive @RequestParam Long clientId){
 
         ordService.deleteOrd(ordId, clientId);

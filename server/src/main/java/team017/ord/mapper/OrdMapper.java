@@ -28,7 +28,7 @@ public interface OrdMapper {
         ord.setAddress(ordPostDto.getAddress());
         ord.setPhone(ordPostDto.getPhone());
         ord.setTotalPrice(ordPostDto.getTotalPrice());
-        ord.setTotalQuantity(ordPostDto.getTotalQuantity());
+        ord.setQuantity(ordPostDto.getQuantity());
 
         return ord;
     }
@@ -68,7 +68,7 @@ public interface OrdMapper {
         ordResponseDto.setAddress(ord.getAddress());
         ordResponseDto.setPhone(ord.getPhone());
         ordResponseDto.setTotalPrice(ord.getTotalPrice());
-        ordResponseDto.setTotalQuantity(ord.getTotalQuantity());
+        ordResponseDto.setQuantity(ord.getQuantity());
         ordResponseDto.setOrdStatus(ord.getStatus());
 //        ordResponseDto.setCreatedAt(ord.getCreatedAt());
 //        ordResponseDto.setModifiedAt(ord.getModifiedAt());
