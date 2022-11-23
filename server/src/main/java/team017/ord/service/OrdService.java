@@ -14,6 +14,7 @@ import team017.member.service.SellerService;
 import team017.ord.entity.Ord;
 import team017.ord.repository.OrdRepository;
 import team017.product.Entity.Product;
+import team017.product.Repository.ProductRepository;
 import team017.product.Service.ProductService;
 import team017.review.entity.Review;
 
@@ -29,6 +30,8 @@ public class OrdService {
 
     private final ProductService productService;
 
+    private final ProductRepository productRepository;
+
     private final ClientService clientService;
 
     private final BoardService boardService;
@@ -36,7 +39,7 @@ public class OrdService {
     //    주문은 Client 만 할 수 있고, 판매자는 내역만 조회로 가져간다
     public Ord createOrd(Ord ord, Long clientId, long boardId) {
         ord.setClient(clientService.findVerifiedClient(clientId));
-        Product product = productService.findProduct(boardId);
+        Product product = findVerifiedProduct(boardId);
         ord.setProduct(product);
         ord.setSeller(product.getBoard().getSeller());
         verifiedClient(ord);
@@ -71,6 +74,12 @@ public class OrdService {
         Optional<Ord> optionalOrd = ordRepository.findById(ordId);
         Ord findOrd = optionalOrd.orElseThrow(() -> new BusinessLogicException(ExceptionCode.ORDER_NOT_FOUND));
         return findOrd;
+    }
+
+    public Product findVerifiedProduct(Long productId){
+        Optional<Product> optionalProduct = productRepository.findById(productId);
+        Product findProduct = optionalProduct.orElseThrow(() -> new BusinessLogicException(ExceptionCode.ORDER_NOT_FOUND));
+        return findProduct;
     }
 
     private void verifiedProduct(Ord ord){
