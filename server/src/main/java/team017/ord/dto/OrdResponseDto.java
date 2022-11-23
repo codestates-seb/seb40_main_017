@@ -19,7 +19,7 @@ public class OrdResponseDto {
     private String address;
     private String phone;
     private int totalPrice;
-    private int totalQuantity;
+    private int quantity;
     private Ord.OrdStatus ordStatus;
 //    private LocalDateTime createdAt;
 //    private LocalDateTime modifiedAt;

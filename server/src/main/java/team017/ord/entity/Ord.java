@@ -33,10 +33,11 @@ public class Ord extends Auditable {
 	// private String board;
 
 	@Column
-	private int totalQuantity;
+	private int quantity;
 
 	@Column
 	private int totalPrice;
+
 	/* 💖판매자 - 주문 다대일 연관 관계 : 판매자 참조 */
 	@ManyToOne
 	@JoinColumn(name = "seller_id")
@@ -70,7 +71,7 @@ public class Ord extends Auditable {
 
 		ORD_REQUEST(1, "주문 요청"),
 		ORD_CONFIRM(2, "주문 확정"),
-		ORD_COMPLETE(3, "주문 처리 완료"),
+		PAY_COMPLETE(3, "결제 완료"),
 		ORD_CANCEL(4, "주문 취소");
 
 		@Getter
