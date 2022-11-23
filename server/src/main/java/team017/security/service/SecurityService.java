@@ -1,6 +1,7 @@
 package team017.security.service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.Cookie;
@@ -15,7 +16,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import team017.global.Exception.BusinessLogicException;
+import team017.global.Exception.ExceptionCode;
+import team017.member.entity.Client;
+import team017.member.entity.Member;
+import team017.member.entity.Seller;
+import team017.member.repository.MemberRepository;
 import team017.security.dto.LoginRequestDto;
+import team017.security.dto.SocialPatchDto;
 import team017.security.dto.TokenDto;
 import team017.security.dto.TokenRequestDto;
 import team017.security.provider.SecurityProvider;
@@ -30,6 +38,7 @@ public class SecurityService {
 	private final AuthenticationManagerBuilder authenticationManagerBuilder;
 	private final SecurityProvider securityProvider;
 	private final RefreshTokenRepository refreshTokenRepository;
+	private final MemberRepository memberRepository;
 
 	/* 🔴 자체 로그인 */
 	@Transactional
@@ -80,6 +89,29 @@ public class SecurityService {
 		}
 
 		return tokenDto;
+	}
+
+	/* 소셜 로그인 권한 선택 */
+	public Member updateSocial(SocialPatchDto patchDto) {
+
+		Member member =
+			memberRepository.findById(patchDto.getMemberId())
+				.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
+		checkSocialRole(member.getRole());
+
+		if (patchDto.getRole().equalsIgnoreCase("CLIENT")) {
+			member.setRole("CLIENT");
+			member.setRoles(List.of("CLIENT"));
+			member.setClient(new Client());
+		} else if (patchDto.getRole().equalsIgnoreCase("SELLER")) {
+			member.setRole("SELLER");
+			member.setRoles(List.of("SELLER"));
+			member.setSeller(new Seller());
+		} else {
+			throw new RuntimeException("수정할 수 없습니다.");
+		}
+
+		return member;
 	}
 
 
@@ -180,5 +212,19 @@ public class SecurityService {
 				.build();
 
 		return tokenDto;
+	}
+
+	/* social 로그인 멤버 확인 메서드 */
+	public void correctMember(long memberId, long target) {
+		if (memberId != target) {
+			throw new RuntimeException("해당 소셜 회원이 아닙니다.");
+		}
+	}
+
+	/* social 역할 확인 */
+	private void checkSocialRole(String role) {
+		if (!role.equalsIgnoreCase("SOCIAL")) {
+			throw new BusinessLogicException(ExceptionCode.WRONG_ACCESS);
+		}
 	}
 }

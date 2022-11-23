@@ -19,7 +19,6 @@ import team017.member.entity.ProviderType;
 import team017.member.repository.MemberRepository;
 import team017.security.dto.KakaoToken;
 import team017.security.info.KakaoProfile;
-import team017.security.info.KakaoUserInfo;
 
 @Service
 @RequiredArgsConstructor
@@ -27,15 +26,20 @@ import team017.security.info.KakaoUserInfo;
 public class KakaoService {
 	private final MemberRepository memberRepository;
 
-	private final String clientId = "0ec82f5e7c4e00ccf807f4b8f98fe01c";
+	@Value("${spring.security.oauth2.client.registration.kakao.clientId}")
+	private String clientId;
 
-	private final String clientSecret = "767fTk4HHcrA84bzBYAMedmdaev5fGKc";
+	@Value("${spring.security.oauth2.client.registration.kakao.clientSecret}")
+	private String clientSecret;
 
-	private final String redirectUri = "http://localhost:8080/login/oauth2/code/kakao";
+	@Value("${spring.security.oauth2.client.registration.kakao.redirectUri}")
+	private String redirectUri;
 
-	private final String accessTokenUri = "https://kauth.kakao.com/oauth/token";
+	@Value("${spring.security.oauth2.client.provider.kakao.tokenUri}")
+	private String accessTokenUri;
 
-	private final String userInfoUri = "https://kapi.kakao.com/v2/user/me";
+	@Value("${spring.security.oauth2.client.provider.kakao.userInfoUri}")
+	private String userInfoUri;
 
 	/* 엑세스 토큰 from Kakao */
 	public KakaoToken getAccessToken(String code) {
@@ -102,8 +106,8 @@ public class KakaoService {
 		KakaoProfile profile = findProfile(access_token); //사용자 정보 받아오기
 		Member member = memberRepository.findMemberByEmail(profile.getKakao_account().getEmail());
 
-		//처음이용자 강제 회원가입
-		if(member ==null) {
+		/* 첫 이용자 강제 회원가입 */
+		if(member == null) {
 			member = Member.builder()
 				.socialId(profile.getId())
 				.password(null) //필요없으니 일단 아무거도 안넣음. 원하는데로 넣으면 됌
