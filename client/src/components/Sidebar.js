@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 
 const SidebarLayout = styled.nav`
+  overflow: hidden;
   width: 15em;
   height: 40em;
   background: var(--green);
@@ -10,7 +11,10 @@ const SidebarLayout = styled.nav`
   border: 2px solid var(--white);
   border-radius: 1em;
   position: fixed;
-  top: 78px;
+  top: 75px;
+  left: -15em;
+  transition: 0.3s;
+  z-index: 10;
 `;
 const LogoBox = styled.div`
   width: 100%;
@@ -43,7 +47,7 @@ const StyledLink = styled(NavLink)`
 function Sidebar() {
   return (
     <>
-      <SidebarLayout>
+      <SidebarLayout id="sidebar">
         <LogoBox>
           <img src="https://ifh.cc/g/CK2xWM.png" alt="logo" />
         </LogoBox>
