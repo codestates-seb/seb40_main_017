@@ -36,16 +36,15 @@ public class OrdController {
         return new ResponseEntity<>((ordMapper.ordToOrdResponseDto(ord)),HttpStatus.CREATED);
     }
 
-    @DeleteMapping("{order-id}")
-    public ResponseEntity deleteOrd(@PathVariable("order-id") @Positive Long ordId,
-                                    @Positive @RequestParam Long clientId){
+    @DeleteMapping("/{order-id}")
+    public ResponseEntity deleteOrd(@PathVariable("order-id") @Positive Long ordId
+                                    ){
 
-        ordService.deleteOrd(ordId, clientId);
+        ordService.deleteOrd(ordId);
 
         String message = "Success!";
 
         return ResponseEntity.ok(message);
-
 
     }
 }
