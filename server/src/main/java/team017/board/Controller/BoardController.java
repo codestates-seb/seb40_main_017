@@ -17,13 +17,12 @@ import team017.global.response.MultiResponseDto;
 import javax.validation.constraints.Positive;
 import java.util.List;
 
-@RequestMapping("/boards")
 @RestController
+@RequestMapping("/boards")
 @AllArgsConstructor
 public class BoardController {
 
     private final BoardService boardService;
-    private final BoardMapper boardMapper;
 
     //게시글 등록
     @PostMapping()
@@ -72,7 +71,7 @@ public class BoardController {
 
         Page<Board> boardsPage = boardService.findBoardsCategory(category, page- 1, size);
         List<Board> boardList = boardsPage.getContent();
-        List<BoardTotalResponseDto> response = boardMapper.productToBoardToalResponseDto(boardList);
+        List<BoardTotalResponseDto> response = boardService.getBoards(boardList);
 
         return new ResponseEntity<>(
                 new MultiResponseDto<>(response , boardsPage), HttpStatus.OK);
@@ -85,7 +84,7 @@ public class BoardController {
 
         Page<Board> boardsPage = boardService.findBoards(page- 1, size);
         List<Board> boardList = boardsPage.getContent();
-        List<BoardTotalResponseDto> response = boardMapper.productToBoardToalResponseDto(boardList);
+        List<BoardTotalResponseDto> response = boardService.getBoards(boardList);
 
         return new ResponseEntity<>(
                 new MultiResponseDto<>(response , boardsPage), HttpStatus.OK);

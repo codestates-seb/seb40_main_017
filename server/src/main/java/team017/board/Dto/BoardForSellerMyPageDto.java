@@ -11,11 +11,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class BoardForSellerMyPageDto {
 
-    private String title;
+    private String title;               //게시글 제목
+
+    private int stock;                  //초기 상품 재고
+
+    private int soldStock;              //잔여 재고
 
     private LocalDateTime createdAt;
-
-    private int stock;
-
-    private int soldStock; //팔린 갯수
 }
