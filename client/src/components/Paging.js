@@ -11,7 +11,7 @@ const Paging = () => {
 
   useEffect(() => {
     const getComments = async () => {
-      const res = await fetch(`http://localhost:3004/comments?_page=1&_limit=${limit}`);
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/comments/?_page=1&_limit=${limit}`);
       const data = await res.json();
       const total = res.headers.get('x-total-count');
       setpageCount(Math.ceil(total / 5));
@@ -24,7 +24,7 @@ const Paging = () => {
   console.log(items);
 
   const fetchComments = async (currentPage) => {
-    const res = await fetch(`http://localhost:3004/comments?_page=${currentPage}&_limit=5`);
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/comments?_page=${currentPage}&_limit=${limit}`);
     const data = await res.json();
     return data;
   };
@@ -43,10 +43,12 @@ const Paging = () => {
     <div>
       {items.map((review) => {
         return (
-          <Review key={review.id}>
-            <h5>{review.id}</h5>
-            <h6>{review.email}</h6>
-            <Context>{review.body}</Context>
+          <Review key={review.clientId}>
+            <div>{review.reviewId}</div>
+            <div>{review.body}</div>
+            <button>수정하기</button>
+            <div>{review.name}</div>
+            <div>{review.createdAt}</div>
           </Review>
         );
       })}
@@ -118,9 +120,45 @@ const PaginationBox = styled.div`
 
 const Review = styled.div`
   display: flex;
-`;
+  border-bottom: 1px solid var(--darker-gray);
+  padding: 10px 8px;
+  div {
+    padding: 10px;
+    width: 8%;
+    height: 100%;
+    text-align: center;
+  }
+  :nth-child(1) {
+    border-top: 2px solid var(--darker-gray);
+  }
 
-const Context = styled.div`
-  width: 100%;
-  height: 100%;
+  div:nth-child(1) {
+    width: 4%;
+    text-align: left;
+  }
+
+  div:nth-child(2) {
+    flex-grow: 5;
+    width: 50%;
+    text-align: left;
+  }
+  div:nth-child(4) {
+    flex-grow: 1;
+  }
+  div:nth-child(5) {
+    text-align: left;
+    width: 8%;
+  }
+  button {
+    all: unset;
+    flex-grow: 1;
+    padding: 10px;
+    width: 25px;
+    height: 8px;
+    border: 1px solid var(--darker-gray);
+    text-align: center;
+    line-height: 10px;
+    border-radius: 5px;
+    font-size: 15px;
+  }
 `;

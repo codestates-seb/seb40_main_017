@@ -5,6 +5,7 @@ import { AiOutlinePlusCircle, AiOutlineMinusCircle } from 'react-icons/ai';
 import StarRate from '../../components/StarRate';
 import { Link } from 'react-scroll';
 import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import Paging from '../../components/Paging';
 
@@ -161,44 +162,36 @@ const Layout = styled.div`
   }
 `;
 
-const SERVER_URL = 'http://localhost:4000/boards/reviews';
-
 function CropInfoPage() {
-  const [reviewList, setReviewList] = useState(null);
-  const [commentList, setCommentList] = useState(null);
+  const { boardId } = useParams();
+  const [board, setBoard] = useState({});
 
-  //ReviewFetch
+  //BoardFetch
   const GetReview = async () => {
-    const response = await axios.get(SERVER_URL);
-    setReviewList(response.data);
+    const response = await axios.get(`${process.env.REACT_APP_API_URL}/boards/${boardId}`);
+    setBoard(response.data);
   };
   useEffect(() => {
     GetReview();
   }, []);
 
-  const ReviewOnSubmitHandler = async (e) => {
-    e.preventDefault();
-    const context = e.target.context.value;
-    await axios.post(SERVER_URL, { context });
-    GetReview();
-  };
+  // const ReviewOnSubmitHandler = async (e) => {
+  //   e.preventDefault();
+  //   const context = e.target.context.value;
+  //   await axios.post(SERVER_URL, { context });
+  //   GetReview();
+  // };
 
-  //CommentFetch
-  const GetComment = async () => {
-    const response = await axios.get(SERVER_URL);
-    setCommentList(response.data);
-  };
+  // useEffect(() => {
+  //   GetComment();
+  // }, []);
 
-  useEffect(() => {
-    GetComment();
-  }, []);
-
-  const CommentOnSubmitHandler = async (e) => {
-    e.preventDefault();
-    const context = e.target.context.value;
-    await axios.post(SERVER_URL, { context });
-    GetComment();
-  };
+  // const CommentOnSubmitHandler = async (e) => {
+  //   e.preventDefault();
+  //   const context = e.target.context.value;
+  //   await axios.post(SERVER_URL, { context });
+  //   GetComment();
+  // };
 
   return (
     <Background>
@@ -247,15 +240,6 @@ function CropInfoPage() {
             </div>
             <div id="b">
               <h2>리뷰</h2>
-              {reviewList?.map((review) => (
-                <ol key={review.reviewId}>
-                  {/* reviewId 가 undefined여서 unique key prop 오류가 뜨는거 같아서 서버연결해서 확인해봐야함 */}
-                  <li>{review.reviewId}</li>
-                  <li>{review.context}</li>
-                  <li>{review.name}</li>
-                  <li>{review.createdAt}</li>
-                </ol>
-              ))}
               <Paging />
             </div>
             <div id="c">
