@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 
 const PayFormBox = styled.div`
@@ -45,10 +46,17 @@ const PayInfo = styled.div`
 `;
 
 export const PayForm = ({ price }) => {
+  const [isCheck, setIsCheck] = useState(false);
+  const changeCheck = (e) => {
+    if (e.target.checked) {
+      setIsCheck(true);
+    } else {
+      setIsCheck(false);
+    }
+  };
+
   const handleOnClick = () => {
-    const checkbox = document.getElementById('결제확인');
-    const is_checked = checkbox.checked;
-    if (is_checked) {
+    if (isCheck) {
       let link = 'https://online-pay.kakao.com/mockup/v1/7ad25dbdc72ea560c9b67e567d9a1d32db19abb52bcf8a5bc7da1cde2a424a37/info';
       window.location.href = link;
     }
@@ -65,7 +73,7 @@ export const PayForm = ({ price }) => {
           <div>{price}원</div>
           <p>생산자 산지직거래 상품으로 환불, 반품은 불가합니다.</p>
           <div>
-            <input type={'checkbox'} id="결제확인" name="결제확인" />
+            <input type={'checkbox'} id="결제확인" name="결제확인" onClick={(e) => changeCheck(e)} />
             <label htmlFor="결제확인">결제 확인 했습니다.</label>
           </div>
           <button onClick={handleOnClick}>결제하기</button>
