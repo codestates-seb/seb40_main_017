@@ -10,12 +10,11 @@ import team017.board.Dto.BoardForSellerMyPageDto;
 import team017.board.Entity.Board;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface BoardRepository extends JpaRepository<Board, Long> {
     Page<Board> findBoardsByProduct_Category(PageRequest pageRequest , int category );
-    @Query("SELECT new team017.board.Dto.BoardForSellerMyPageDto( b.title, b.createdAt, b.product.stock, b.soldStock) FROM Board as b  WHERE b.seller.sellerId = :sellerId")
+    @Query("SELECT new team017.board.Dto.BoardForSellerMyPageDto( b.title, b.product.stock, b.soldStock, b.createdAt) FROM Board as b  WHERE b.seller.sellerId = :sellerId")
     List<BoardForSellerMyPageDto> sellerBoard(@Param("sellerId") Long sellerId);
 
 }

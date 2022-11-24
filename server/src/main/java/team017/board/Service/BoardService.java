@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import team017.board.Dto.BoardPatchDto;
 import team017.board.Dto.BoardPostDto;
 import team017.board.Dto.BoardResponseDto;
+import team017.board.Dto.BoardTotalResponseDto;
 import team017.board.Entity.Board;
 import team017.board.Mapper.BoardMapper;
 import team017.board.Repository.BoardRepository;
@@ -19,15 +20,19 @@ import team017.member.service.SellerService;
 import team017.product.Entity.Product;
 import team017.product.Repository.ProductRepository;
 import team017.product.Service.ProductService;
+import team017.review.entity.Review;
 import team017.review.repository.ReviewRepository;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class BoardService {
 
-    // 상품은 재고 수정 하지 못함, 상품은 게시글을 통해서만 수정가능!
+    // 상품에서는 재고를 수정 하지 못함, 상품은 게시글을 통해서만 수정 가능!
     private final SellerService sellerService;
     private final ProductService productService;
     private final ProductRepository productRepository;
@@ -105,20 +110,22 @@ public class BoardService {
         //상품 존재 여부 확인
         Product findProduct = productService.findVerifiedProduct(findBoard.getProduct());
 
-        //조회수 ++
-        addView(findBoard);
-
         BoardResponseDto responseDto = boardMapper.productToBoardResponseDto(findProduct , findBoard);
 
         return  responseDto;
     }
 
-    private void addView(Board board) {
-        int viewCnt = board.getView();
-        viewCnt++;
-        board.setView(viewCnt);
-        boardRepository.save(board);
+    public List<BoardTotalResponseDto> getBoards(List<Board> boardList) {
+        List<BoardTotalResponseDto> totalBoard = new ArrayList<>();
 
+        Iterator iter = boardList.iterator();
+
+        while (iter.hasNext()) {
+            Board board = (Board) iter.next();
+            Product product = board.getProduct();
+            totalBoard.add(boardMapper.productToBoardTotalResponseDto(product, board));
+        }
+        return totalBoard;
     }
 
     public Page<Board> findBoards(int page, int size) {
@@ -128,4 +135,5 @@ public class BoardService {
     public Page<Board> findBoardsCategory(int category, int page, int size) {
         return  boardRepository.findBoardsByProduct_Category(PageRequest.of(page, size, Sort.by("createdAt").descending()), category);
     }
+
 }

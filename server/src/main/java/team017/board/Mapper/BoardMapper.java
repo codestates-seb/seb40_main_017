@@ -7,6 +7,7 @@ import team017.board.Dto.BoardResponseDto;
 import team017.board.Dto.BoardTotalResponseDto;
 import team017.board.Entity.Board;
 import team017.product.Entity.Product;
+import team017.review.repository.ReviewRepository;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -19,22 +20,10 @@ public interface BoardMapper {
     @Mapping(target = "sellerId", expression = "java(board.getSeller().getSellerId())")
     @Mapping(target = "name", expression = "java(board.getSeller().getMember().getName())")
     BoardResponseDto productToBoardResponseDto(Product product, Board board);
+
     @Mapping(target = "sellerId", expression = "java(board.getSeller().getSellerId())")
+    @Mapping(target = "sellerImage", expression = "java(board.getSeller().getImageUrl())")
     @Mapping(target = "name", expression = "java(board.getSeller().getMember().getName())")
     BoardTotalResponseDto productToBoardTotalResponseDto(Product product, Board board);
-
-    default List<BoardTotalResponseDto> productToBoardToalResponseDto(List<Board> boardList) {
-        List<BoardTotalResponseDto> totalBoard = new ArrayList<>();
-
-        Iterator iter = boardList.iterator();
-
-        while (iter.hasNext()) {
-            Board board = (Board) iter.next();
-            Product product = board.getProduct();
-            totalBoard.add(productToBoardTotalResponseDto(product, board));
-        }
-
-        return totalBoard;
-    }
 
 }

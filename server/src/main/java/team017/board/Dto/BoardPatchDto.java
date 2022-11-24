@@ -17,16 +17,16 @@ public class BoardPatchDto {
     @NotBlank
     private Long boardId;
 
-    private String title;
+    private String mainImage;               //게시판 썸네일 이미지
 
-    private String content;
+    private String title;                   //게시글 제목
 
-    private int price;
+    private String content;                 //게시글 내용
 
-    private Product.ProductStatus status;
+    private int price;                      //상품 가격
 
-    private int category;
+    private Product.ProductStatus status;   //상품 판매 상태
 
-    private String mainImage;
+    private int category;                   //상품분류
 
 }

@@ -20,7 +20,7 @@ import javax.validation.constraints.Positive;
 import java.util.List;
 
 @RestController
-@RequestMapping("comment")
+@RequestMapping("comments")
 @AllArgsConstructor
 @Validated
 @Slf4j

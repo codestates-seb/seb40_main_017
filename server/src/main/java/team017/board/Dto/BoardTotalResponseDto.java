@@ -14,18 +14,22 @@ public class BoardTotalResponseDto {
 
     private Long sellerId;
 
-    private String name;
+    private String sellerImage;     //판매자 이미지
 
-    private String title;
+    private String mainImage;       //게시판 썸네일 이미지
 
-    private int price;
+    private String name;            //판매자 이름
 
-    private int soldStock;
+    private String title;           //게시글 제목
 
-    private int category; //상품분류 (과일 :1 , 채소: 2, 곡물: 3,  견과류: 4)
+    private int price;              //상품 가격
 
-    private double reviewAvg ; //별점의 평균
+    private int soldStock;          //잔여 재고
 
-    private String mainImage;
+    private int category;           //상품분류 (과일 :1 , 채소: 2, 곡물: 3,  견과류: 4)
+
+    private double reviewAvg ;      //별점의 평균
+
+    private int reviewNum;          //리뷰 갯수
 
 }
