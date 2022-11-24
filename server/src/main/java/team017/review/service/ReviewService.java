@@ -34,9 +34,10 @@ public class ReviewService {
         verifiedBoard(review); // 존재하는 게시판인지 확인
         Review savedReview = reviewRepository.save(review);
 
-        //리뷰의 평균 저장
+        //리뷰의 평균, 총 리뷰수 저장
         Board board = boardService.findVerifiedBoard(savedReview.getBoard().getBoardId());
         board.setReviewAvg(reviewRepository.findbyReviewAvg(board.getBoardId()));
+        board.setReviewNum(board.getReviewNum() + 1);
         boardRepository.save(board);
 
         return savedReview;
