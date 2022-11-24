@@ -1,13 +1,23 @@
 import styled from 'styled-components';
 import { FiMenu } from 'react-icons/fi';
+import { getUser } from '../features/user/userSlice';
+import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import Sidebar from './Sidebar';
+import { useState } from 'react';
 
 const Headerbox = styled.header`
   width: 100%;
   height: 80px;
   background-color: var(--green);
   position: sticky;
+  top: 0;
+  z-index: 10;
   display: flex;
   justify-content: space-between;
+  .active {
+    left: 0em;
+  }
 `;
 
 const Menu = styled(FiMenu)`
@@ -23,11 +33,11 @@ const Menu = styled(FiMenu)`
   }
 `;
 
-const Logo = styled.p`
+const Logo = styled(Link)`
   color: var(--white);
   line-height: 80px;
   font-size: 30px;
-  margin-left: 20px;
+  margin-left: 100px;
   cursor: pointer;
 `;
 
@@ -35,7 +45,7 @@ const UserInfo = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  button {
+  a {
     all: unset;
     cursor: pointer;
     border: 1px solid var(--white);
@@ -51,17 +61,38 @@ const UserInfo = styled.div`
   }
 `;
 
-function Header() {
+const Header = () => {
+  const user = useSelector(getUser);
+  const [sidebar, setSidebar] = useState(false);
+  const handleOnClick = () => {
+    if (!sidebar) {
+      setSidebar(true);
+      document.getElementById('sidebar').classList.add('active');
+    } else {
+      setSidebar(false);
+      document.getElementById('sidebar').classList.remove('active');
+    }
+  };
   return (
     <Headerbox>
-      <Menu />
-      <Logo>6시 내고향</Logo>
+      <Menu onClick={handleOnClick} />
+      <Sidebar />
+      <Logo to="/">17시 내고향</Logo>
       <UserInfo>
-        <button>로그인</button>
-        <button>회원가입</button>
+        {user ? (
+          <>
+            <Link to="/mypage">마이페이지</Link>
+            <Link to="/logout">로그아웃</Link>
+          </>
+        ) : (
+          <>
+            <Link to="/login">로그인</Link>
+            <Link to="/signup">회원가입</Link>
+          </>
+        )}
       </UserInfo>
     </Headerbox>
   );
-}
+};
 
 export default Header;
