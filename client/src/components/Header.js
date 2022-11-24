@@ -32,7 +32,7 @@ const Logo = styled(Link)`
   color: var(--white);
   line-height: 80px;
   font-size: 30px;
-  margin-left: 100px;
+  margin-left: 20px;
   cursor: pointer;
 `;
 
@@ -57,6 +57,7 @@ const UserInfo = styled.div`
 `;
 
 const Header = () => {
+  //  Redux Provider 로 부터 사용자 정보 수신
   const user = useSelector(getUser);
 
   return (
@@ -64,7 +65,7 @@ const Header = () => {
       <Menu />
       <Logo to="/">17시 내고향</Logo>
       <UserInfo>
-        {user ? (
+        {user.memberId ? (
           <>
             <Link to="/mypage">마이페이지</Link>
             <Link to="/logout">로그아웃</Link>

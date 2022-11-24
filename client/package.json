@@ -17,7 +17,6 @@
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.4.3",
     "react-scripts": "5.0.1",
-    "react-scroll": "^1.8.8",
     "redux": "^4.2.0",
     "styled-components": "^5.3.6",
     "swiper": "^6.8.4",

@@ -1,13 +1,16 @@
 import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { SubmitButton } from '../../components/Button';
 import Container from '../../components/Container';
 import { Form, FormInput, FormRadioGroup } from '../../components/Form';
 import { InputPassword, InputText, useInput } from '../../components/Input';
-import { userService } from '../../features/user/userSlice';
+import { login } from '../../api/login';
+import { signup } from '../../api/signup';
 
 const SignupPage = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [userId, handleChangeUserId] = useInput('');
   const [userPassword, handleChangeUserPassword] = useInput('');
@@ -17,13 +20,22 @@ const SignupPage = () => {
   const [userAddress, handleChangeUserAddress] = useInput('');
   const [userRole, handleChangeUserRole] = useInput('');
 
-  const submitCallback = useCallback(
+  const loginCallback = useCallback(
     (success) => {
       if (success) {
-        dispatch(userService.login(userId, userPassword));
+        navigate('/');
       }
     },
-    [dispatch, userId, userPassword]
+    [navigate]
+  );
+
+  const signupCallback = useCallback(
+    (success) => {
+      if (success) {
+        dispatch(login(userId, userPassword), loginCallback);
+      }
+    },
+    [dispatch, loginCallback, userId, userPassword]
   );
 
   const handleSubmit = useCallback(
@@ -53,10 +65,10 @@ const SignupPage = () => {
       } else if (userRole === '') {
         alert('회원 구분을 선택해주세요.');
       } else {
-        dispatch(userService.signup({ userId, userPassword, userPasswordCheck, userName, userPhone, userAddress, userRole }, submitCallback));
+        dispatch(signup({ userId, userPassword, userPasswordCheck, userName, userPhone, userAddress, userRole }, signupCallback));
       }
     },
-    [dispatch, submitCallback, userId, userPassword, userPasswordCheck, userName, userPhone, userAddress, userRole]
+    [dispatch, signupCallback, userId, userPassword, userPasswordCheck, userName, userPhone, userAddress, userRole]
   );
 
   return (
@@ -80,6 +92,7 @@ const SignupPage = () => {
         <FormInput text="주소">
           <InputText onChange={handleChangeUserAddress} placeholder="주소" />
         </FormInput>
+
         <FormRadioGroup
           name="role"
           onChange={handleChangeUserRole}
