@@ -67,12 +67,6 @@ const FormBodyBox = styled.div`
   z-index: 10;
 `;
 
-// const ButtonBox = styled.div`
-//   width: 50%;
-//   display: flex;
-//   justify-content: space-between;
-// `;
-
 function SellerformPage() {
   const [index, setIndex] = useState(1);
   const [isLoading, setIsLoading] = useState(false);

@@ -40,8 +40,10 @@ const ButtonBox = styled.div`
     background: var(--green);
     border-radius: 15px;
     border: 1px solid var(--white);
+    transition: 0.3s;
     :hover {
       background-color: #9bdd9f;
+      scale: 1.2;
     }
   }
 `;
