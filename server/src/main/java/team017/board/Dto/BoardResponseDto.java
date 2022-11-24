@@ -44,5 +44,4 @@ public class BoardResponseDto {
 
     private String mainImage;
 
-
 }

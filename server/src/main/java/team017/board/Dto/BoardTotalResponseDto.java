@@ -14,6 +14,10 @@ public class BoardTotalResponseDto {
 
     private Long sellerId;
 
+    private String sellerImage;
+
+    private String mainImage;
+
     private String name;
 
     private String title;
@@ -26,6 +30,6 @@ public class BoardTotalResponseDto {
 
     private double reviewAvg ; //별점의 평균
 
-    private String mainImage;
+    private int reviewNum; //리뷰 갯수
 
 }
