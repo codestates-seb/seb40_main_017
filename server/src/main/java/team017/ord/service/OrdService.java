@@ -1,24 +1,21 @@
 package team017.ord.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import team017.board.Entity.Board;
+import team017.board.Repository.BoardRepository;
 import team017.board.Service.BoardService;
 import team017.global.Exception.BusinessLogicException;
 import team017.global.Exception.ExceptionCode;
 import team017.member.entity.Client;
 import team017.member.service.ClientService;
-import team017.member.service.SellerService;
+import team017.ord.dto.OrdPostDto;
+import team017.ord.dto.OrdResponseDto;
 import team017.ord.entity.Ord;
+import team017.ord.mapper.OrdMapper;
 import team017.ord.repository.OrdRepository;
-import team017.product.Entity.Product;
-import team017.product.Repository.ProductRepository;
 import team017.product.Service.ProductService;
-import team017.review.entity.Review;
 
-import javax.swing.text.html.Option;
 import javax.transaction.Transactional;
 import java.util.Optional;
 
@@ -27,56 +24,46 @@ import java.util.Optional;
 @Service
 public class OrdService {
     private final OrdRepository ordRepository;
-
+    private final OrdMapper ordMapper;
     private final ProductService productService;
-
-    private final ProductRepository productRepository;
-
+    private final BoardService boardService;
+    private final BoardRepository boardRepository;
     private final ClientService clientService;
 
-    private final BoardService boardService;
+    //주문은 Client 만 할 수 있고, 판매자는 내역만 조회로 가져간다
+    public OrdResponseDto createOrd(Ord ord, OrdPostDto ordPostDto) {
 
-    //    주문은 Client 만 할 수 있고, 판매자는 내역만 조회로 가져간다
-    public Ord createOrd(Ord ord, Long clientId, long boardId) {
-        ord.setClient(clientService.findVerifiedClient(clientId));
-        verifiedClient(ord);
-        ord.setProduct(productService.findProduct(boardId));
-        findVerifiedProduct(boardId);
-        ord.setTotalPrice(productService.findProduct(boardId).getPrice() * productService.findProduct(boardId).getStock());
-        ord.setQuantity(productService.findProduct(boardId).getStock());
-        return ordRepository.save(ord);
+        //판매자 존재 여부 확인
+        Client findClient = clientService.findClient(ordPostDto.getClientId());
+
+        //게시글 존재 여부 확인
+        Board findBoard = boardService.findVerifiedBoard(ordPostDto.getBoardId());
+
+        //상품 존재 여부 확인
+        productService.findProduct(findBoard.getProduct().getProductId());
+
+        //ord DB 저장
+        ord.setProduct(productService.findProduct(findBoard.getBoardId()));
+        ord.setClient(clientService.findVerifiedClient(findClient.getClientId()));
+        ordRepository.save(ord);
+
+        //주문 등록 시, 재고에서 수량만큼 빼기
+        findBoard.setLeftStock(findBoard.getLeftStock() - ord.getQuantity());
+        boardRepository.save(findBoard);
+
+        OrdResponseDto responseDto = ordMapper.ordToOrdResponseDto(ord);
+
+        return responseDto;
     }
 
-
-    public Ord findOrd(Long ordId){
-        Ord findOrd = findVerifiedOrd(ordId);
-        return findOrd;
-    }
-
-    //주문취소
     public void deleteOrd(Long ordId){
-        Ord foundOrd = findOrd(ordId);
+        Ord foundOrd = findVerifiedOrd(ordId);
         ordRepository.delete(foundOrd);
-    }
-
-    public void verifyWriter(Long postUserId, Long editUserId) {
-        if (!postUserId.equals(editUserId)) {
-            throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED_MEMBER);
-        }
-    }
-    private void verifiedClient(Ord ord) {
-        clientService.findClient(ord.getClient().getClientId());
     }
 
     public Ord findVerifiedOrd(Long ordId){
         Optional<Ord> optionalOrd = ordRepository.findById(ordId);
         Ord findOrd = optionalOrd.orElseThrow(() -> new BusinessLogicException(ExceptionCode.ORDER_NOT_FOUND));
         return findOrd;
-    }
-
-    public Product findVerifiedProduct(Long productId){
-        Optional<Product> optionalProduct = productRepository.findById(productId);
-        Product findProduct = optionalProduct.orElseThrow(() -> new BusinessLogicException(ExceptionCode.PRODUCT_NOT_FOUND));
-        return findProduct;
     }
 }

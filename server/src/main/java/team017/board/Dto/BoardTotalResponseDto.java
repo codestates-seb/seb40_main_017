@@ -24,9 +24,9 @@ public class BoardTotalResponseDto {
 
     private int price;              //상품 가격
 
-    private int soldStock;          //잔여 재고
+    private int leftStock;          //잔여 재고
 
-    private int category;           //상품분류 (과일 :1 , 채소: 2, 곡물: 3,  견과류: 4)
+    private int category;           //상품분류
 
     private double reviewAvg ;      //별점의 평균
 

@@ -23,7 +23,7 @@ public interface OrdMapper {
 
         Ord ord = new Ord();
         ord.setClient(client.build());
-        // ord.setClientName(ordPostDto.getClientName());
+        //ord.setClientName(ordPostDto.getClientName());
         ord.setAddress(ordPostDto.getAddress());
         ord.setPhone(ordPostDto.getPhone());
         ord.setTotalPrice(ordPostDto.getTotalPrice());
@@ -31,21 +31,6 @@ public interface OrdMapper {
 
         return ord;
     }
-
-//    default Ord ordPatchDtoToOrd(OrdPatchDto ordPatchDto){
-//        if( ordPatchDto == null){
-//            return null;
-//        }
-//        Client.ClientBuilder client = Client.builder();
-//        client.clientId(ordPatchDto.getClientId());
-//
-//        Ord ord = new Ord();
-//        ord.setClient(client.build());
-//        ord.setAddress(ordPatchDto.getAddress());
-//        ord.setPhone(ordPatchDto.getPhone());
-//
-//        return ord;
-//    }
 
     default OrdResponseDto ordToOrdResponseDto(Ord ord){
         if( ord == null){
@@ -69,9 +54,7 @@ public interface OrdMapper {
         ordResponseDto.setTotalPrice(ord.getTotalPrice());
         ordResponseDto.setQuantity(ord.getQuantity());
         ordResponseDto.setOrdStatus(ord.getStatus());
-//        ordResponseDto.setCreatedAt(ord.getCreatedAt());
-//        ordResponseDto.setModifiedAt(ord.getModifiedAt());
-
+        ordResponseDto.setCreatedAt(ord.getCreatedAt());
 
         return ordResponseDto;
 

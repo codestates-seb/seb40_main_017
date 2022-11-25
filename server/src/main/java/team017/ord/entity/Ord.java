@@ -62,7 +62,6 @@ public class Ord extends Auditable {
 		}
 	}
 
-
 	@Column
 	@Enumerated(EnumType.STRING)
 	private OrdStatus status = OrdStatus.ORD_REQUEST;
@@ -70,9 +69,9 @@ public class Ord extends Auditable {
 	public enum OrdStatus {
 
 		ORD_REQUEST(1, "주문 요청"),
-		ORD_CONFIRM(2, "주문 확정"),
-		PAY_COMPLETE(3, "결제 완료"),
-		ORD_CANCEL(4, "주문 취소");
+		PAY_FAILED(2, "결제 실패"),
+		PAY_CANCEL(3, "결제 취소"),
+		PAY_COMPLETE(4, "결제 완료");
 
 		@Getter
 		private int Number;
