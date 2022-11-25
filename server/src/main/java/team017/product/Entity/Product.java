@@ -59,8 +59,7 @@ public class Product {
     private Seller seller;
 
     /* 🍑상품 - 주문 일대일 연관 관계 : 상품 참조 */
-    @OneToOne
-    @JoinColumn(name = "ord_id")
+    @OneToOne(mappedBy = "product", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private Ord ord;
 
     /* 🍑상품 - 주문 연관 관계 편의 메서드 */

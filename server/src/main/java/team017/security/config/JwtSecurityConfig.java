@@ -6,8 +6,8 @@ import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import lombok.RequiredArgsConstructor;
-import team017.security.filter.SecurityFilter;
-import team017.security.provider.SecurityProvider;
+import team017.security.jwt.filter.SecurityFilter;
+import team017.security.jwt.SecurityProvider;
 
 @RequiredArgsConstructor
 public class JwtSecurityConfig extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {

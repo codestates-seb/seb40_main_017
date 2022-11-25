@@ -35,6 +35,7 @@ public class MemberService {
 	@Transactional
 	public Member createMember(Member member) {
 		verifyEmailExist(member.getEmail());
+		correctRole(member.getRole());
 		List<String> roles = authorityUtils.createRoles(member.getRole());
 		if (member.getRole().equalsIgnoreCase("client")) {
 			member.setClient(new Client());
@@ -100,7 +101,7 @@ public class MemberService {
 	}
 
 	/* 역할 확인 */
-	public void correctRole(String target) {
+	private void correctRole(String target) {
 		if (! target.equalsIgnoreCase("CLIENT") && ! target.equalsIgnoreCase("SELLER")) {
 			throw new RuntimeException("역할이 잘못되었습니다.");
 		}
