@@ -1,19 +1,40 @@
 import styled from 'styled-components';
-import lettuce from '../assets/styles/img/lettuce.jpg';
-import farmer from '../assets/styles/img/farmer.jpeg';
 import { AiFillStar } from 'react-icons/ai';
+
+function CropBoard({ item: { name, title, price, mainImage, reviewAvg, reviewNum, sellerImage } }) {
+  return (
+    <Container>
+      <CropImage src={mainImage} alt="썸네일" />
+      <CropInfo>
+        <p>{title}</p>
+        <p>{price}원</p>
+        <p>리뷰 {reviewNum}개</p>
+        <SellerInfo>
+          <p>{name}</p>
+          <Review>
+            <Star />
+            <p>{reviewAvg}/5</p>
+          </Review>
+          <SellerImage src={sellerImage} alt="판매자사진" />
+        </SellerInfo>
+      </CropInfo>
+    </Container>
+  );
+}
+
+export default CropBoard;
 
 const Container = styled.div`
   background-color: var(--white);
-  width: 300px;
+  width: 270px;
   height: 500px;
   margin: 50px;
   cursor: pointer;
 `;
 
 const CropImage = styled.img`
-  width: 300px;
-  height: 300px;
+  width: 270px;
+  height: 270px;
 `;
 
 const SellerImage = styled.img`
@@ -55,28 +76,3 @@ const Star = styled(AiFillStar)`
 const Review = styled.div`
   display: flex;
 `;
-
-function CropCard(props) {
-  return (
-    <div>
-      <Container>
-        <CropImage src={lettuce} alt="상추" />
-        <CropInfo>
-          <p>{props.crops.title}</p>
-          <p>5,700원</p>
-          <p>리뷰 45개</p>
-          <SellerInfo>
-            <p>김상추</p>
-            <Review>
-              <Star />
-              <p>4.8/5</p>
-            </Review>
-            <SellerImage src={farmer} alt="판매자사진" className="sellerImage" />
-          </SellerInfo>
-        </CropInfo>
-      </Container>
-    </div>
-  );
-}
-
-export default CropCard;

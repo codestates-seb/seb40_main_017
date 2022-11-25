@@ -19,6 +19,8 @@
     "react-hook-form": "^7.39.4",
     "react-icon": "^1.0.0",
     "react-icons": "^4.6.0",
+    "react-infinite-scroll-component": "^6.1.0",
+    "react-paginate": "^8.1.4",
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.4.3",
     "react-scripts": "5.0.1",
