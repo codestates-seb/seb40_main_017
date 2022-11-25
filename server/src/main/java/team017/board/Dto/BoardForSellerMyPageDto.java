@@ -15,7 +15,7 @@ public class BoardForSellerMyPageDto {
 
     private int stock;                  //초기 상품 재고
 
-    private int soldStock;              //잔여 재고
+    private int leftStock;              //잔여 재고
 
-    private LocalDateTime createdAt;
+    private LocalDateTime createdAt;    //게시글 생성 시간
 }

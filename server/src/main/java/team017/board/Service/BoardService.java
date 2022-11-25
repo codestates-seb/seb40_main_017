@@ -51,6 +51,7 @@ public class BoardService {
         Board board = boardMapper.boardPostDtoToBoard(boardPostDto);
         board.setSeller(findSeller);
         board.setProduct(product);
+        board.setLeftStock(product.getStock());
         boardRepository.save(board);
 
         BoardResponseDto boardResponseDto = boardMapper.productToBoardResponseDto(product,board);

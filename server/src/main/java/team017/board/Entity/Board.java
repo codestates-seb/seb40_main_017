@@ -31,13 +31,13 @@ public class Board extends Auditable {
     private String content;
 
     @Column(nullable = false )
-    private int reviewNum; //리뷰 갯수
+    private int reviewNum;
 
     @Column(nullable = false)
-    private int soldStock; //팔린 갯수
+    private int leftStock;
 
     @Column(nullable = false)
-    private double reviewAvg ; //별점의 평균
+    private double reviewAvg ;
 
     /* 🍋게시판 - 상품 일대일 연관 관계 : 상품 참조*/
     @OneToOne

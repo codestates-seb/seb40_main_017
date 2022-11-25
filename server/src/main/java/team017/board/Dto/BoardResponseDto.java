@@ -34,10 +34,10 @@ public class BoardResponseDto {
 
     private double reviewAvg ;              //별점의 평균
 
-    private int soldStock;                  //팔린 갯수
+    private int leftStock;                  //잔여 재고
 
-    private LocalDateTime createdAt;
+    private LocalDateTime createdAt;        //게시글 생성 시간
 
-    private LocalDateTime modifiedAt;
+    private LocalDateTime modifiedAt;       //게시글 수정 시간
 
 }

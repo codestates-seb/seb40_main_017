@@ -14,7 +14,7 @@ import java.util.List;
 @Repository
 public interface BoardRepository extends JpaRepository<Board, Long> {
     Page<Board> findBoardsByProduct_Category(PageRequest pageRequest , int category );
-    @Query("SELECT new team017.board.Dto.BoardForSellerMyPageDto( b.title, b.product.stock, b.soldStock, b.createdAt) FROM Board as b  WHERE b.seller.sellerId = :sellerId")
+    @Query("SELECT new team017.board.Dto.BoardForSellerMyPageDto( b.title, b.product.stock, b.leftStock, b.createdAt) FROM Board as b  WHERE b.seller.sellerId = :sellerId")
     List<BoardForSellerMyPageDto> sellerBoard(@Param("sellerId") Long sellerId);
 
 }
