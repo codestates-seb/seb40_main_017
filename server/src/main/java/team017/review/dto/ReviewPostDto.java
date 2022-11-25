@@ -24,7 +24,6 @@ public class ReviewPostDto {
 
     private String image;
 
-    @NotNull
     @Max(5)
     private int star;
 }
