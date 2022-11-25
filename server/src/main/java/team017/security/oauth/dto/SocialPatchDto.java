@@ -10,6 +10,5 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class SocialPatchDto {
-	private long memberId;
 	private String role;
 }

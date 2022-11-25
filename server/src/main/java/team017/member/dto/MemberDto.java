@@ -58,7 +58,6 @@ public class MemberDto {
 		private String phone;
 		private String address;
 		private String role;
-		// private String authorization;
 	}
 
 	@Getter
@@ -74,6 +73,5 @@ public class MemberDto {
 		private String role;
 		private String introduce;
 		private String imageUrl;
-		// private String authorization;
 	}
 }

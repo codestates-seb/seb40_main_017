@@ -62,38 +62,8 @@ public interface MemberMapper {
 	Seller sellerPatchDtoToSeller(SellerPatchDto sellerPatchDto);
 	Client clientPatchDtoToClient(ClientPatchDto clientPatchDto);
 
-	/* 로그인 용 매퍼 */
-	default LoginResponse.Cilent loginClientResponseDto(Member member) {
-		if (member == null) {
-			return null;
-		}
-		LoginResponse.Cilent response =
-			LoginResponse.Cilent.builder()
-				.memberId(member.getMemberId())
-				.clientId(member.getClient().getClientId())
-				.name(member.getName())
-				.role(member.getRole())
-				.build();
-
-		return response;
-	}
-	default LoginResponse.Seller loginSellerResponseDto(Member member) {
-		if (member == null) {
-			return null;
-		}
-		LoginResponse.Seller response =
-			LoginResponse.Seller.builder()
-				.memberId(member.getMemberId())
-				.sellerId(member.getSeller().getSellerId())
-				.name(member.getName())
-				.role(member.getRole())
-				.build();
-
-		return response;
-	}
-
 	/* 새로 고침 */
-	default LoginResponse.Cilent getClientToken(Member member) {
+	default LoginResponse.Cilent getClientResponse(Member member) {
 		if (member == null && member.getClient() == null) {
 			return null;
 		}
@@ -107,7 +77,7 @@ public interface MemberMapper {
 
 		return response;
 	}
-	default LoginResponse.Seller getSellerToken(Member member) {
+	default LoginResponse.Seller getSellerResponse(Member member) {
 		if (member == null && member.getSeller() == null) {
 			return null;
 		}
@@ -123,12 +93,13 @@ public interface MemberMapper {
 	}
 
 	/* 소셜 용 --> 소셜은 권한이 없기 때문 */
-	default LoginResponse.Member socialLoginResponseDto(Member member) {
+	default LoginResponse.Member socialLoginResponseDto(Member member, String token) {
 		LoginResponse.Member response =
 			LoginResponse.Member.builder()
 				.memberId(member.getMemberId())
 				.name(member.getName())
 				.role(member.getRole())
+				.authorization(token)
 				.build();
 
 		return response;

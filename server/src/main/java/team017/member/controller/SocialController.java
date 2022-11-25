@@ -1,4 +1,4 @@
-package team017.security.controller;
+package team017.member.controller;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -51,10 +51,8 @@ public class SocialController {
 
 		/* jwt 토큰 저장 */
 		LoginRequestDto requestDto = new LoginRequestDto(member.getEmail(), member.getPassword());
-
 		TokenDto tokenDto = securityService.socialLogin(requestDto);
-
-		LoginResponse.Member response = mapper.socialLoginResponseDto(member);
+		LoginResponse.Member response = mapper.socialLoginResponseDto(member, tokenDto.getAccessToken());
 
 		HttpHeaders httpHeaders = setHeader(tokenDto);
 
@@ -65,8 +63,7 @@ public class SocialController {
 	@PatchMapping("/social/{member_id}")
 	public ResponseEntity patchSocial(@PathVariable("member_id") long memberId,
 			@RequestBody SocialPatchDto patchDto) {
-		securityService.correctMember(memberId, patchDto.getMemberId());
-		Member member = securityService.updateSocial(patchDto);
+		Member member = securityService.updateSocial(patchDto.getRole(), memberId);
 		LoginRequestDto request = new LoginRequestDto(member.getEmail(), member.getPassword());
 
 		/* 여기서 토큰 재발급 */
@@ -74,13 +71,9 @@ public class SocialController {
 		HttpHeaders httpHeaders = setHeader(tokenDto);
 
 		if (member.getRole().equals("SELLER")) {
-			LoginResponse.Seller response = mapper.loginSellerResponseDto(member);
-
-			return new ResponseEntity<>(response,httpHeaders, HttpStatus.OK);
+			return new ResponseEntity<>(mapper.memberToSellerDto(member),httpHeaders, HttpStatus.OK);
 		} else if (member.getRole().equals("CLIENT")) {
-			LoginResponse.Cilent response = mapper.loginClientResponseDto(member);
-
-			return new ResponseEntity<>(response, httpHeaders, HttpStatus.OK);
+			return new ResponseEntity<>(mapper.memberToClientDto(member), httpHeaders, HttpStatus.OK);
 		}
 		throw new BusinessLogicException(ExceptionCode.WRONG_ACCESS);
 	}

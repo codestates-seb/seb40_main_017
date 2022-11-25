@@ -40,40 +40,29 @@ public class MemberController {
 	@PostMapping("/members/signup")
 	public ResponseEntity postMember(@Valid @RequestBody MemberDto.Post requestBody,
 		HttpServletRequest request) throws ServletException {
-
 		memberService.correctPassword(requestBody.getPassword(), requestBody.getPasswordCheck());
 		Member createMember = memberService.createMember(mapper.memberDtoToMember(requestBody));
 
-		log.info("# 로그인 시도 시작 ");
-		request.login(createMember.getEmail(), requestBody.getPassword());
+		/* 로그인 시도를 위한 LoginRequestDto 생성 */
 		LoginRequestDto loginRequestDto = new LoginRequestDto(createMember.getEmail(), requestBody.getPassword());
-		TokenDto tokenDto = securityService.tokenLogin(loginRequestDto);
-		HttpHeaders headers = setHeader(tokenDto.getAccessToken());
 
-		if (requestBody.getRole().equalsIgnoreCase("SELLER")) {
-			return new ResponseEntity<>(mapper.memberToSellerDto(createMember), headers, HttpStatus.CREATED);
-		} else if (requestBody.getRole().equalsIgnoreCase("CLIENT")) {
-			return new ResponseEntity<>(mapper.memberToClientDto(createMember), headers, HttpStatus.CREATED);
-		}
-
-		throw new BusinessLogicException(ExceptionCode.LOGIN_ERROR);
+		/* 로그인 */
+		return login(loginRequestDto);
 	}
 
 	/* 자체 로그인 */
 	@PostMapping("/login")
 	public ResponseEntity login(@RequestBody LoginRequestDto requestBody) {
 		Member member = memberService.findMemberByEmail(requestBody.getEmail());
-		if (member.getProviderType() != ProviderType.LOCAL) {
-			throw new RuntimeException("잘못된 프로바이더입니다.");
-		}
+		memberService.checkLocalProvider(member.getProviderType());
 
 		TokenDto tokenDto = securityService.tokenLogin(requestBody);
 		HttpHeaders httpHeaders = setHeader(tokenDto.getAccessToken());
 
 		if(member.getRole().equals("SELLER")) {
-			return new ResponseEntity<>(mapper.loginSellerResponseDto(member), httpHeaders, HttpStatus.OK);
+			return new ResponseEntity<>(mapper.memberToSellerDto(member), httpHeaders, HttpStatus.OK);
 		} else if (member.getRole().equals("CLIENT")) {
-			return new ResponseEntity<>(mapper.loginClientResponseDto(member), httpHeaders, HttpStatus.OK);
+			return new ResponseEntity<>(mapper.memberToClientDto(member), httpHeaders, HttpStatus.OK);
 		}
 
 		throw new BusinessLogicException(ExceptionCode.LOGIN_ERROR);

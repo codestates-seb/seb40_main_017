@@ -38,19 +38,11 @@ public class SellerService {
 
     /* 생산자 정보 수정 */
     public Seller updateSeller(long sellerId, Seller seller) {
-        correctSeller(sellerId, seller.getSellerId());
-        Seller findSeller = findVerifiedSeller(seller.getSellerId());
+        Seller findSeller = findVerifiedSeller(sellerId);
         Optional.ofNullable(seller.getIntroduce()).ifPresent(introduce -> findSeller.setIntroduce(introduce));
         Optional.ofNullable(seller.getImageUrl()).ifPresent(image -> findSeller.setImageUrl(image));
 
         return sellerRepository.save(findSeller);
-    }
-
-    /* url sellerId와 dto sellerId 값 일치 판별*/
-    public void correctSeller(long sellerId, long getId) {
-        if (sellerId != getId) {
-            throw new RuntimeException("회원 정보를 확인하세요.");
-        }
     }
 
     public List<BoardForSellerMyPageDto> getSellerBoard(long sellerId) {

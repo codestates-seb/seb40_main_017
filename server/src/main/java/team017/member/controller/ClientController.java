@@ -1,12 +1,9 @@
 package team017.member.controller;
 
-import java.security.Principal;
-
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,18 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import team017.global.Exception.BusinessLogicException;
-import team017.global.Exception.ExceptionCode;
 import team017.member.dto.ClientPatchDto;
-import team017.member.dto.MemberDto;
 import team017.member.entity.Client;
 import team017.member.entity.Member;
 import team017.member.mapper.MemberMapper;
 import team017.member.service.ClientService;
 import team017.member.service.MemberService;
-import team017.security.jwt.service.MemberPrincipal;
-import team017.security.jwt.service.MemberPrincipalService;
-import team017.security.utils.SecurityUtil;
 
 /* 소비자 관련 컨트롤러 : 마이페이지 조회, 정보 수정 */
 @Slf4j
@@ -53,7 +44,6 @@ public class ClientController {
 	@PatchMapping("/{client_id}")
 	public ResponseEntity patchClient(@PathVariable("client_id") @Positive long clientId,
 			@RequestBody ClientPatchDto clientPatchDto) {
-
 		Client client = clientService.updateClient(clientId, mapper.clientPatchDtoToClient(clientPatchDto));
 		long memberId = client.getMember().getMemberId();
 		Member member = memberService.updateMember(memberId, mapper.clientPatchDtoToMember(clientPatchDto));

@@ -13,6 +13,9 @@ public class LoginResponse {
 		private long memberId;
 		private String name;
 		private String role;
+
+		/* 소셜 로그인 시, 바로 url에서 작업할 경우 헤더에서 가져오기 힘들어서 우선 바디에 출력 중. */
+		private String authorization;
 	}
 
 	@Getter
