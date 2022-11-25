@@ -39,6 +39,13 @@ const Logo = styled(Link)`
   font-size: 30px;
   margin-left: 100px;
   cursor: pointer;
+  @font-face {
+    font-family: 'BMEuljiro10yearslater';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-10-21@1.0/BMEuljiro10yearslater.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+  }
+  font-family: 'BMEuljiro10yearslater';
 `;
 
 const UserInfo = styled.div`
