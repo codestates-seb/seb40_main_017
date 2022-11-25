@@ -14,14 +14,14 @@ import lombok.RequiredArgsConstructor;
 import team017.global.Exception.BusinessLogicException;
 import team017.global.Exception.ExceptionCode;
 import team017.member.entity.Member;
-import team017.security.dto.KakaoToken;
-import team017.security.dto.LoginMapper;
-import team017.security.dto.LoginRequestDto;
-import team017.security.dto.LoginResponse;
-import team017.security.dto.SocialPatchDto;
-import team017.security.dto.TokenDto;
-import team017.security.service.KakaoService;
-import team017.security.service.SecurityService;
+import team017.member.mapper.MemberMapper;
+import team017.security.oauth.dto.KakaoToken;
+import team017.security.jwt.dto.LoginRequestDto;
+import team017.security.jwt.dto.LoginResponse;
+import team017.security.oauth.dto.SocialPatchDto;
+import team017.security.jwt.dto.TokenDto;
+import team017.security.oauth.service.KakaoService;
+import team017.security.jwt.service.SecurityService;
 
 @RestController
 @RequiredArgsConstructor
@@ -29,9 +29,15 @@ public class SocialController {
 	private final SecurityService securityService;
 
 	private final KakaoService kakaoService;
-	private final LoginMapper mapper;
+	private final MemberMapper mapper;
 
 	/* 카카오 로그인 */
+
+	/* test 로 직접 인가 코드 받기 */
+	// @GetMapping("/login/oauth2/code/kakao")
+	// public String KakaoCode(@RequestParam("code") String code) {
+	// 	return "카카오 로그인 인증완료, code: "  + code;
+	// }
 
 	/* frontend 로 부터 받은 인가 코드 받기 및 사용자 정보 받기, 회원가입 */
 	@GetMapping("/login/oauth2/code/kakao")
@@ -48,18 +54,12 @@ public class SocialController {
 
 		TokenDto tokenDto = securityService.socialLogin(requestDto);
 
-		LoginResponse.Member response = mapper.socialLoginResponseDto(member, tokenDto);
+		LoginResponse.Member response = mapper.socialLoginResponseDto(member);
 
 		HttpHeaders httpHeaders = setHeader(tokenDto);
 
 		return new ResponseEntity(response, httpHeaders, HttpStatus.OK);
 	}
-
-	// /* test 로 직접 인가 코드 받기 */
-	// @GetMapping("/login/oauth2/code/kakao")
-	// public String KakaoCode(@RequestParam("code") String code) {
-	// 	return "카카오 로그인 인증완료, code: "  + code;
-	// }
 
 	/* 소셜 로그인 수정 -> only 권한 */
 	@PatchMapping("/social/{member_id}")
@@ -74,11 +74,11 @@ public class SocialController {
 		HttpHeaders httpHeaders = setHeader(tokenDto);
 
 		if (member.getRole().equals("SELLER")) {
-			LoginResponse.Seller response = mapper.loginSellerResponseDto(member, tokenDto);
+			LoginResponse.Seller response = mapper.loginSellerResponseDto(member);
 
 			return new ResponseEntity<>(response,httpHeaders, HttpStatus.OK);
 		} else if (member.getRole().equals("CLIENT")) {
-			LoginResponse.Cilent response = mapper.loginClientResponseDto(member, tokenDto);
+			LoginResponse.Cilent response = mapper.loginClientResponseDto(member);
 
 			return new ResponseEntity<>(response, httpHeaders, HttpStatus.OK);
 		}

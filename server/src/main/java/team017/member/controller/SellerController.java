@@ -26,7 +26,7 @@ import java.util.List;
 
 /* 생산자 관련 컨트롤러 : 마이페이지 조회, 정보 수정 */
 @RestController
-@RequestMapping("members/seller")
+@RequestMapping("/members/seller")
 @RequiredArgsConstructor
 public class SellerController {
 	private final SellerService sellerService;
@@ -36,11 +36,10 @@ public class SellerController {
 	/* 판매자 마이 페이지 조회 */
 	@GetMapping("/{seller_id}")
 	public ResponseEntity getSeller(@PathVariable("seller_id") @Positive long sellerId) {
-		Seller seller = sellerService.findSeller(sellerId);
-		Member member = seller.getMember();
+		Member member = sellerService.findSeller(sellerId).getMember();
 
 		List<BoardForSellerMyPageDto> boardList = sellerService.getSellerBoard(sellerId);
-		MemberDto.SelleResponseDto response = mapper.memberToSellerDto(member, seller);
+		MemberDto.SelleResponseDto response = mapper.memberToSellerDto(member);
 
 		return new ResponseEntity<>(
 				new MultiSellerResponseDto(response,boardList), HttpStatus.OK);
@@ -54,6 +53,6 @@ public class SellerController {
 		long memberId = seller.getMember().getMemberId();
 		Member member = memberService.updateMember(memberId, mapper.sellerPatchDtoToMember(sellerPatchDto));
 
-		return ResponseEntity.ok(mapper.memberToSellerDto(member, seller));
+		return ResponseEntity.ok(mapper.memberToSellerDto(member));
 	}
 }

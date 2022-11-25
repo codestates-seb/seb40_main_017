@@ -15,13 +15,13 @@ import org.springframework.security.oauth2.client.web.HttpSessionOAuth2Authoriza
 import org.springframework.security.web.SecurityFilterChain;
 
 import lombok.RequiredArgsConstructor;
-import team017.security.service.MemberPrincipalService;
-import team017.security.provider.SecurityProvider;
-import team017.security.handler.MemberAccessDeniedHandler;
-import team017.security.handler.MemberAuthenticationEntryPoint;
-import team017.security.handler.OAuth2FailureHandler;
-import team017.security.handler.OAuth2SuccessHandler;
-import team017.security.refresh.RefreshTokenRepository;
+import team017.security.jwt.service.MemberPrincipalService;
+import team017.security.jwt.SecurityProvider;
+import team017.security.jwt.handler.MemberAccessDeniedHandler;
+import team017.security.jwt.handler.MemberAuthenticationEntryPoint;
+import team017.security.oauth.handler.OAuth2FailureHandler;
+import team017.security.oauth.handler.OAuth2SuccessHandler;
+import team017.security.jwt.refresh.RefreshTokenRepository;
 
 @Configuration
 @EnableWebSecurity(debug = true)
@@ -45,14 +45,14 @@ public class SecurityConfig {
 					.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
 					/* 회원 관련 접근 제한 */
-					// .antMatchers(HttpMethod.POST, "/members/signup").permitAll()
-					// .antMatchers(HttpMethod.POST, "/login").permitAll()
-					// .antMatchers(HttpMethod.POST, "/login/oauth").permitAll()
-					// .antMatchers(HttpMethod.GET, "/members/client/**").hasRole("CLIENT")
-					// .antMatchers(HttpMethod.PATCH, "members/client/**").hasRole("CLIENT")
-					// .antMatchers(HttpMethod.GET,"/members/seller/**").permitAll()
-					// .antMatchers(HttpMethod.PATCH, "/members/seller/**").hasRole("SELLER")
-					// .antMatchers(HttpMethod.DELETE, "/members/**").hasAnyRole("CLIENT", "SELLER")
+					.antMatchers(HttpMethod.POST, "/members/signup").permitAll()
+					.antMatchers(HttpMethod.POST, "/login").permitAll()
+					.antMatchers(HttpMethod.POST, "/login/oauth").permitAll()
+					.antMatchers(HttpMethod.GET, "/members/client/**").hasRole("CLIENT")
+					.antMatchers(HttpMethod.PATCH, "members/client/**").hasRole("CLIENT")
+					.antMatchers(HttpMethod.GET,"/members/seller/**").permitAll()
+					.antMatchers(HttpMethod.PATCH, "/members/seller/**").hasRole("SELLER")
+					.antMatchers(HttpMethod.DELETE, "/members/**").hasAnyRole("CLIENT", "SELLER")
 
 					/* 소셜 수정 권한 접근 */
 					// .antMatchers(HttpMethod.PATCH, "/social/**").hasRole("SOCIAL")

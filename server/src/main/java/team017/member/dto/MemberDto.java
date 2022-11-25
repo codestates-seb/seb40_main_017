@@ -48,8 +48,8 @@ public class MemberDto {
 	}
 
 	@Getter
-	@Setter
-	@NoArgsConstructor
+	@Builder
+	@AllArgsConstructor
 	public static class ClientResponseDto{
 		private long memberId;
 		private long clientId;
@@ -62,8 +62,8 @@ public class MemberDto {
 	}
 
 	@Getter
-	@Setter
-	@NoArgsConstructor
+	@Builder
+	@AllArgsConstructor
 	public static class SelleResponseDto{
 		private long memberId;
 		private long sellerId;
@@ -75,37 +75,5 @@ public class MemberDto {
 		private String introduce;
 		private String imageUrl;
 		// private String authorization;
-	}
-
-	@Getter
-	@Builder
-	@AllArgsConstructor
-	@NoArgsConstructor
-	public static class ClientLoginResponse {
-		private long memberId;
-		private long clientId;
-		private String email;
-		private String name;
-		private String phone;
-		private String address;
-		private String role;
-		private String authorization;
-	}
-
-	@Getter
-	@Builder
-	@AllArgsConstructor
-	@NoArgsConstructor
-	public static class SellerLoginResponse {
-		private long memberId;
-		private long sellerId;
-		private String email;
-		private String name;
-		private String phone;
-		private String address;
-		private String role;
-		private String introduce;
-		private String imageUrl;
-		private String authorization;
 	}
 }

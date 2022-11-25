@@ -8,7 +8,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class ClientPatchDto {
-	private long clientId;
 	private String name;
 	private String phone;
 	private String password;

@@ -8,7 +8,8 @@ import team017.member.dto.SellerPatchDto;
 import team017.member.entity.Client;
 import team017.member.entity.Member;
 import team017.member.entity.Seller;
-import team017.security.dto.TokenDto;
+import team017.security.jwt.dto.LoginResponse;
+import team017.security.jwt.dto.TokenDto;
 
 @Mapper(componentModel = "spring")
 public interface MemberMapper {
@@ -16,15 +17,13 @@ public interface MemberMapper {
 	Member memberDtoToMember(MemberDto.Post post);
 
 	/* 응답 */
-	MemberDto.ClientResponseDto memberToClientDto(Member member, Client client);
-	MemberDto.SelleResponseDto memberToSellerDto(Member member, Seller seller);
-	default MemberDto.SellerLoginResponse memberToSellerDto(Member member, TokenDto tokenDto) {
-		if (member == null && tokenDto == null) {
+	default MemberDto.SelleResponseDto memberToSellerDto(Member member) {
+		if (member == null) {
 			return null;
 		}
 
-		MemberDto.SellerLoginResponse response =
-			MemberDto.SellerLoginResponse.builder()
+		MemberDto.SelleResponseDto response =
+			MemberDto.SelleResponseDto.builder()
 				.memberId(member.getMemberId())
 				.sellerId(member.getSeller().getSellerId())
 				.email(member.getEmail())
@@ -34,18 +33,17 @@ public interface MemberMapper {
 				.role(member.getRole())
 				.introduce(member.getSeller().getIntroduce())
 				.imageUrl(member.getSeller().getImageUrl())
-				.authorization(tokenDto.getAccessToken())
 				.build();
 
 		return response;
 	}
 
-	default MemberDto.ClientLoginResponse memberToClientDto(Member member, TokenDto tokenDto) {
-		if (member == null && tokenDto == null) {
+	default MemberDto.ClientResponseDto memberToClientDto(Member member) {
+		if (member == null) {
 			return null;
 		}
-		MemberDto.ClientLoginResponse response =
-			MemberDto.ClientLoginResponse.builder()
+		MemberDto.ClientResponseDto response =
+			MemberDto.ClientResponseDto.builder()
 				.memberId(member.getMemberId())
 				.clientId(member.getClient().getClientId())
 				.email(member.getEmail())
@@ -53,7 +51,6 @@ public interface MemberMapper {
 				.phone(member.getPhone())
 				.address(member.getAddress())
 				.role(member.getRole())
-				.authorization(tokenDto.getAccessToken())
 				.build();
 
 		return response;
@@ -64,4 +61,76 @@ public interface MemberMapper {
 	Member clientPatchDtoToMember(ClientPatchDto clientPatchDto);
 	Seller sellerPatchDtoToSeller(SellerPatchDto sellerPatchDto);
 	Client clientPatchDtoToClient(ClientPatchDto clientPatchDto);
+
+	/* 로그인 용 매퍼 */
+	default LoginResponse.Cilent loginClientResponseDto(Member member) {
+		if (member == null) {
+			return null;
+		}
+		LoginResponse.Cilent response =
+			LoginResponse.Cilent.builder()
+				.memberId(member.getMemberId())
+				.clientId(member.getClient().getClientId())
+				.name(member.getName())
+				.role(member.getRole())
+				.build();
+
+		return response;
+	}
+	default LoginResponse.Seller loginSellerResponseDto(Member member) {
+		if (member == null) {
+			return null;
+		}
+		LoginResponse.Seller response =
+			LoginResponse.Seller.builder()
+				.memberId(member.getMemberId())
+				.sellerId(member.getSeller().getSellerId())
+				.name(member.getName())
+				.role(member.getRole())
+				.build();
+
+		return response;
+	}
+
+	/* 새로 고침 */
+	default LoginResponse.Cilent getClientToken(Member member) {
+		if (member == null && member.getClient() == null) {
+			return null;
+		}
+		LoginResponse.Cilent response =
+			LoginResponse.Cilent.builder()
+				.memberId(member.getMemberId())
+				.clientId(member.getClient().getClientId())
+				.name(member.getName())
+				.role(member.getRole())
+				.build();
+
+		return response;
+	}
+	default LoginResponse.Seller getSellerToken(Member member) {
+		if (member == null && member.getSeller() == null) {
+			return null;
+		}
+		LoginResponse.Seller response =
+			LoginResponse.Seller.builder()
+				.memberId(member.getMemberId())
+				.sellerId(member.getSeller().getSellerId())
+				.name(member.getName())
+				.role(member.getRole())
+				.build();
+
+		return response;
+	}
+
+	/* 소셜 용 --> 소셜은 권한이 없기 때문 */
+	default LoginResponse.Member socialLoginResponseDto(Member member) {
+		LoginResponse.Member response =
+			LoginResponse.Member.builder()
+				.memberId(member.getMemberId())
+				.name(member.getName())
+				.role(member.getRole())
+				.build();
+
+		return response;
+	}
 }
