@@ -7,6 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import lombok.Setter;
 import team017.global.Exception.BusinessLogicException;
 import team017.global.Exception.ExceptionCode;
 import team017.member.entity.Client;
@@ -42,7 +43,9 @@ public class MemberService {
 		}
 		if (member.getRole().equalsIgnoreCase("seller")) {
 			member.setSeller(new Seller());
+			member.getSeller().setImageUrl("https://jihoon-bucket.s3.ap-northeast-2.amazonaws.com/%E1%84%89%E1%85%A2%E1%86%BC%E1%84%89%E1%85%A1%E1%86%AB%E1%84%8C%E1%85%A1%E1%84%80%E1%85%B5%E1%84%87%E1%85%A9%E1%86%AB%E1%84%8B%E1%85%B5%E1%84%86%E1%85%B5%E1%84%8C%E1%85%B5.png");
 		}
+
 		/* 비밀번호 암호화 */
 		String encryptedPassword = passwordEncoder.encode(member.getPassword());
 		member.setPassword(encryptedPassword);
@@ -104,6 +107,13 @@ public class MemberService {
 	private void correctRole(String target) {
 		if (! target.equalsIgnoreCase("CLIENT") && ! target.equalsIgnoreCase("SELLER")) {
 			throw new RuntimeException("역할이 잘못되었습니다.");
+		}
+	}
+
+	/* 로컬 프로바이더 확인 */
+	public void checkLocalProvider(ProviderType providerType) {
+		if (providerType != ProviderType.LOCAL) {
+			throw new RuntimeException("소셜 사용자입니다.");
 		}
 	}
 

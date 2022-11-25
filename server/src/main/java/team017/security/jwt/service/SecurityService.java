@@ -52,11 +52,7 @@ public class SecurityService {
 		TokenDto tokenDto = securityProvider.generatedTokenDto(authentication.getName());
 
 		/* Refresh Token 저장 */
-		RefreshToken refreshToken =
-			RefreshToken.builder()
-				.key(authentication.getName())
-				.value(tokenDto.getRefreshToken())
-				.build();
+		RefreshToken refreshToken = new RefreshToken(authentication.getName(), tokenDto.getRefreshToken());
 		refreshTokenRepository.save(refreshToken);
 
 		return tokenDto;
@@ -65,19 +61,15 @@ public class SecurityService {
 	/* 소셜 로그인 */
 	@Transactional
 	public TokenDto socialLogin(LoginRequestDto loginRequest) {
-		log.debug("# SecurityService Social Login 시작");
+		log.info("# SecurityService Social Login 시작");
 
 		/* 토큰 생성 -> 소셜이라는 권한 부여 */
 		TokenDto tokenDto = securityProvider.generatedTokenDto(loginRequest.getEmail());
-
 		RefreshToken userRefreshToken = refreshTokenRepository.findRefreshTokenByKey(loginRequest.getEmail());
 		if (userRefreshToken == null) {
 
 			/* 토큰이 저장되어 있지 않다면, 등록 */
-			userRefreshToken = RefreshToken.builder()
-				.key(loginRequest.getEmail())
-				.value(tokenDto.getRefreshToken())
-				.build();
+			userRefreshToken = new RefreshToken(loginRequest.getEmail(), tokenDto.getRefreshToken());
 			refreshTokenRepository.saveAndFlush(userRefreshToken);
 		} else {
 
@@ -90,17 +82,17 @@ public class SecurityService {
 	}
 
 	/* 소셜 로그인 권한 선택 */
-	public Member updateSocial(SocialPatchDto patchDto) {
+	public Member updateSocial(String role, long memberId) {
 
-		Member member = memberRepository.findById(patchDto.getMemberId())
+		Member member = memberRepository.findById(memberId)
 				.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
 		checkSocialRole(member.getRole());
 
-		if (patchDto.getRole().equalsIgnoreCase("CLIENT")) {
+		if (role.equalsIgnoreCase("CLIENT")) {
 			member.setRole("CLIENT");
 			member.setRoles(List.of("CLIENT"));
 			member.setClient(new Client());
-		} else if (patchDto.getRole().equalsIgnoreCase("SELLER")) {
+		} else if (role.equalsIgnoreCase("SELLER")) {
 			member.setRole("SELLER");
 			member.setRoles(List.of("SELLER"));
 			member.setSeller(new Seller());
@@ -112,7 +104,7 @@ public class SecurityService {
 	}
 
 
-	/* 🔵 엑세스 토큰 재발급 */
+	/* 엑세스 토큰 재발급 */
 	@Transactional
 	public String reissueAccess(String accessToken) {
 
@@ -132,22 +124,20 @@ public class SecurityService {
 		/* 엑세스 토큰의 시간이 10분 이내로 남았다면 재 발급 */
 		if (accessValidTime <= 1000 * 60 * 10) {
 			log.info("# 엑세스 토큰 재 발급");
-			log.info("# 재발급 전 엑세스 토큰 : {}", accessToken);
 
 			String role = authentication.getAuthorities().toString().replace("[ROLE_","").replace("]", "");
 
 			Date newAccessExpiration = new Date(now.getTime() + securityProvider.getAccessTokenTime());
 			accessToken =
 				securityProvider.createAccessToken(authentication.getName(), role, newAccessExpiration);
-			log.info("authorities : {}", role);
-			log.info("# 재발급 엑세스 토큰 : {}", accessToken);
 		}
+		log.info("# 엑세스 토큰 재 발급 완료");
 
 		/* 토큰 발급 */
 		return accessToken;
 	}
 
-	/* 🟢 리프레시 토큰 재발급 */
+	/* 리프레시 토큰 + 엑세스 토큰 재발급 */
 	@Transactional
 	public TokenDto reissueRefresh(HttpServletRequest request, HttpServletResponse response) {
 
@@ -201,8 +191,7 @@ public class SecurityService {
 			CookieUtil.addCookie(response, "Refresh", refreshToken, cookieMaxAge);
 		}
 
-		TokenDto tokenDto =
-			TokenDto.builder()
+		TokenDto tokenDto = TokenDto.builder()
 				.grantType("Bearer ")
 				.accessToken(accessToken)
 				.refreshToken(refreshToken)
@@ -210,13 +199,6 @@ public class SecurityService {
 				.build();
 
 		return tokenDto;
-	}
-
-	/* social 로그인 멤버 확인 메서드 */
-	public void correctMember(long memberId, long target) {
-		if (memberId != target) {
-			throw new RuntimeException("해당 소셜 회원이 아닙니다.");
-		}
 	}
 
 	/* social 역할 확인 */

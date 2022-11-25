@@ -1,4 +1,4 @@
-package team017.member.controller;
+package team017.security.jwt;
 
 import java.security.Principal;
 
@@ -61,11 +61,11 @@ public class TokenController {
 		Member member = memberService.findMemberByEmail(principal.getName());
 
 		if(member.getRole().equals("SELLER")) {
-			LoginResponse.Seller sellerResponse = mapper.getSellerToken(member);
+			LoginResponse.Seller sellerResponse = mapper.getSellerResponse(member);
 
 			return new ResponseEntity<>(sellerResponse, HttpStatus.OK);
 		} else if (member.getRole().equals("CLIENT")) {
-			LoginResponse.Cilent clientResponse = mapper.getClientToken(member);
+			LoginResponse.Cilent clientResponse = mapper.getClientResponse(member);
 
 			return new ResponseEntity<>(clientResponse, HttpStatus.OK);
 		}

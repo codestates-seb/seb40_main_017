@@ -30,7 +30,7 @@ public class SecurityAspect {
 
 	@Before("@annotation(reissueToken)")
 	public void getAccessTokenAgain(ReissueToken reissueToken) throws Throwable {
-		log.info("# 토큰 유효성 검사 시작");
+		log.info("# 어노테이션 토큰 유효성 검사 시작");
 		ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
 		HttpServletRequest request = requestAttributes.getRequest();
 		HttpServletResponse response = requestAttributes.getResponse();
@@ -53,33 +53,25 @@ public class SecurityAspect {
 		/* 엑세스 토큰의 시간이 10분 이내로 남았다면 재 발급 */
 		if (accessValidTime <= 1000 * 60 * 10) {
 			log.info("# 엑세스 토큰 재 발급");
-			log.info("# 재발급 전 엑세스 토큰 : {}", accessToken);
-
 			String role = authentication.getAuthorities().toString().replace("[ROLE_","").replace("]", "");
 
 			Date newAccessExpiration = new Date(now.getTime() + securityProvider.getAccessTokenTime());
 			accessToken =
 				securityProvider.createAccessToken(authentication.getName(), role, newAccessExpiration);
-			log.info("authorities : {}", role);
-			log.info("# 재발급 엑세스 토큰 : {}", accessToken);
 		}
 
 		/* 리프레시 토큰의 시간이 하루 이내로 남았다면 재 발급 */
 		if (refreshValidTime <= 1000 * 60 * 60 * 24) {
 			log.info("# 리프레시 토큰 재 발급");
-			log.info("# 재발급 전 리프레시 토큰 : {}", refreshToken);
 			Date newRefreshExpiration = new Date(now.getTime() + securityProvider.getRefreshTokenTime());
 			refreshToken = securityProvider.createRefreshToken(authentication.getName(), newRefreshExpiration);
 
 			refreshTokenTable.updateValue(refreshToken);
 			refreshTokenRepository.saveAndFlush(refreshTokenTable);
-
-			log.info("member name : {}", authentication.getName());
-			log.info("# 재발급 리프레시 토큰 : {}", refreshToken);
 		}
 
 		response.setHeader("Authorization", accessToken);
 
-		log.info("# 토큰 유효성 검사 종료 ");
+		log.info("# 어노테이션 토큰 유효성 검사 종료 ");
 	}
 }
