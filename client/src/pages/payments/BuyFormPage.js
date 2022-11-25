@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { MultiStepBuyForm } from '../../components/buyform/MultiStepBuyForm';
 import { MultiStepBuyProgressBar } from '../../components/buyform/MultiStepBuyProgressBar';
+import axios from 'axios';
 
 const FormLayout = styled.div`
   background: var(--off-white);
@@ -41,6 +42,17 @@ const ProgressBarBox = styled.div`
 function BuyFoamPage() {
   const [index, setIndex] = useState(1);
 
+  useEffect(() => {
+    const getUserData = async () => {
+      const user = await axios
+        .get(`${process.env.REACT_APP_API_URL}/members/client/1`, { headers: { 'Content-Type': 'application/json' } })
+        .then((res) => console.log(res.data))
+        .catch((error) => console.log(error));
+      console.log(user);
+    };
+
+    getUserData();
+  }, []);
   const userData = {
     memberId: 3,
     sellerId: 1,
