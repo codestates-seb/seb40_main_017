@@ -8,9 +8,11 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -46,6 +48,7 @@ public class SecurityController {
 
 	/* 🔴 자체 토큰 로그인 */
 	@PostMapping("/login")
+	@Transactional
 	public ResponseEntity login(@RequestBody LoginRequestDto requestBody) {
 		Member member = memberService.findMemberByEmail(requestBody.getEmail());
 		if (member.getProviderType() != ProviderType.LOCAL) {
@@ -71,37 +74,33 @@ public class SecurityController {
 		throw new BusinessLogicException(ExceptionCode.LOGIN_ERROR);
 	}
 
-	/* 🔵 자체 로그  토큰 재발급 */
-	@PostMapping("/reissue")
-	public ResponseEntity reissue(@RequestBody TokenRequestDto requestBody) {
-		TokenDto tokenDto = securityService.tokenReissue(requestBody);
+	/* 🔵 엑세스 토큰 재발급 */
+	@PostMapping("/reissue/access")
+	public ResponseEntity newAccessToken(@RequestHeader("Authorization") String accessToken) {
+		String responseToken = securityService.reissueAccess(accessToken);
 
-		HttpHeaders httpHeaders = setHeader(tokenDto.getAccessToken());
+		HttpHeaders httpHeaders = setHeader(responseToken);
 		String message = "액세스 토큰 재발급 완료.";
 
 		return new ResponseEntity<>(message, httpHeaders, HttpStatus.OK);
 	}
 
-	/* 🟢 소셜 토큰 재발급 */
-	@PostMapping("/reissue/oauth")
-	public ResponseEntity reToken(HttpServletRequest request, HttpServletResponse response) {
-		TokenDto tokenDto = securityService.socialReissue(request, response);
+	/* 🟢 리프레시 토큰 + 엑세스 토큰 재발급 */
+	@PostMapping("/reissue/refresh")
+	public ResponseEntity newRefreshToken(HttpServletRequest request, HttpServletResponse response) {
+		TokenDto tokenDto = securityService.reissueRefresh(request, response);
 
 		HttpHeaders httpHeaders = setHeader(tokenDto.getAccessToken());
-		String message = "액세스 토큰 재발급 완료.";
-
-		int cookieMaxAge = 1000 * 60 * 24 * 7 ;
-		CookieUtil.deleteCookie(request, response, "Refresh");
-		CookieUtil.addCookie(response, "Refresh", tokenDto.getRefreshToken(), cookieMaxAge);
+		String message = "토큰 재발급 완료.";
 
 		return new ResponseEntity<>(message, httpHeaders, HttpStatus.OK);
 	}
 
 	/* 새로 고침 */
 	@GetMapping("/access")
+	// @ReissueToken /* 토큰을 재발급 받아도 응답 바디에는 반영이 되지 못함. */
 	public ResponseEntity reGet(HttpServletRequest request,Principal principal) {
-		String accessToken = request.getHeader("Authorization");
-		accessToken = securityService.getAgainAccessToken(accessToken);
+		String accessToken = request.getHeader("Authorization").replace("Bearer ", "");
 		HttpHeaders httpHeaders = setHeader(accessToken);
 		Member member = memberService.findMemberByEmail(principal.getName());
 
