@@ -1,6 +1,5 @@
 package team017.ord.dto;
 
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,6 +11,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 public class OrdResponseDto {
+
     private Long ordId;
     private Long clientId;
     private Long boardId;
@@ -21,7 +21,6 @@ public class OrdResponseDto {
     private int totalPrice;
     private int quantity;
     private Ord.OrdStatus ordStatus;
-//    private LocalDateTime createdAt;
-//    private LocalDateTime modifiedAt;
+    private LocalDateTime createdAt;
 }
 

@@ -9,6 +9,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import team017.member.service.ClientService;
 import team017.ord.dto.OrdPostDto;
+import team017.ord.dto.OrdResponseDto;
 import team017.ord.entity.Ord;
 import team017.ord.mapper.OrdMapper;
 import team017.ord.service.OrdService;
@@ -24,27 +25,22 @@ import javax.validation.constraints.Positive;
 @Validated
 public class OrdController {
     private final OrdService ordService;
-    private final ProductService productService;
-    private final ClientService clientService;
     private final OrdMapper ordMapper;
 
     @PostMapping
     public ResponseEntity postOrd(@RequestBody @Valid OrdPostDto ordPostDto){
 
-        Ord ord = ordService.createOrd(ordMapper.ordPostDtoToOrd(ordPostDto), ordPostDto.getClientId(), ordPostDto.getBoardId());
+        OrdResponseDto response = ordService.createOrd(ordMapper.ordPostDtoToOrd(ordPostDto),ordPostDto);
 
-        return new ResponseEntity<>((ordMapper.ordToOrdResponseDto(ord)),HttpStatus.CREATED);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/{order-id}")
-    public ResponseEntity deleteOrd(@PathVariable("order-id") @Positive Long ordId
-                                    ){
+    @DeleteMapping("/{order_id}")
+    public ResponseEntity deleteOrd(@PathVariable("order_id") @Positive Long ordId){
 
         ordService.deleteOrd(ordId);
 
-        String message = "Success!";
-
-        return ResponseEntity.ok(message);
+        return new ResponseEntity<>("Success delete",HttpStatus.OK);
 
     }
 }
