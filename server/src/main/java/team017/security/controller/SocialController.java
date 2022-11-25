@@ -34,7 +34,7 @@ public class SocialController {
 	/* 카카오 로그인 */
 
 	/* frontend 로 부터 받은 인가 코드 받기 및 사용자 정보 받기, 회원가입 */
-	@GetMapping("/login/oauth/kakao")
+	@GetMapping("/login/oauth2/code/kakao")
 	public ResponseEntity KakaoLogin(@RequestParam("code") String code) {
 
 		/* access 토큰 받기 */
@@ -55,11 +55,11 @@ public class SocialController {
 		return new ResponseEntity(response, httpHeaders, HttpStatus.OK);
 	}
 
-	/* test 로 직접 인가 코드 받기 */
-	@GetMapping("/login/oauth2/code/kakao")
-	public String KakaoCode(@RequestParam("code") String code) {
-		return "카카오 로그인 인증완료, code: "  + code;
-	}
+	// /* test 로 직접 인가 코드 받기 */
+	// @GetMapping("/login/oauth2/code/kakao")
+	// public String KakaoCode(@RequestParam("code") String code) {
+	// 	return "카카오 로그인 인증완료, code: "  + code;
+	// }
 
 	/* 소셜 로그인 수정 -> only 권한 */
 	@PatchMapping("/social/{member_id}")

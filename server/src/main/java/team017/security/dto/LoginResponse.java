@@ -1,7 +1,10 @@
 package team017.security.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 public class LoginResponse {
 	@Getter
@@ -14,7 +17,10 @@ public class LoginResponse {
 	}
 
 	@Getter
+	@Setter
 	@Builder
+	@NoArgsConstructor
+	@AllArgsConstructor
 	public static class Cilent{
 		private long memberId;
 		private long clientId;
@@ -24,7 +30,10 @@ public class LoginResponse {
 	}
 
 	@Getter
+	@Setter
 	@Builder
+	@NoArgsConstructor
+	@AllArgsConstructor
 	public static class Seller{
 		private long memberId;
 		private long sellerId;

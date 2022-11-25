@@ -115,64 +115,45 @@ public class SecurityService {
 		return member;
 	}
 
-	/* 엑세스 토큰 재발급 */
-	public String getAgainAccessToken(String accessToken) {
-		long validTime = securityProvider.getTokenClaims(accessToken).getExpiration().getTime();
 
-		/* 엑세스 토큰 시간이 10분 이내로 남았다면 토큰 재발급 */
-		if (validTime <= 1000 * 60 * 10) {
-			Authentication authentication = securityProvider.getAuthentication(accessToken);
-			RefreshToken refresh = refreshTokenRepository.findRefreshTokenByKey(authentication.getName());
-			if (refresh == null) {
-				throw new RuntimeException("리프레시 토큰이 존재하지 않습니다.");
-			}
-			long now = (new Date()).getTime();
-			Date expiration = new Date(now + securityProvider.getAccessTokenTime());
-			accessToken =
-				securityProvider.createAccessToken(authentication.getName(), authentication.getAuthorities().toString(), expiration);
-			log.info("권한 : {}", authentication.getAuthorities().toString());
-		}
-
-		return accessToken;
-	}
-
-
-	/* 🔵 자체 로그인 토큰 재발급 */
+	/* 🔵 엑세스 토큰 재발급 */
 	@Transactional
-	public TokenDto tokenReissue(TokenRequestDto tokenRequestDto) {
+	public String reissueAccess(String accessToken) {
 
-		/* Refresh Token 검증 */
-		if (!securityProvider.validate(tokenRequestDto.getRefreshToken())) {
+		/* Access Token 검증 */
+		if (!securityProvider.validate(accessToken)) {
 			throw new RuntimeException("유효하지 않은 RefreshToken 입니다.");
 		}
 
-		/* 인증 정보에서 Key 값(email) 가져오기 */
-		Authentication authentication = securityProvider.getAuthentication(tokenRequestDto.getAccessToken());
+		/* 인증 정보 가져오기 */
+		Authentication authentication = securityProvider.getAuthentication(accessToken);
 
-		/* Key 값으로 Refresh Token 가져오기 */
-		RefreshToken refreshToken =
-			refreshTokenRepository.findByKey(authentication.getName())
-				.orElseThrow(() -> new RuntimeException("로그아웃 된 사용자 입니다."));
 
-		/* 해당 토큰이 일치하는지 검사 */
-		if (!refreshToken.getValue().equals(tokenRequestDto.getRefreshToken())) {
-			throw new RuntimeException("토큰의 유저 정보가 일치하지 않습니다.");
+		/* 토큰 유효 시간 */
+		Date now = new Date();
+		long accessValidTime = securityProvider.getTokenClaims(accessToken).getExpiration().getTime() - now.getTime();
+
+		/* 엑세스 토큰의 시간이 10분 이내로 남았다면 재 발급 */
+		if (accessValidTime <= 1000 * 60 * 10) {
+			log.info("# 엑세스 토큰 재 발급");
+			log.info("# 재발급 전 엑세스 토큰 : {}", accessToken);
+
+			String role = authentication.getAuthorities().toString().replace("[ROLE_","").replace("]", "");
+
+			Date newAccessExpiration = new Date(now.getTime() + securityProvider.getAccessTokenTime());
+			accessToken =
+				securityProvider.createAccessToken(authentication.getName(), role, newAccessExpiration);
+			log.info("authorities : {}", role);
+			log.info("# 재발급 엑세스 토큰 : {}", accessToken);
 		}
 
-		/* 새로운 토큰 생성 */
-		TokenDto tokenDto = securityProvider.generatedTokenDto(authentication.getName());
-
-		/* 저장 정보 업데이트 */
-		RefreshToken newRefreshToken = refreshToken.updateValue(tokenDto.getRefreshToken());
-		refreshTokenRepository.save(newRefreshToken);
-
 		/* 토큰 발급 */
-		return tokenDto;
+		return accessToken;
 	}
 
-	/* 🟢 소셜 로그인 리프레시 토큰 재발급 -> DB 에서만 관리 확인? */
+	/* 🟢 리프레시 토큰 재발급 */
 	@Transactional
-	public TokenDto socialReissue(HttpServletRequest request, HttpServletResponse response) {
+	public TokenDto reissueRefresh(HttpServletRequest request, HttpServletResponse response) {
 
 		/* Access Token 확인 */
 		String accessToken = request.getHeader("Authorization");
@@ -188,12 +169,15 @@ public class SecurityService {
 		}
 
 		String username = (String)claims.get("username");
-		String role = (String)claims.get("role");
 
 		/* Refresh Token 확인 */
 		String refreshToken = CookieUtil.getCookie(request, "Refresh")
 			.map(Cookie::getValue)
-			.orElse(null);
+			.orElseThrow(() -> new RuntimeException("로그아웃 된 사용자입니다."));
+
+		RefreshToken userRefreshToken =
+			refreshTokenRepository.findByKey(username)
+				.orElseThrow(() -> new RuntimeException("로그아웃 된 사용자입니다."));
 
 		if (securityProvider.validate(refreshToken)) {
 			throw  new RuntimeException("유효하지 않은 리프레시 토큰");
@@ -202,25 +186,21 @@ public class SecurityService {
 		long accessTime = securityProvider.getAccessTokenTime();
 		Date newAccessTime = new Date(now.getTime() + accessTime);
 
-		String newAccessToken = securityProvider.createAccessToken(username, role, newAccessTime);
+		long validTime = securityProvider.getTokenClaims(refreshToken).getExpiration().getTime() - now.getTime();
 
-		RefreshToken userRefreshToken = refreshTokenRepository.findByKeyAndValue(username, refreshToken);
+		/* 리프레시 토큰이 하루 이내로 남았다면, 재 발급 (엑세스 토큰도 같이 재발급) */
+		if (validTime <= 1000 * 60 * 60 * 24) {
 
+			TokenDto tokenDto = securityProvider.generatedTokenDto(username);
 
-		long validTime = securityProvider.getTokenClaims(refreshToken).getExpiration().getTime();
-
-		/* 리프레시 토큰이 3일 이내로 남았다면, 재 발급 */
-		if (validTime <= 259200000) {
-
-			long refreshTokenExpiration = securityProvider.getRefreshTokenTime();
-			Date newExpiration = new Date(now.getTime() + refreshTokenExpiration);
-
-			refreshToken = securityProvider.createRefreshToken(username, newExpiration);
+			accessToken = tokenDto.getAccessToken();
+			refreshToken = tokenDto.getRefreshToken();
 
 			/* Refresh DB update */
 			userRefreshToken.updateValue(refreshToken);
+			refreshTokenRepository.saveAndFlush(userRefreshToken);
 
-			int cookieMaxAge = (int) refreshTokenExpiration / 60;
+			int cookieMaxAge = (int) 1000 * 60 * 24 * 7;
 			CookieUtil.deleteCookie(request, response, "Refresh");
 			CookieUtil.addCookie(response, "Refresh", refreshToken, cookieMaxAge);
 		}
@@ -228,7 +208,7 @@ public class SecurityService {
 		TokenDto tokenDto =
 			TokenDto.builder()
 				.grantType("Bearer ")
-				.accessToken(newAccessToken)
+				.accessToken(accessToken)
 				.refreshToken(refreshToken)
 				.accessTokenExpiresIn(newAccessTime.getTime())
 				.build();
