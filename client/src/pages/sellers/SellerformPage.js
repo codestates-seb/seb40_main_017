@@ -2,7 +2,7 @@ import { MultiStepProgressBar } from '../../components/sellerform/MultiStepProgr
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import { MultiStepForm } from '../../components/sellerform/MultiStepForm';
-import { LineWobble } from '@uiball/loaders';
+import { DotSpinner } from '@uiball/loaders';
 
 const FormLayout = styled.div`
   background: var(--off-white);
@@ -116,7 +116,7 @@ function SellerformPage() {
               setIsLoading={setIsLoading}
             />
           )}
-          {isLoading && <LineWobble className="animation" size={150} lineWeight={5} speed={1.75} color="var(--green)" />}
+          {isLoading && <DotSpinner className="animation" size={100} speed={1.75} color="var(--green)" />}
         </FormBodyBox>
         {/* <ButtonBox>
           <button onClick={prevButton} disabled={index === 1}>
