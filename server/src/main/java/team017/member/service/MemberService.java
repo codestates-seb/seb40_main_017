@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import team017.global.Exception.BusinessLogicException;
 import team017.global.Exception.ExceptionCode;
 import team017.member.entity.Client;
@@ -18,6 +19,7 @@ import team017.member.repository.MemberRepository;
 import team017.security.utils.CustomAuthorityUtils;
 
 @Service
+@Slf4j
 @Transactional
 public class MemberService {
 
@@ -33,7 +35,6 @@ public class MemberService {
 	}
 
 	/* 회원 가입 */
-	@Transactional
 	public Member createMember(Member member) {
 		verifyEmailExist(member.getEmail());
 		correctRole(member.getRole());
@@ -43,6 +44,7 @@ public class MemberService {
 		}
 		if (member.getRole().equalsIgnoreCase("seller")) {
 			member.setSeller(new Seller());
+			member.getSeller().setIntroduce("안녕하세요, " + member.getName() + "입니다.");
 			member.getSeller().setImageUrl("https://jihoon-bucket.s3.ap-northeast-2.amazonaws.com/%E1%84%89%E1%85%A2%E1%86%BC%E1%84%89%E1%85%A1%E1%86%AB%E1%84%8C%E1%85%A1%E1%84%80%E1%85%B5%E1%84%87%E1%85%A9%E1%86%AB%E1%84%8B%E1%85%B5%E1%84%86%E1%85%B5%E1%84%8C%E1%85%B5.png");
 		}
 
@@ -55,11 +57,13 @@ public class MemberService {
 		member.setRoles(roles);
 		member.setProviderType(ProviderType.LOCAL);
 
-		return memberRepository.saveAndFlush(member);
+		return memberRepository.save(member);
 	}
 
 	/* 회원 수정 (멤버 파트) */
 	public Member updateMember(long memberId, Member member) {
+
+		log.info("# 멤버 수정 서비스 시작! ");
 		Member findMember = findVerifiedMember(memberId);
 
 		Optional.ofNullable(member.getName()).ifPresent(name -> findMember.setName(name));

@@ -18,7 +18,6 @@ import team017.member.entity.Client;
 import team017.member.entity.Member;
 import team017.member.mapper.MemberMapper;
 import team017.member.service.ClientService;
-import team017.member.service.MemberService;
 
 /* 소비자 관련 컨트롤러 : 마이페이지 조회, 정보 수정 */
 @Slf4j
@@ -28,7 +27,6 @@ import team017.member.service.MemberService;
 @RequestMapping("/members/client")
 public class ClientController {
 	private final ClientService clientService;
-	private final MemberService memberService;
 	private final MemberMapper mapper;
 
 	/* 소비자 마이 페이지 조회 */
@@ -44,10 +42,8 @@ public class ClientController {
 	@PatchMapping("/{client_id}")
 	public ResponseEntity patchClient(@PathVariable("client_id") @Positive long clientId,
 			@RequestBody ClientPatchDto clientPatchDto) {
-		Client client = clientService.updateClient(clientId, mapper.clientPatchDtoToClient(clientPatchDto));
-		long memberId = client.getMember().getMemberId();
-		Member member = memberService.updateMember(memberId, mapper.clientPatchDtoToMember(clientPatchDto));
+		Client client = clientService.updateClient(clientId, clientPatchDto);
 
-		return ResponseEntity.ok(mapper.memberToClientDto(member));
+		return ResponseEntity.ok(mapper.memberToClientDto(client));
 	}
 }
