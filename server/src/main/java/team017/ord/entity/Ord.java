@@ -28,20 +28,11 @@ public class Ord extends Auditable {
 	@Column(length = 13, nullable = false)
 	private String phone;
 
-	// private String clientName;
-
-	// private String board;
-
 	@Column
 	private int quantity;
 
 	@Column
 	private int totalPrice;
-
-	/* 💖판매자 - 주문 다대일 연관 관계 : 판매자 참조 */
-	@ManyToOne
-	@JoinColumn(name = "seller_id")
-	private Seller seller;
 
 	/* 💛 소비자 - 주문 다대일 연관 관계 : 소비자 참조 */
 	@ManyToOne
@@ -52,15 +43,6 @@ public class Ord extends Auditable {
 	@ManyToOne
 	@JoinColumn(name = "product_id")
 	private Product product;
-
-	/* 🍑상품 - 주문 연관 관계 편의 메서드 */
-	// public void setProduct(Product product){
-	// 	this.product = product;
-	//
-	// 	if(product.getOrd() != this){
-	// 		product.setOrd(this);
-	// 	}
-	// }
 
 	@Column
 	@Enumerated(EnumType.STRING)

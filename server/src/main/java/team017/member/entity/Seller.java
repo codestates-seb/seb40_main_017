@@ -82,30 +82,4 @@ public class Seller {
 			product.setSeller(this);
 		}
 	}
-
-	/* 💖판매자 - 주문 일대다 연관 관계 : 판매자 참조 */
-	@OneToMany(mappedBy = "seller", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-	private List<Ord> ordList = new ArrayList<>();
-
-	/* 💖판매자 - 주문 연관 관계 편의 메서드  */
-	public void addOrd (Ord ord) {
-		ordList.add(ord);
-
-		if (ord.getSeller() != this) {
-			ord.setSeller(this);
-		}
-	}
-
-	// /* 🌼판매자 - 판매자 이미지 일대일 연관 관계 : 판매자 참조 */
-	// @OneToOne(mappedBy = "seller", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-	// private SellerImage sellerImage;
-	//
-	// /* 🌼판매자 - 이미지 연관 관계 편의 메서드*/
-	// public void setSellerImage(SellerImage sellerImage) {
-	// 	this.sellerImage = sellerImage;
-	//
-	// 	if (sellerImage.getSeller() != this) {
-	// 		sellerImage.setSeller(this);
-	// 	}
-	// }
 }
