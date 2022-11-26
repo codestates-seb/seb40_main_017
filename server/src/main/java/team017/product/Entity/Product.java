@@ -59,14 +59,21 @@ public class Product {
     private Seller seller;
 
     /* 🍑상품 - 주문 일대일 연관 관계 : 상품 참조 */
-    @OneToOne(mappedBy = "product", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    private Ord ord;
+    @OneToMany(mappedBy = "product", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    private List<Ord> ordList = new ArrayList<>();
 
     /* 🍑상품 - 주문 연관 관계 편의 메서드 */
-    public void setOrd(Ord ord) {
-        this.ord = ord;
+    // public void setOrd(Ord ord) {
+    //     this.ord = ord;
+    //
+    //     if(ord.getProduct() != this){
+    //         ord.setProduct(this);
+    //     }
+    // }
+    public void addOrd(Ord ord) {
+        ordList.add(ord);
 
-        if(ord.getProduct() != this){
+        if (ord.getProduct() != this) {
             ord.setProduct(this);
         }
     }
