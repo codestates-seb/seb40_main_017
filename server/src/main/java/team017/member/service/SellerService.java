@@ -66,7 +66,7 @@ public class SellerService {
         Member loginMember = memberService.findMemberByEmail(email);
         log.info("로그인한 유저 : {}", loginMember.getName());
 
-        if (loginMember.getClient().getClientId() != accessId) {
+        if (loginMember.getSeller().getSellerId() != accessId) {
             throw new BusinessLogicException(ExceptionCode.WRONG_ACCESS);
         }
     }
