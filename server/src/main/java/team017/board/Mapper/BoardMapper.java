@@ -29,19 +29,16 @@ public interface BoardMapper {
     @Mapping(target = "name", expression = "java(board.getSeller().getMember().getName())")
     BoardTotalResponseDto productToBoardTotalResponseDto(Product product, Board board);
 
-
     default OrdSellerResponseDto ordToOrdSellerResponseDto(Board board){
         if( board == null){
             return null;
         }
 
-        int soldStock = board.getProduct().getStock() - board.getLeftStock();
         Seller seller = new Seller();
         seller.setSellerId(board.getSeller().getSellerId());
 
         Product product = new Product();
         product.setProductId(board.getProduct().getBoard().getBoardId());
-
 
         OrdSellerResponseDto ordResponseDto = new OrdSellerResponseDto();
         ordResponseDto.setBoardId(product.getProductId());
@@ -52,7 +49,7 @@ public interface BoardMapper {
         ordResponseDto.setPhone(board.getSeller().getMember().getPhone());
         ordResponseDto.setStock(board.getProduct().getStock());
         ordResponseDto.setCategory(board.getProduct().getCategory());
-        ordResponseDto.setSoldStock(soldStock);
+        ordResponseDto.setLeftStock(board.getLeftStock());
 
         return ordResponseDto;
 
