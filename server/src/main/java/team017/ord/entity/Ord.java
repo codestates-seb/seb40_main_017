@@ -49,18 +49,18 @@ public class Ord extends Auditable {
 	private Client client;
 
 	/* 🍑상품 - 주문 일대일 연관 관계 : 상품 참조 */
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name = "product_id")
 	private Product product;
 
 	/* 🍑상품 - 주문 연관 관계 편의 메서드 */
-	public void setProduct(Product product){
-		this.product = product;
-
-		if(product.getOrd() != this){
-			product.setOrd(this);
-		}
-	}
+	// public void setProduct(Product product){
+	// 	this.product = product;
+	//
+	// 	if(product.getOrd() != this){
+	// 		product.setOrd(this);
+	// 	}
+	// }
 
 	@Column
 	@Enumerated(EnumType.STRING)
