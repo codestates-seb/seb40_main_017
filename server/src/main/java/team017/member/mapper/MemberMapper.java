@@ -55,6 +55,23 @@ public interface MemberMapper {
 
 		return response;
 	}
+	default MemberDto.ClientResponseDto memberToClientDto(Client client) {
+		if (client == null) {
+			return null;
+		}
+		MemberDto.ClientResponseDto response =
+			MemberDto.ClientResponseDto.builder()
+				.memberId(client.getMember().getMemberId())
+				.clientId(client.getClientId())
+				.email(client.getMember().getEmail())
+				.name(client.getMember().getName())
+				.phone(client.getMember().getPhone())
+				.address(client.getMember().getAddress())
+				.role(client.getMember().getRole())
+				.build();
+
+		return response;
+	}
 
 	/* 수정 */
 	Member sellerPatchDtoToMember(SellerPatchDto sellerPatchDto);
