@@ -1,7 +1,10 @@
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { apiServer } from '../features/axios';
 
-import { getCookie, removeCookie, setCookie } from '../features/cookie';
-import { clearUser, setUser } from '../features/user/userSlice';
+import { removeCookie, setCookie } from '../features/cookie';
+import { clearUser, getUser, setUser } from '../features/user/userSlice';
 
 //  Axios 로그인 및 Redux 상태 관리
 export const login = ({ userId, userPassword }, callback) => {
@@ -26,7 +29,7 @@ export const login = ({ userId, userPassword }, callback) => {
           const accessToken = response.data.authorization || response.headers['authorization'];
           setCookie('accessToken', accessToken);
 
-          // 로그인 성공을 알림
+          //  로그인 성공을 알림
           callback(true);
         } else {
           //  오류 발생 시 메시지 경고 창 표시
@@ -63,20 +66,15 @@ export const logout = (callback) => {
 };
 
 //  Axios 페이지 새로고침 시 로그인 세션 불러오기
-export const updateSession = () => {
+export const updateSession = (callback) => {
   return (dispatch) => {
-    const accessToken = getCookie('accessToken');
-
     apiServer({
       method: 'GET',
       url: '/access',
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
     })
       .then((response) => {
         if (response.data.memberId) {
-          // Response 데이터에 사용자 정보가 있다면 저장
+          //  Response 데이터에 사용자 정보가 있다면 저장
           dispatch(setUser(response.data));
 
           //  토큰 새로 저장
@@ -86,6 +84,28 @@ export const updateSession = () => {
       })
       .catch((reason) => {
         console.log(reason);
+      })
+      .finally(() => {
+        callback();
       });
   };
+};
+
+//  로그인 세션 검증
+export const useSessionCheck = (needLogin = true, to = '/login') => {
+  const navigate = useNavigate();
+
+  const user = useSelector(getUser);
+  const { memberId } = user;
+  const hasSession = memberId > 0;
+
+  useEffect(() => {
+    const delayId = setTimeout(() => {
+      if (hasSession !== needLogin) {
+        navigate(to);
+      }
+    }, 100);
+
+    return () => clearTimeout(delayId);
+  }, [navigate, hasSession]);
 };

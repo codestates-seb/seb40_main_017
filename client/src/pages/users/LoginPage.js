@@ -5,9 +5,11 @@ import { LinkButton, SubmitButton } from '../../components/Button';
 import Container from '../../components/Container';
 import { Form, FormInput } from '../../components/Form';
 import { InputPassword, InputText, useInput } from '../../components/Input';
-import { login } from '../../api/login';
+import { login, useSessionCheck } from '../../api/login';
 
 const LoginPage = () => {
+  useSessionCheck(false, '/');
+
   //  Redux Provider 로 부터 dispatch (상태 관리를 위한 함수) 수신
   const dispatch = useDispatch();
   //  로그인 후 페이지 이동을 위해 navigate 정의
@@ -22,14 +24,16 @@ const LoginPage = () => {
   const submitCallback = useCallback(
     (success) => {
       if (success) {
+        //  로그인 성공 시 메인 화면으로 이동
         navigate('/');
       }
     },
     [navigate]
   );
-
+  //  Form 전송 시 검증 후 서버로 전송
   const handleSubmit = useCallback(
     (event) => {
+      //  <form> submit 시 페이지가 넘어가지 않도록 처리
       event.preventDefault();
 
       if (userId === '') {
@@ -37,15 +41,19 @@ const LoginPage = () => {
       } else if (userPassword === '') {
         alert('비밀번호를 입력해주세요.');
       } else {
+        //  Redux 상태 업데이트까지 수행하는 로그인 서비스 실행
         dispatch(login({ userId, userPassword }, submitCallback));
       }
     },
-    [dispatch, submitCallback, userId, userPassword]
+    [dispatch, submitCallback, userId, userPassword] //  해당 Callback 함수는 userId, userPassword 가 변경될 때 재정의 됨
   );
 
   return (
     <>
+      {/* <></> 는 React.Fragment 요소를 의미하며, return 시 여러 하위 컴포넌트를 나열할 수 있도록 함 */}
+      {/*  화면 정중앙에 표시하도록 만든 Container 컴포넌트 */}
       <Container name="로그인">
+        {/*  Form / FormInput / InputText / InputPassword / SubmitButton / LinkButton 은 모두 components/ 폴더 내 Button / Form / Input 스크립트를 참조 */}
         <Form onSubmit={handleSubmit}>
           <FormInput text="이메일">
             <InputText onChange={handleChangeUserId} placeholder="이메일" />

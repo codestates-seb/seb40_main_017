@@ -17,7 +17,7 @@ const StyledFormInput = styled.div`
   }
 
   input {
-    margin-top: 8px;
+    margin-top: 10px;
   }
 `;
 
