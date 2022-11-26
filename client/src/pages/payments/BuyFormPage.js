@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { MultiStepBuyForm } from '../../components/buyform/MultiStepBuyForm';
 import { MultiStepBuyProgressBar } from '../../components/buyform/MultiStepBuyProgressBar';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 
 const FormLayout = styled.div`
   background: var(--off-white);
@@ -41,6 +42,8 @@ const ProgressBarBox = styled.div`
 
 function BuyFoamPage() {
   const [index, setIndex] = useState(1);
+  const payInfo = useSelector((state) => state.pay.tid);
+  const userInfo = useSelector((state) => state.user.memberId);
 
   useEffect(() => {
     const getUserData = async () => {
@@ -49,13 +52,15 @@ function BuyFoamPage() {
         .then((res) => console.log(res.data))
         .catch((error) => console.log(error));
       console.log(user);
+      console.log(payInfo);
+      console.log(userInfo);
     };
 
     getUserData();
   }, []);
   const userData = {
-    memberId: 3,
-    sellerId: 1,
+    memberId: 6,
+    clientId: 6,
     email: 'hello2@naver.com',
     name: '박생산',
     phone: '010-2222-2222',
@@ -66,7 +71,7 @@ function BuyFoamPage() {
   };
 
   const itemData = {
-    boardId: 1,
+    boardId: 4,
     productId: 1,
     sellerId: 1,
     name: '박생산',

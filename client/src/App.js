@@ -9,6 +9,8 @@ import FruitsPage from './pages/crops/FruitsPage';
 import VegetablePage from './pages/crops/VegetablePage';
 import RicePage from './pages/crops/RicePage';
 import NutsPage from './pages/crops/NutsPage';
+import SellerformPage from './pages/sellers/SellerformPage';
+import BuyFormPage from './pages/payments/BuyFormPage';
 import styled from 'styled-components';
 import { configureStore } from '@reduxjs/toolkit';
 import userSlice, { userService } from './features/user/userSlice';
@@ -16,6 +18,9 @@ import { Provider } from 'react-redux';
 import { useEffect } from 'react';
 import { getCookie } from './features/cookie';
 import LogoutPage from './pages/users/LogoutPage';
+import paySlice from './features/pay/paySlice';
+import CompletePage from './pages/payments/CompletePage';
+import FailPage from './pages/payments/FailPage';
 
 const StyledApp = styled.main`
   display: flex;
@@ -37,6 +42,7 @@ const App = () => {
   const store = configureStore({
     reducer: {
       user: userSlice,
+      pay: paySlice,
     },
   });
 
@@ -67,6 +73,10 @@ const App = () => {
                 <Route path="/boards/vegetable" element={<VegetablePage />} />
                 <Route path="/boards/grain" element={<RicePage />} />
                 <Route path="/boards/nut" element={<NutsPage />} />
+                <Route path="/sell" element={<SellerformPage />} />
+                <Route path="/order" element={<BuyFormPage />} />
+                <Route path="/order/complete" element={<CompletePage />} />
+                <Route path="/order/fail" element={<FailPage />} />
               </Routes>
             </StyledContent>
           </StyledApp>

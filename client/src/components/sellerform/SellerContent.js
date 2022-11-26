@@ -119,6 +119,7 @@ export const SellerContent = ({ nextButton, formData, setFormData, setIsLoading 
       <ContentBox>
         <h2>상품 상세 내용 작성</h2>
         <Editor
+          usageStatistics={false}
           height="40em"
           minHeight="400px"
           onChange={onChange}

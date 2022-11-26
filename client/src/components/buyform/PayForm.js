@@ -1,5 +1,7 @@
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
+import axios from 'axios';
 
 const PayFormBox = styled.div`
   width: 100%;
@@ -47,6 +49,9 @@ const PayInfo = styled.div`
 
 export const PayForm = ({ price }) => {
   const [isCheck, setIsCheck] = useState(false);
+  const payInfo = useSelector((state) => state.pay.tid);
+
+  console.log(payInfo);
   const changeCheck = (e) => {
     if (e.target.checked) {
       setIsCheck(true);
@@ -55,10 +60,17 @@ export const PayForm = ({ price }) => {
     }
   };
 
-  const handleOnClick = () => {
+  const handleOnClick = async () => {
+    const ord_Id = useSelector((state) => state.pay.ordId);
     if (isCheck) {
-      let link = 'https://online-pay.kakao.com/mockup/v1/7ad25dbdc72ea560c9b67e567d9a1d32db19abb52bcf8a5bc7da1cde2a424a37/info';
-      window.location.href = link;
+      await axios
+        .get(`${process.env.REACT_APP_API_URL}order/pay/${ord_Id}`)
+        .then((res) => {
+          console.log(res);
+          let link = res.next_redirect_pc_url;
+          window.location.href = link;
+        })
+        .catch((err) => console.log(err));
     }
   };
   return (

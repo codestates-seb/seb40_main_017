@@ -1,6 +1,9 @@
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { payActions } from '../../features/pay/paySlice';
+import axios from 'axios';
 
 const BuyFormBox = styled.div`
   width: 100%;
@@ -17,7 +20,6 @@ const UserBox = styled.form`
     font-size: 16px;
     text-align: center;
   }
-  /* background-color: forestgreen; */
 `;
 const UserInfo = styled.div`
   margin-top: 2em;
@@ -47,6 +49,7 @@ const ButtonBox = styled.div`
   input {
     width: 10em;
     height: 3em;
+    transition: 0.3s;
     :hover {
       transform: scale(1.2);
     }
@@ -69,7 +72,6 @@ const ItemBox = styled.div`
   height: 100%;
   border-left: 1px solid black;
   padding-left: 1em;
-  /* background-color: blue; */
   span {
     margin-right: 2em;
     font-size: 23px;
@@ -132,14 +134,39 @@ const ErrorBox = styled.div`
 
 export const ClientBuyForm = ({ nextButton, userData, itemData, count, price }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const payInfo = useSelector((state) => state.pay.tid);
+  // const user = useSelector(getUser);
+  // console.log(user.role, user.clientId);
   const {
     register,
     formState: { errors },
     handleSubmit,
   } = useForm();
-  const onSubmit = (data) => {
+  const orderData = {
+    clientId: userData.clientId,
+    boardId: itemData.boardId,
+    address: '~~~',
+    phone: '~~~',
+    totalQuantity: count,
+    totalPrice: price,
+  };
+
+  const onSubmit = async (data) => {
     console.log(data);
+    const newData = { ...orderData, ...data };
+    console.log(newData);
     if (window.confirm('주문 확인')) {
+      await axios
+        .post(`${process.env.REACT_APP_API_URL}/orders`, newData, { headers: { 'Content-Type': 'application/json' } })
+        .then((res) => {
+          console.log(res);
+          let orderId = res.ordId;
+          dispatch(payActions.setPay({ ordId: orderId }));
+        })
+        .catch((err) => console.log(err));
+      dispatch(payActions.setPay({ tid: 1234 }));
+      console.log(payInfo);
       nextButton();
     }
   };
