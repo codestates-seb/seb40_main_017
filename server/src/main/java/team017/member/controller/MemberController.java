@@ -1,7 +1,5 @@
 package team017.member.controller;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 
@@ -20,7 +18,6 @@ import team017.global.Exception.BusinessLogicException;
 import team017.global.Exception.ExceptionCode;
 import team017.member.dto.MemberDto;
 import team017.member.entity.Member;
-import team017.member.entity.ProviderType;
 import team017.member.mapper.MemberMapper;
 import team017.member.service.MemberService;
 import team017.security.jwt.dto.LoginRequestDto;
@@ -38,8 +35,7 @@ public class MemberController {
 
 	/* 회원 가입 */
 	@PostMapping("/members/signup")
-	public ResponseEntity postMember(@Valid @RequestBody MemberDto.Post requestBody,
-		HttpServletRequest request) throws ServletException {
+	public ResponseEntity postMember(@Valid @RequestBody MemberDto.Post requestBody) {
 		memberService.correctPassword(requestBody.getPassword(), requestBody.getPasswordCheck());
 		Member createMember = memberService.createMember(mapper.memberDtoToMember(requestBody));
 
@@ -53,18 +49,23 @@ public class MemberController {
 	/* 자체 로그인 */
 	@PostMapping("/login")
 	public ResponseEntity login(@RequestBody LoginRequestDto requestBody) {
+
+		/* 역할 확인 및 프로바이더 확인을 위한 Member 찾기 */
 		Member member = memberService.findMemberByEmail(requestBody.getEmail());
 		memberService.checkLocalProvider(member.getProviderType());
 
+		/* 로그인하여 토큰 생성 후, 헤더에 넣어주기 */
 		TokenDto tokenDto = securityService.tokenLogin(requestBody);
 		HttpHeaders httpHeaders = setHeader(tokenDto.getAccessToken());
 
+		/* 역할에 따라 응답 바디가 다르므로, 나누어 주었다.*/
 		if(member.getRole().equals("SELLER")) {
 			return new ResponseEntity<>(mapper.memberToSellerDto(member), httpHeaders, HttpStatus.OK);
 		} else if (member.getRole().equals("CLIENT")) {
 			return new ResponseEntity<>(mapper.memberToClientDto(member), httpHeaders, HttpStatus.OK);
 		}
 
+		/* 어떤 것도 해당이 안 될 경우, 예외 처리 */
 		throw new BusinessLogicException(ExceptionCode.LOGIN_ERROR);
 	}
 
