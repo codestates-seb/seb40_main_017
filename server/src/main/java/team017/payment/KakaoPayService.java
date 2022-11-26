@@ -11,6 +11,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import team017.board.Entity.Board;
+import team017.board.Repository.BoardRepository;
 import team017.ord.dto.OrdResponseDto;
 import team017.ord.entity.Ord;
 import team017.ord.mapper.OrdMapper;
@@ -25,10 +27,9 @@ public class KakaoPayService {
     private final OrdService ordService;
     private final OrdRepository ordRepository;
     private final OrdMapper ordMapper;
-
+    private final BoardRepository boardRepository;
     @Value("${spring.security.oauth2.client.registration.kakao.adminKey}")
     private String adminKey;
-
     ReadyResponseDto readyResponseDto;
 
     // 결제 준비 메서드
@@ -98,7 +99,15 @@ public class KakaoPayService {
 
     /* 결제 취소 혹은 삭제 */
     public void cancelOrFailPayment() {
-        ordService.deleteOrd(Long.parseLong(readyResponseDto.getPartner_order_id()));
+        long ordId = Long.parseLong(readyResponseDto.getPartner_order_id());
+
+        //결제 취소, 결제 실패로 인한 잔여 재고 수정
+        Ord findOrd = ordService.findVerifiedOrd(ordId);
+        Board findBoard = findOrd.getProduct().getBoard();
+
+        findBoard.setLeftStock(findBoard.getLeftStock() + findOrd.getQuantity());
+        boardRepository.save(findBoard);
+        ordService.deleteOrd(ordId);
     }
 
     // 서버로 요청할 Header
