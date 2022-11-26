@@ -6,6 +6,9 @@ import team017.board.Dto.BoardPostDto;
 import team017.board.Dto.BoardResponseDto;
 import team017.board.Dto.BoardTotalResponseDto;
 import team017.board.Entity.Board;
+import team017.member.entity.Seller;
+import team017.ord.dto.OrdSellerResponseDto;
+import team017.ord.entity.Ord;
 import team017.product.Entity.Product;
 import team017.review.repository.ReviewRepository;
 
@@ -25,5 +28,35 @@ public interface BoardMapper {
     @Mapping(target = "sellerImage", expression = "java(board.getSeller().getImageUrl())")
     @Mapping(target = "name", expression = "java(board.getSeller().getMember().getName())")
     BoardTotalResponseDto productToBoardTotalResponseDto(Product product, Board board);
+
+
+    default OrdSellerResponseDto ordToOrdSellerResponseDto(Board board){
+        if( board == null){
+            return null;
+        }
+
+        int soldStock = board.getProduct().getStock() - board.getLeftStock();
+        Seller seller = new Seller();
+        seller.setSellerId(board.getSeller().getSellerId());
+
+        Product product = new Product();
+        product.setProductId(board.getProduct().getBoard().getBoardId());
+
+
+        OrdSellerResponseDto ordResponseDto = new OrdSellerResponseDto();
+        ordResponseDto.setBoardId(product.getProductId());
+        ordResponseDto.setSellerId(seller.getSellerId());
+        ordResponseDto.setTitle(board.getProduct().getBoard().getTitle());
+        ordResponseDto.setName(board.getSeller().getMember().getName());
+        ordResponseDto.setPrice(board.getProduct().getPrice());
+        ordResponseDto.setPhone(board.getSeller().getMember().getPhone());
+        ordResponseDto.setStock(board.getProduct().getStock());
+        ordResponseDto.setCategory(board.getProduct().getCategory());
+        ordResponseDto.setSoldStock(soldStock);
+
+        return ordResponseDto;
+
+    }
+    List<OrdSellerResponseDto> ordToOrdSellerResponseDtos(List<Board> boards);
 
 }

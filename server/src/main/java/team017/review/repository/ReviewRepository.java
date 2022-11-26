@@ -15,7 +15,7 @@ import team017.review.entity.Review;
 @Repository
 public interface ReviewRepository extends JpaRepository<Review,Long> {
 
-    public Page<Review> findByBoard_BoardId(Long boardId, Pageable pageable);
+    Page<Review> findByBoard_BoardId(Long boardId, Pageable pageable);
 
     //리뷰 평균 구하기
     @Query("SELECT round(avg(r.star),1) as reviewAvg FROM Review as r WHERE r.board.boardId = :boardId")

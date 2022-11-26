@@ -1,6 +1,9 @@
 package team017.ord.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import team017.board.Entity.Board;
 import team017.board.Repository.BoardRepository;
@@ -65,5 +68,13 @@ public class OrdService {
         Optional<Ord> optionalOrd = ordRepository.findById(ordId);
         Ord findOrd = optionalOrd.orElseThrow(() -> new BusinessLogicException(ExceptionCode.ORDER_NOT_FOUND));
         return findOrd;
+    }
+
+    public Page<Ord> findClientOrd(Long clientId, int page, int size){
+        return ordRepository.findByClient_ClientId(clientId, PageRequest.of(page, size, Sort.by("createdAt").descending()));
+    }
+
+    public Page<Board> findSellerOrd(Long sellerId, int page, int size){
+        return boardRepository.findBySeller_SellerId(sellerId, PageRequest.of(page, size, Sort.by("createdAt").descending()));
     }
 }
