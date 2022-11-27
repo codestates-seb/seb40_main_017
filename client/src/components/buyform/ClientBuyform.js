@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { payActions } from '../../features/pay/paySlice';
 import axios from 'axios';
+import { useEffect } from 'react';
 
 const BuyFormBox = styled.div`
   width: 100%;
@@ -127,28 +128,35 @@ const ErrorBox = styled.div`
   color: red;
   top: 2.5em;
   p {
-    width: 10em;
+    width: 11em;
+    font-size: 10px;
   }
   margin-bottom: 0em;
 `;
 
-export const ClientBuyForm = ({ nextButton, userData, itemData, count, price }) => {
+export const ClientBuyForm = ({ nextButton, userData, itemData, count, price, setIsLoading }) => {
+  const userFormData = userData;
+  console.log(userFormData);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const payInfo = useSelector((state) => state.pay.tid);
-  // const user = useSelector(getUser);
-  // console.log(user.role, user.clientId);
+  const orderInfo = useSelector((state) => state.pay.orderid);
   const {
     register,
     formState: { errors },
     handleSubmit,
-  } = useForm();
+    reset,
+  } = useForm({ defaultValues: { phone: userFormData.phone, address: userFormData.address } });
+
+  useEffect(() => {
+    reset({ phone: userFormData.phone, address: userFormData.address });
+  }, [userFormData]);
   const orderData = {
     clientId: userData.clientId,
     boardId: itemData.boardId,
     address: '~~~',
     phone: '~~~',
-    totalQuantity: count,
+    quantity: count,
     totalPrice: price,
   };
 
@@ -157,16 +165,21 @@ export const ClientBuyForm = ({ nextButton, userData, itemData, count, price }) 
     const newData = { ...orderData, ...data };
     console.log(newData);
     if (window.confirm('주문 확인')) {
+      setIsLoading(true);
       await axios
-        .post(`${process.env.REACT_APP_API_URL}/orders`, newData, { headers: { 'Content-Type': 'application/json' } })
+        .post(`${process.env.REACT_APP_API_URL}/orders`, JSON.stringify(newData), { headers: { 'Content-Type': 'application/json' } })
         .then((res) => {
           console.log(res);
-          let orderId = res.ordId;
-          dispatch(payActions.setPay({ ordId: orderId }));
+          console.log(res.data.ordId);
+          let orderId = res.data.ordId;
+          console.log(orderId);
+          dispatch(payActions.setPay({ orderid: res.data.ordId }));
         })
         .catch((err) => console.log(err));
-      dispatch(payActions.setPay({ tid: 1234 }));
+      // dispatch(payActions.setPay({ orderid: 1, tid: 777 }));
       console.log(payInfo);
+      console.log(orderInfo);
+      setIsLoading(false);
       nextButton();
     }
   };
@@ -182,15 +195,15 @@ export const ClientBuyForm = ({ nextButton, userData, itemData, count, price }) 
           <UserInfo>
             <div>
               <p>이름</p>
-              <input placeholder="이름" defaultValue={userData.name} readOnly></input>
+              <input placeholder="이름" key={userFormData.name} defaultValue={userFormData.name} readOnly></input>
               <p>전화번호</p>
               <InputBox>
-                <input name="phone" placeholder="전화번호" defaultValue={userData.phone} {...register('phone', { required: true })} />
+                <input name="phone" placeholder="전화번호" {...register('phone', { required: true })} />
                 <ErrorBox>{errors.phone && <p>전화번호를 적어 주세요</p>}</ErrorBox>
               </InputBox>
               <p>주소</p>
               <InputBox>
-                <input name="address" placeholder="주소" defaultValue={userData.address} {...register('address', { required: true })}></input>
+                <input name="address" placeholder="주소" {...register('address', { required: true })}></input>
                 <ErrorBox>{errors.address && <p>주소를 적어 주세요</p>}</ErrorBox>
               </InputBox>
             </div>
@@ -207,12 +220,14 @@ export const ClientBuyForm = ({ nextButton, userData, itemData, count, price }) 
           <h3>상품</h3>
           <ItemInfo>
             <img src={itemData.mainImage} alt="사진" />
-            <p>{itemData.title}</p>
             <p>
-              수량: <span>{count}</span>
+              상품명: <span>{itemData.title}</span>
             </p>
             <p>
               판매자 : <span>{itemData.name}</span>
+            </p>
+            <p>
+              수량: <span>{count}</span>
             </p>
           </ItemInfo>
           <ItemPrice>

@@ -3,7 +3,8 @@ import styled from 'styled-components';
 import { MultiStepBuyForm } from '../../components/buyform/MultiStepBuyForm';
 import { MultiStepBuyProgressBar } from '../../components/buyform/MultiStepBuyProgressBar';
 import axios from 'axios';
-import { useSelector } from 'react-redux';
+import { DotSpinner } from '@uiball/loaders';
+// import { useSelector } from 'react-redux';
 
 const FormLayout = styled.div`
   background: var(--off-white);
@@ -31,6 +32,9 @@ const FormBox = styled.div`
 const MultiStepBox = styled.div`
   width: 90%;
   height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   /* background: darkmagenta; */
 `;
 
@@ -42,40 +46,27 @@ const ProgressBarBox = styled.div`
 
 function BuyFoamPage() {
   const [index, setIndex] = useState(1);
-  const payInfo = useSelector((state) => state.pay.tid);
-  const userInfo = useSelector((state) => state.user.memberId);
-
-  useEffect(() => {
-    const getUserData = async () => {
-      const user = await axios
-        .get(`${process.env.REACT_APP_API_URL}/members/client/1`, { headers: { 'Content-Type': 'application/json' } })
-        .then((res) => console.log(res.data))
-        .catch((error) => console.log(error));
-      console.log(user);
-      console.log(payInfo);
-      console.log(userInfo);
-    };
-
-    getUserData();
-  }, []);
-  const userData = {
-    memberId: 6,
-    clientId: 6,
+  const [isLoading, setIsLoading] = useState(false);
+  // const payInfo = useSelector((state) => state.pay.tid);
+  // const userInfo = useSelector((state) => state.user.clientId);
+  const [userData, setUserData] = useState({
+    memberId: 1,
+    clientId: 2,
     email: 'hello2@naver.com',
-    name: '박생산',
-    phone: '010-2222-2222',
-    address: '제주도 서귀포시 성산읍',
+    name: '김통신',
+    phone: '010-4444-4444',
+    address: '통신광역시 통신구 통신',
     role: 'SELLER',
     introduce: null,
     imageUrl: null,
-  };
+  });
 
-  const itemData = {
-    boardId: 4,
+  const [itemData, setItemData] = useState({
+    boardId: 1,
     productId: 1,
     sellerId: 1,
-    name: '박생산',
-    title: '쌀을 팝니다',
+    name: '박응답',
+    title: '통신테스트',
     content: '이 쌀은 맛이 좋아요!',
     price: 1000,
     stock: 200,
@@ -87,10 +78,53 @@ function BuyFoamPage() {
     reviewAvg: 2.0,
     soldStock: 0,
     mainImage: 'https://waymophototest.s3-ap-northeast-2.amazonaws.com/당근-1.png',
-  };
+  });
 
-  const count = 4;
-  const totalPrice = itemData.price * 4;
+  useEffect(() => {
+    const getUserData = async () => {
+      await axios
+        .get(`${process.env.REACT_APP_API_URL}/members/client/1`)
+        .then((res) => {
+          console.log(res.data);
+          setUserData({ ...userData, ...res.data });
+        })
+        .catch((error) => console.log(error));
+    };
+    const getItem = async () => {
+      await axios
+        .get(`${process.env.REACT_APP_API_URL}/boards/4`)
+        .then((res) => {
+          console.log(res.data);
+          setItemData({ ...itemData, ...res.data });
+        })
+        .catch((error) => console.log(error));
+    };
+    getUserData();
+    getItem();
+    console.log(userData);
+  }, []);
+
+  // const itemData = {
+  //   boardId: 1,
+  //   productId: 1,
+  //   sellerId: 1,
+  //   name: '박생산',
+  //   title: '쌀을 팝니다',
+  //   content: '이 쌀은 맛이 좋아요!',
+  //   price: 1000,
+  //   stock: 200,
+  //   category: 2,
+  //   status: 'PRD_SELLING',
+  //   view: 3,
+  //   createdAt: '2022-11-20T22:03:07.452223',
+  //   modifiedAt: '2022-11-20T22:16:35.8949572',
+  //   reviewAvg: 2.0,
+  //   soldStock: 0,
+  //   mainImage: 'https://waymophototest.s3-ap-northeast-2.amazonaws.com/당근-1.png',
+  // };
+
+  const count = 10;
+  const totalPrice = itemData.price * count;
 
   const nextButton = () => {
     if (index < 3) {
@@ -105,7 +139,18 @@ function BuyFoamPage() {
         </ProgressBarBox>
         <FormBox>
           <MultiStepBox>
-            <MultiStepBuyForm index={index} nextButton={nextButton} userData={userData} itemData={itemData} count={count} price={totalPrice} />
+            {!isLoading && (
+              <MultiStepBuyForm
+                index={index}
+                nextButton={nextButton}
+                userData={userData}
+                itemData={itemData}
+                count={count}
+                price={totalPrice}
+                setIsLoading={setIsLoading}
+              />
+            )}
+            {isLoading && <DotSpinner size={40} speed={0.9} color="var(--green)" />}
           </MultiStepBox>
           {/* <UserBox></UserBox>
           <ItemBox></ItemBox> */}

@@ -28,7 +28,7 @@ const PayInfo = styled.div`
   align-items: center;
   border-radius: 1em;
   p {
-    font-size: 16px;
+    font-size: 14px;
     color: red;
   }
   label {
@@ -41,6 +41,7 @@ const PayInfo = styled.div`
     border-radius: 1em;
     width: 10em;
     height: 3em;
+    transition: 0.3s;
     :hover {
       transform: scale(1.2);
     }
@@ -49,9 +50,9 @@ const PayInfo = styled.div`
 
 export const PayForm = ({ price }) => {
   const [isCheck, setIsCheck] = useState(false);
-  const payInfo = useSelector((state) => state.pay.tid);
+  const orderId = useSelector((state) => state.pay.orderid);
 
-  console.log(payInfo);
+  console.log(orderId);
   const changeCheck = (e) => {
     if (e.target.checked) {
       setIsCheck(true);
@@ -61,14 +62,13 @@ export const PayForm = ({ price }) => {
   };
 
   const handleOnClick = async () => {
-    const ord_Id = useSelector((state) => state.pay.ordId);
     if (isCheck) {
       await axios
-        .get(`${process.env.REACT_APP_API_URL}order/pay/${ord_Id}`)
+        .get(`${process.env.REACT_APP_API_URL}/order/pay/${orderId}`)
         .then((res) => {
           console.log(res);
-          let link = res.next_redirect_pc_url;
-          window.location.href = link;
+          console.log(res.data.next_redirect_pc_url);
+          // window.location.href = res.data.next_redirect_pc_url;
         })
         .catch((err) => console.log(err));
     }

@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { FiTruck } from 'react-icons/fi';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useSelector } from 'react-redux';
+// import { useSelector } from 'react-redux';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 const CompleteLayout = styled.div`
@@ -90,22 +90,18 @@ const ItemBox = styled.div`
 
 function CompletePage() {
   const [data, setData] = useState({});
-  const orderTid = useSelector((state) => state.pay.tid);
+  // const orderTid = useSelector((state) => state.pay.tid);
   const [query] = useSearchParams();
   const navigate = useNavigate();
-  let pgTokenData = query.get('pgToken');
-  console.log(pgTokenData);
+  let orderId = query.get('ordId');
+  console.log(orderId);
   useEffect(() => {
     const completeData = async () => {
       const order = await axios
-        .get(
-          `${process.env.REACT_APP_API_URL}/order/pay/complete`,
-          { params: { tid: orderTid, pgToken: pgTokenData } },
-          { headers: { 'Content-Type': 'application/json' } }
-        )
+        .get(`${process.env.REACT_APP_API_URL}/orders/${orderId}`, { headers: { 'Content-Type': 'application/json' } })
         .then((res) => {
           console.log(res);
-          setData({ ...data, ...res });
+          setData({ ...data, ...res.data });
         })
         .catch((error) => console.log(error));
 
@@ -136,16 +132,16 @@ function CompletePage() {
               <h3>상품 정보</h3>
               <ul>
                 <li>
-                  가격 <span>{data.totalPrice}</span>
+                  가격 : <span>{data.totalPrice}</span>
                 </li>
                 <li>
-                  성함<span>{data.name}</span>
+                  성함 : <span>{data.name}</span>
                 </li>
                 <li>
-                  전화번호<span>{data.phone}</span>
+                  전화번호 : <span>{data.phone}</span>
                 </li>
                 <li>
-                  주소<span>{data.address}</span>
+                  주소 : <span>{data.address}</span>
                 </li>
               </ul>
             </ItemBox>
