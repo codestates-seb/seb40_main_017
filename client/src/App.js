@@ -21,6 +21,7 @@ import LogoutPage from './pages/users/LogoutPage';
 import paySlice from './features/pay/paySlice';
 import CompletePage from './pages/payments/CompletePage';
 import FailPage from './pages/payments/FailPage';
+import SellerPatchPage from './pages/sellers/SellerPatchPage';
 
 const StyledApp = styled.main`
   display: flex;
@@ -74,9 +75,11 @@ const App = () => {
                 <Route path="/boards/grain" element={<RicePage />} />
                 <Route path="/boards/nut" element={<NutsPage />} />
                 <Route path="/sell" element={<SellerformPage />} />
+                <Route path="/sell/patch" element={<SellerPatchPage />} />
                 <Route path="/order" element={<BuyFormPage />} />
-                <Route path="/order/complete" element={<CompletePage />} />
-                <Route path="/order/fail" element={<FailPage />} />
+                <Route path="/order/pay/completed" element={<CompletePage />} />
+                <Route path="/order/pay/fail" element={<FailPage />} />
+                <Route path="/order/pay/cancel" element={<FailPage />} />
               </Routes>
             </StyledContent>
           </StyledApp>
