@@ -1,6 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { FiX } from 'react-icons/fi';
+import axios from 'axios';
+import { Editor } from '@toast-ui/react-editor';
+import '@toast-ui/editor/dist/toastui-editor.css';
+import S3 from 'react-aws-s3';
 
 const SellerPostLayout = styled.div`
   background: var(--off-white);
@@ -13,7 +17,7 @@ const SellerPostLayout = styled.div`
 `;
 
 const SellerPostHeader = styled.div`
-  width: 1100px;
+  width: 34.5em;
   height: 50px;
   margin-bottom: 30px;
   display: flex;
@@ -28,12 +32,12 @@ const SellerPostHeader = styled.div`
 `;
 
 const SellerPostContent = styled.div`
-  width: 1100px;
-  height: 700px;
+  width: 65em;
+  height: 50em;
   background: var(--white);
   display: grid;
   grid-template-columns: 1fr 3.5fr;
-  grid-template-rows: 4fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: 4fr 1fr 1fr 1fr 1fr 4fr;
   .image-box {
     border: none;
   }
@@ -151,12 +155,13 @@ const SellerPostButton = styled.button`
   }
 `;
 
-function SellerPostPage() {
-  const [form, setForm] = useState({ title: '', stock: '', price: '', category: '' });
+function SellerPatchPage() {
+  window.Buffer = window.Buffer || require('buffer').Buffer;
+  const editorRef = useRef();
+  const [form, setForm] = useState({ sellerId: 1 });
   const [img, setImg] = useState([]);
-  const [content, setContent] = useState([]);
   const [previewImg, setPreviewImg] = useState([]);
-  const [previewContent, setPreviewContent] = useState([]);
+  const [itemData, setItemData] = useState({});
 
   const handleOnchangeForm = (e) => {
     setForm({
@@ -165,9 +170,43 @@ function SellerPostPage() {
     });
   };
 
+  // 수정할 페이지 정보 불러오기
+  const getItem = async () => {
+    await axios
+      .get(`${process.env.REACT_APP_API_URL}/boards/1`)
+      .then((res) => {
+        console.log(res);
+        console.log(res.data);
+        setItemData((prevState) => {
+          return { ...prevState, ...res.data };
+        });
+        console.log('데이터 넣기');
+        setContent();
+      })
+      .catch((error) => console.log(error));
+  };
+  const setContent = () => {
+    editorRef.current.getInstance().setMarkdown(itemData.content);
+    console.log('콘텐츠 넣기');
+  };
+
   useEffect(() => {
-    setForm({ ...form, mainimage: img, contentimage: content });
-  }, [img, content]);
+    getItem();
+    console.log(itemData);
+  }, []);
+
+  // 메인이미지
+  // useEffect(() => {
+  //   console.log(mainImage);
+  //   setForm((prevState) => ({ ...prevState, mainImage: mainImage }));
+  //   // setForm({ ...form, mainImage: mainImage });
+  // }, [mainImage]);
+
+  useEffect(() => {
+    console.log(form);
+    // setForm({ ...form, mainImage: mainImage });
+  }, [form]);
+
   // 썸네일 이미지 input 이벤트
   const handleThumbnailInput = (e) => {
     const file = e.target.files[0];
@@ -183,11 +222,10 @@ function SellerPostPage() {
       if (fileSize > maxSize) {
         return alert('첨부파일 사이즈는 4MB 이내로 등록 가능합니다.');
       }
-
-      console.log(file);
       reader.readAsDataURL(e.target.files[0]);
 
       img.push(file);
+      uploadMainImage(file);
     }
 
     reader.onloadend = () => {
@@ -196,49 +234,8 @@ function SellerPostPage() {
         setPreviewImg([...previewImg, previewImgUrl]);
       }
     };
-    console.log(img);
-    setForm({
-      ...form,
-      [e.target.name]: img,
-    });
   };
-  // 상세 이미지 input 이벤트
-  const handleContentInput = (e) => {
-    const files = e.target.files;
-    console.log(files);
-    if (content.length >= 3) {
-      return alert('3개이상 불가능');
-    }
-    let fileURLs = [];
-    let file;
-    setContent([...content, ...files]);
 
-    for (let i = 0; i < files.length; i++) {
-      file = files[i];
-      let maxSize = 4 * 1024 * 1024;
-      let fileSize = file.size;
-
-      if (fileSize > maxSize) {
-        alert('첨부파일 사이즈는 4MB 이내로 등록 가능합니다.');
-        continue;
-      }
-      content.push(files[i]);
-      console.log(content);
-      if (fileSize < maxSize) {
-        let reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onloadend = () => {
-          fileURLs[i] = reader.result;
-          setPreviewContent([...previewContent, ...fileURLs]);
-        };
-      }
-    }
-
-    setForm({
-      ...form,
-      [e.target.name]: content,
-    });
-  };
   // 썸네일 이미지 미리보기
   const getPreviewMain = () => {
     const deleteImg = (index) => {
@@ -247,7 +244,6 @@ function SellerPostPage() {
       setImg([...imgArr]);
       setPreviewImg([...imgNameArr]);
       console.log(img);
-      setForm({ ...form, mainimage: img });
     };
     if (img === null || img.length === 0) {
       return (
@@ -269,48 +265,82 @@ function SellerPostPage() {
       });
     }
   };
-  // 상세 이미지 미리보기
-  const getPreviewImg = () => {
-    // 미리보기 이미지 삭제
-    const deleteImg = (index) => {
-      const imgArr = content.filter((el, idx) => idx !== index);
-      const imgNameArr = previewContent.filter((el, idx) => idx !== index);
-      setContent([...imgArr]);
-      setPreviewContent([...imgNameArr]);
-      console.log(content);
-    };
-
-    if (content === null || content.length === 0) {
-      return (
-        <PreviewContent>
-          <img src="https://k-startup.go.kr/images/homepage/prototype/noimage.gif" alt="dd" />
-          <span>등록된 이미지가 없습니다.</span>
-        </PreviewContent>
-      );
-    } else {
-      return content.map((el, index) => {
-        const { name } = el;
-        return (
-          <PreviewContent key={index}>
-            <img src={previewContent[index]} alt="콘텐츠" />
-            <div>{name}</div>
-            <FiX onClick={() => deleteImg(index)} color="red" />
-          </PreviewContent>
-        );
-      });
-    }
+  let mainImgurl = '';
+  let dataImgurl;
+  const config = {
+    bucketName: process.env.REACT_APP_BUCKET_NAME,
+    region: process.env.REACT_APP_REGION,
+    accessKeyId: process.env.REACT_APP_ACCESS,
+    secretAccessKey: process.env.REACT_APP_SECRET,
   };
-  // 판매 등록 버튼 이벤트
-  const handlePostButton = () => {
-    setForm({ ...form, mainimage: img, contentimage: content });
+
+  // 메인 이미지를 S3 버킷에 저장하고 이미지 링크 전달
+  const uploadMainImage = async (file) => {
+    const ReactS3Client = new S3(config);
+    await ReactS3Client.uploadFile(file, file.name)
+      .then((data) => {
+        console.log(data.location); // 이미지 링크 확인
+        mainImgurl = data.location; // dataimgurl 에 이미지 링크 할당
+        setForm((prevState) => ({ ...prevState, mainImage: mainImgurl }));
+        return mainImgurl;
+      })
+      .catch((err) => console.error(err));
+  };
+  // 콘텐츠 이미지를 S3 버킷에 저장하고 이미지 링크 전달
+  const uploadImage = async (file) => {
+    const ReactS3Client = new S3(config);
+    await ReactS3Client.uploadFile(file, file.name)
+      .then((data) => {
+        console.log(data.location); // 이미지 링크 확인
+        dataImgurl = data.location; // dataimgurl 에 이미지 링크 할당
+        return dataImgurl;
+      })
+      .catch((err) => console.error(err));
+  };
+
+  // 토스트 ui editor 이미지 삽입 함수
+  const onUploadImage = async (blob, callback) => {
+    console.log('이미지 삽입');
+    let blank_pattern = /[\s]/g;
+    if (blank_pattern.test(blob.name)) {
+      return alert('이미지명에는 공백제거해주세요');
+    }
+    let maxSize = 4 * 1024 * 1024;
+    let fileSize = blob.size;
+
+    if (fileSize > maxSize) {
+      return alert('첨부파일 사이즈는 4MB 이내로 등록 가능합니다.');
+    }
+
+    await uploadImage(blob); // 버킷에 이미지 저장하고 링크 불러오는 함수
+    console.log(dataImgurl); // 이미지 링크 확인
+    callback(dataImgurl, 'image'); // 에디터에 해당 이미지 링크 전달
+  };
+
+  const onChange = () => {
+    const data = editorRef.current.getInstance().getMarkdown(); // 토스트 에디터 작성 내용 콘솔창 보이게 하기
+    let contentData = { content: data };
+    setForm({ ...form, ...contentData });
     console.log(form);
+  };
+  // 판매 수정 등록 버튼 이벤트
+  const handlePostButton = async () => {
+    // await uploadMainImage(img[0]);
+    console.log(form);
+
+    if (window.confirm('확인')) {
+      axios
+        .patch(`${process.env.REACT_APP_API_URL}/boards/1`, form)
+        .then((res) => console.log(res))
+        .catch((err) => console.log(err));
+    }
   };
 
   return (
     <SellerPostLayout>
       <SellerPostHeader>
         <p className="head">판매 물품</p>
-        <p>등록</p>
+        <p>수정</p>
       </SellerPostHeader>
       <SellerPostContent>
         <ContentHead>이미지</ContentHead>
@@ -319,30 +349,22 @@ function SellerPostPage() {
             <div className="button-box">
               <span> 메인 이미지</span>
               <label htmlFor="file">업로드</label>
-              <input type={'file'} name="mainimage" accept={'image/*'} id="file" onChange={handleThumbnailInput}></input>
+              <input type={'file'} name="mainImage" accept={'image/*'} id="file" onChange={handleThumbnailInput}></input>
             </div>
             <PreviewMain>{getPreviewMain()}</PreviewMain>
           </div>
-          <div className="image-box">
-            <div className="button-box">
-              <span> 상세 이미지</span>
-              <label htmlFor="file2">업로드</label>
-              <input type={'file'} name="contentimage" accept={'image/*'} id="file2" onChange={handleContentInput} multiple></input>
-            </div>
-            <PreviewMain>{getPreviewImg()}</PreviewMain>
-          </div>
         </ContentImage>
-        <ContentHead>제목</ContentHead>
+        <ContentHead>상품명</ContentHead>
         <ContentInput>
-          <input placeholder="제목" name="title" onChange={handleOnchangeForm}></input>
+          <input placeholder="상품명" name="title" defaultValue={itemData.title} onChange={handleOnchangeForm}></input>
         </ContentInput>
         <ContentHead>판매수량</ContentHead>
         <ContentInput>
-          <input placeholder="판매수량" name="stock" type="number" onChange={handleOnchangeForm}></input>개
+          <input placeholder="판매수량" name="stock" defaultValue={itemData.stock} type="number" onChange={handleOnchangeForm}></input>개
         </ContentInput>
         <ContentHead>상품가격</ContentHead>
         <ContentInput>
-          <input placeholder="상품가격" name="price" type="number" onChange={handleOnchangeForm}></input>원
+          <input placeholder="상품가격" name="price" defaultValue={itemData.price} type="number" onChange={handleOnchangeForm}></input>원
         </ContentInput>
         <ContentHead>카테고리</ContentHead>
         <ContentInput>
@@ -354,10 +376,35 @@ function SellerPostPage() {
             <option value={4}>견과류</option>
           </select>
         </ContentInput>
+        <ContentHead>상품 상세</ContentHead>
+        <ContentInput>
+          {' '}
+          {itemData && (
+            <Editor
+              usageStatistics={false}
+              height="20em"
+              onChange={onChange}
+              ref={editorRef}
+              previewStyle="vertical"
+              initialEditType="markdown"
+              initialValue={'수정 하려는 상품정보를 적어주세요'}
+              hooks={{
+                addImageBlobHook: onUploadImage,
+              }}
+              toolbarItems={[
+                ['table', 'image', 'link'],
+                ['heading', 'bold', 'italic', 'strike'],
+                ['hr', 'quote'],
+                ['ul', 'ol', 'task'],
+                ['scrollSync'],
+              ]}
+            />
+          )}
+        </ContentInput>
       </SellerPostContent>
       <SellerPostButton onClick={handlePostButton}> 등록하기 </SellerPostButton>
     </SellerPostLayout>
   );
 }
 
-export default SellerPostPage;
+export default SellerPatchPage;
