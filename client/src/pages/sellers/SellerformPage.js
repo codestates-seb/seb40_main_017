@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import { MultiStepForm } from '../../components/sellerform/MultiStepForm';
 import { DotSpinner } from '@uiball/loaders';
+import { useSelector } from 'react-redux';
 
 const FormLayout = styled.div`
   background: var(--off-white);
@@ -68,6 +69,7 @@ const FormBodyBox = styled.div`
 `;
 
 function SellerformPage() {
+  const userInfo = useSelector((state) => state.user.sellerId);
   const [index, setIndex] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -79,7 +81,7 @@ function SellerformPage() {
     mainImage: '이미지테스트',
     content: '테스트',
   });
-
+  console.log(userInfo);
   useEffect(() => {
     console.log(formData);
     // setFormData({ ...formData });
@@ -118,12 +120,6 @@ function SellerformPage() {
           )}
           {isLoading && <DotSpinner className="animation" size={100} speed={1.75} color="var(--green)" />}
         </FormBodyBox>
-        {/* <ButtonBox>
-          <button onClick={prevButton} disabled={index === 1}>
-            Previous
-          </button>
-          {index === 4 ? <button>Submit</button> : <button onClick={nextButton}>Next</button>}
-        </ButtonBox> */}
         <BackImage />
       </FormBox>
     </FormLayout>
