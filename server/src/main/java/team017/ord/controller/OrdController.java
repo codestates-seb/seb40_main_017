@@ -43,4 +43,14 @@ public class OrdController {
         return new ResponseEntity<>("Success delete",HttpStatus.OK);
 
     }
+
+    @GetMapping("/{order_id}")
+    public ResponseEntity getOrd(@PathVariable("order_id") @Positive Long ordId){
+      Ord ord= ordService.findVerifiedOrd(ordId);
+      OrdResponseDto response = ordMapper.ordToOrdResponseDto(ord);
+
+        log.info("redirect 가 전송됨");
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
 }

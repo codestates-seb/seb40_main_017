@@ -1,7 +1,6 @@
 package team017.payment;
 
 import javax.validation.constraints.Positive;
-
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -9,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import team017.ord.dto.OrdResponseDto;
 import team017.ord.entity.Ord;
 import team017.ord.service.OrdService;
@@ -18,7 +18,6 @@ import team017.ord.service.OrdService;
 @AllArgsConstructor
 @Validated
 public class PaymentController {
-
     private final KakaoPayService kakaoPayService;
     private final OrdService ordService;
 
@@ -36,7 +35,7 @@ public class PaymentController {
 
     //결제 승인 요청
     @GetMapping("/order/pay/completed")
-    public ResponseEntity payCompleted(@RequestParam("pg_token") String pgToken) {
+    public String payCompleted(@RequestParam("pg_token") String pgToken, RedirectAttributes redirectAttributes) {
 
         log.info("!결제승인 요청 시작!") ;
         log.info("결제승인 요청을 인증하는 토큰: " + pgToken);
@@ -45,22 +44,34 @@ public class PaymentController {
         OrdResponseDto response = kakaoPayService.payApprove(pgToken);
         log.info("결제 완료");
 
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        Long ordId = response.getOrdId();
+
+        redirectAttributes.addAttribute("ordId", ordId);
+
+        //return new ResponseEntity<>(response, HttpStatus.OK);
+        //return "redirect: https://www.17farm.shop/order/pay/completed";
+        //return "redirect:http://localhost:8080/test";
+
+        return "redirect:http://localhost:3000/order/pay/completed";
     }
 
     // 결제 취소시 실행 url
     @GetMapping("/order/pay/cancel")
-    public ResponseEntity payCancel() {
+    public String payCancel() {
         kakaoPayService.cancelOrFailPayment();
         log.info("결제 취소");
-        return new ResponseEntity<>("결제 취소", HttpStatus.OK);
+
+        //return "redirect: https://www.17farm.shop/order/pay/cancel";
+        return "redirect:http://localhost:3000/order/pay/fail";
     }
 
     // 결제 실패시 실행 url
     @GetMapping("/order/pay/fail")
-    public ResponseEntity payFail() {
+    public String payFail() {
         kakaoPayService.cancelOrFailPayment();
         log.info("결제 실패");
-        return new ResponseEntity<>("결제 실패",HttpStatus.OK);
+
+        //return "redirect: https://www.17farm.shop/order/pay/fail";
+        return "redirect:http://localhost:3000/order/pay/cancel";
     }
 }

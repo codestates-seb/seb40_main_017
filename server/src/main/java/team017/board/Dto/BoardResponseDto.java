@@ -18,6 +18,8 @@ public class BoardResponseDto {
 
     private Long sellerId;
 
+    private String mainImage;               //게시판 썸네일 이미지
+
     private String name;                    //판매자 이름
 
     private String title;                   //게시글 제목
