@@ -45,13 +45,9 @@ public class PaymentController {
         log.info("결제 완료");
 
         Long ordId = response.getOrdId();
-
         redirectAttributes.addAttribute("ordId", ordId);
 
-        //return new ResponseEntity<>(response, HttpStatus.OK);
         //return "redirect: https://www.17farm.shop/order/pay/completed";
-        //return "redirect:http://localhost:8080/test";
-
         return "redirect:http://localhost:3000/order/pay/completed";
     }
 
