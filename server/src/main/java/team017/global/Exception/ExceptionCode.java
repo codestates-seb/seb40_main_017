@@ -22,9 +22,9 @@ public enum ExceptionCode {
 	FORBIDDEN(403, "접근 권한이 없습니다."),
 	MEMBER_EXISTS(409, "이미 존재하는 이메일입니다."),
 	WRONG_ACCESS(400, "잘못된 접근입니다."),
-
 	ORDER_NOT_FOUND(404, "Order not found"),
-	PRODUCT_SOLDOUT(404, "Product soldout");
+	PRODUCT_SOLDOUT(404, "Product soldout"),
+	PRODUCT_NOT_ENOUGH(404, "Product not enough");
 
 	@Getter
 	private int status;
