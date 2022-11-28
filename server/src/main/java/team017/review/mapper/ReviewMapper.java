@@ -3,7 +3,6 @@ package team017.review.mapper;
 import org.mapstruct.Mapper;
 import team017.board.Entity.Board;
 import team017.member.entity.Client;
-import team017.review.dto.ReviewPatchDto;
 import team017.review.dto.ReviewPostDto;
 import team017.review.dto.ReviewResponseDto;
 import team017.review.entity.Review;
@@ -32,26 +31,26 @@ public interface ReviewMapper {
         return review;
     }
 
-    default Review reviewPatchDtoToReview(ReviewPatchDto reviewPatchDto) {
-        if ( reviewPatchDto == null ) {
-            return null;
-        }
-
-        Client.ClientBuilder client = Client.builder();
-        client.build();
-
-        Board board = new Board();
-        board.setBoardId(reviewPatchDto.getBoardId());
-
-        Review review = new Review();
-        review.setClient(client.build());
-        review.setBoard(board);
-        review.setImage(reviewPatchDto.getImage());
-        review.setReviewId( reviewPatchDto.getReviewId());
-        review.setContext( reviewPatchDto.getContext());
-
-        return review;
-    }
+//    default Review reviewPatchDtoToReview(ReviewPatchDto reviewPatchDto) {
+//        if ( reviewPatchDto == null ) {
+//            return null;
+//        }
+//
+//        Client.ClientBuilder client = Client.builder();
+//        client.build();
+//
+//        Board board = new Board();
+//        board.setBoardId(reviewPatchDto.getBoardId());
+//
+//        Review review = new Review();
+//        review.setClient(client.build());
+//        review.setBoard(board);
+//        review.setImage(reviewPatchDto.getImage());
+//        review.setReviewId( reviewPatchDto.getReviewId());
+//        review.setContext( reviewPatchDto.getContext());
+//
+//        return review;
+//    }
 
     default ReviewResponseDto reviewToReviewResponseDto(Review review) {
         if ( review == null ) {

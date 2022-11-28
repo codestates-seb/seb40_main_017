@@ -39,7 +39,7 @@ public class CommentService {
 
     public Comment updateComment(Comment comment, Long memberId) {
         Comment foundComment = findComment(comment.getCommentId());
-        verifyWriter(memberId, foundComment.getMember().getMemberId());
+        verifyWriter(memberId, foundComment.getMember().getMemberId()); // 작성자와 수정자가 같은지 확인
 
         Optional.ofNullable(comment.getContext()).ifPresent(context -> foundComment.setContext(context));
 

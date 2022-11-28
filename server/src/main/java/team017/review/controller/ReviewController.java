@@ -1,18 +1,13 @@
 package team017.review.controller;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import team017.board.Entity.Board;
 import team017.global.response.MultiResponseDto;
-import team017.review.dto.ReviewPatchDto;
 import team017.review.dto.ReviewPostDto;
-import team017.review.dto.ReviewResponseDto;
 import team017.review.entity.Review;
 import team017.review.mapper.ReviewMapper;
 import team017.review.service.ReviewService;
@@ -58,15 +53,15 @@ public class ReviewController {
         );
     }
 
-    @PatchMapping("/reviews/{review-id}")
-    public ResponseEntity patchReview(@PathVariable("review-id") @Positive Long reviewId,
-                                      @Valid @RequestBody ReviewPatchDto reviewPatchDto) {
-        reviewPatchDto.setReviewId(reviewId);
-        Review review = reviewService.updateReview(
-                reviewMapper.reviewPatchDtoToReview(reviewPatchDto), reviewPatchDto.getClientId());
-
-        return new ResponseEntity<>(reviewMapper.reviewToReviewResponseDto(review), HttpStatus.OK);
-    }
+//    @PatchMapping("/reviews/{review-id}")
+//    public ResponseEntity patchReview(@PathVariable("review-id") @Positive Long reviewId,
+//                                      @Valid @RequestBody ReviewPatchDto reviewPatchDto) {
+//        reviewPatchDto.setReviewId(reviewId);
+//        Review review = reviewService.updateReview(
+//                reviewMapper.reviewPatchDtoToReview(reviewPatchDto), reviewPatchDto.getClientId());
+//
+//        return new ResponseEntity<>(reviewMapper.reviewToReviewResponseDto(review), HttpStatus.OK);
+//    }
 
     @DeleteMapping("/reviews/{review-id}")
     public ResponseEntity deleteReview(

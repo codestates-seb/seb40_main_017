@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import team017.board.Entity.Board;
 import team017.board.Mapper.BoardMapper;
 import team017.global.response.MultiResponseDto;
-import team017.member.service.ClientService;
-import team017.member.service.MemberService;
 import team017.ord.entity.Ord;
 import team017.ord.mapper.OrdMapper;
 import team017.ord.service.OrdService;

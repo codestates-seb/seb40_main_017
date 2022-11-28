@@ -3,11 +3,9 @@ package team017.ord.mapper;
 import org.mapstruct.Mapper;
 import team017.board.Entity.Board;
 import team017.member.entity.Client;
-import team017.member.entity.Seller;
 import team017.ord.dto.OrdClientResponseDto;
 import team017.ord.dto.OrdPostDto;
 import team017.ord.dto.OrdResponseDto;
-import team017.ord.dto.OrdSellerResponseDto;
 import team017.ord.entity.Ord;
 import team017.product.Entity.Product;
 
