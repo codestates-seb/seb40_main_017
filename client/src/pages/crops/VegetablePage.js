@@ -1,7 +1,6 @@
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useState, useEffect } from 'react';
 import CropBoard from '../../components/CropBoard';
-import Loader from '../../components/Loader';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
@@ -67,7 +66,7 @@ function VegetablePage() {
           dataLength={items.length} //This is important field to render the next data
           next={fetchData}
           hasMore={hasMore}
-          loader={<Loader />}
+          loader={'로딩중'}
           endMessage={'endMsg'}
         >
           <BoardList>
