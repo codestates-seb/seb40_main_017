@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const Footerbox = styled.div`
+const Footerbox = styled.footer`
   width: 100%;
   height: 200px;
   padding: 0 100px;

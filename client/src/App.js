@@ -9,7 +9,7 @@ import MyPage from './pages/users/MyPage';
 import CropsListPage from './pages/CropsListPage';
 import FruitsPage from './pages/crops/FruitsPage';
 import VegetablePage from './pages/crops/VegetablePage';
-import RicePage from './pages/crops/RicePage';
+import GrainPage from './pages/crops/GrainPage';
 import NutsPage from './pages/crops/NutsPage';
 
 import styled from 'styled-components';
@@ -21,6 +21,7 @@ import { getCookie } from './features/cookie';
 import LogoutPage from './pages/users/LogoutPage';
 import { updateSession } from './api/login';
 import SellerInfoPage from './pages/sellers/SellerInfoPage';
+import CropInfoPage from './pages/crops/CropInfoPage';
 import Footer from './components/Footer';
 
 const StyledApp = styled.main`
@@ -88,8 +89,9 @@ const App = () => {
                   <Route path="/boards" element={<CropsListPage />} />
                   <Route path="/boards/fruit" element={<FruitsPage />} />
                   <Route path="/boards/vegetable" element={<VegetablePage />} />
-                  <Route path="/boards/grain" element={<RicePage />} />
+                  <Route path="/boards/grain" element={<GrainPage />} />
                   <Route path="/boards/nut" element={<NutsPage />} />
+                  <Route path="/boards/:boardId" element={<CropInfoPage />} />
                 </Routes>
               </StyledContent>
               <Footer />
