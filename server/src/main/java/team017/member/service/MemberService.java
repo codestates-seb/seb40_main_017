@@ -108,14 +108,14 @@ public class MemberService {
 	/* 역할 확인 */
 	private void correctRole(String target) {
 		if (! target.equalsIgnoreCase("CLIENT") && ! target.equalsIgnoreCase("SELLER")) {
-			throw new RuntimeException("역할이 잘못되었습니다.");
+			throw new BusinessLogicException(ExceptionCode.ROLE_ERROR);
 		}
 	}
 
 	/* 로컬 프로바이더 확인 */
 	public void checkLocalProvider(ProviderType providerType) {
 		if (providerType != ProviderType.LOCAL) {
-			throw new RuntimeException("소셜 사용자입니다.");
+			throw new BusinessLogicException(ExceptionCode.PROVIDER_ERROR);
 		}
 	}
 
@@ -131,7 +131,7 @@ public class MemberService {
 	public Member findMemberByEmail(String email) {
 		Member member = memberRepository.findMemberByEmail(email);
 		if (member == null) {
-			throw new RuntimeException("회원이 존재하지 않습니다.");
+			throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND);
 		}
 
 		return member;
