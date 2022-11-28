@@ -11,6 +11,8 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
+import team017.global.Exception.BusinessLogicException;
+import team017.global.Exception.ExceptionCode;
 import team017.member.entity.Member;
 import team017.member.entity.ProviderType;
 import team017.member.repository.MemberRepository;
@@ -48,7 +50,7 @@ public class CustomOAuth2Service extends DefaultOAuth2UserService {
 
 		if (findMember != null) {
 			if (providerType != findMember.getProviderType()) {
-				throw new RuntimeException("회원은 존재하나 지금의 소셜이 아닙니다.");
+				throw new BusinessLogicException(ExceptionCode.PROVIDER_ERROR);
 			}
 		} else {
 			/* 등록되지 않으면 저장이 필요 */

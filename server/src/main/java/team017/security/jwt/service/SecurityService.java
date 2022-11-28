@@ -110,7 +110,8 @@ public class SecurityService {
 
 		/* Access Token 검증 */
 		if (!securityProvider.validate(accessToken)) {
-			throw new RuntimeException("유효하지 않은 RefreshToken 입니다.");
+			log.error("유효하지 않은 access token");
+			throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED_TOKEN);
 		}
 
 		/* 인증 정보 가져오기 */
@@ -145,13 +146,14 @@ public class SecurityService {
 		String accessToken = request.getHeader("Authorization");
 
 		if (!securityProvider.validate(accessToken)) {
-			throw new RuntimeException("유효하지 않은 엑세스 토큰");
+			log.error("유효하지 않은 access token");
+			throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED_TOKEN);
 		}
 
 		Map<String, Object> claims = securityProvider.parseClaims(accessToken);
 
 		if (claims == null) {
-			throw new RuntimeException("만료되지 않은 토큰");
+			throw new BusinessLogicException(ExceptionCode.NOT_EXPIRATION_TOKEN);
 		}
 
 		String username = (String)claims.get("username");
@@ -159,14 +161,15 @@ public class SecurityService {
 		/* Refresh Token 확인 */
 		String refreshToken = CookieUtil.getCookie(request, "Refresh")
 			.map(Cookie::getValue)
-			.orElseThrow(() -> new RuntimeException("로그아웃 된 사용자입니다."));
+			.orElseThrow(() -> new BusinessLogicException(ExceptionCode.LOGOUT_MEMBER));
 
 		RefreshToken userRefreshToken =
 			refreshTokenRepository.findByKey(username)
-				.orElseThrow(() -> new RuntimeException("로그아웃 된 사용자입니다."));
+				.orElseThrow(() -> new BusinessLogicException(ExceptionCode.LOGOUT_MEMBER));
 
 		if (securityProvider.validate(refreshToken)) {
-			throw  new RuntimeException("유효하지 않은 리프레시 토큰");
+			log.error("유효하지 않은 refresh token");
+			throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED_TOKEN);
 		}
 		Date now = new Date();
 		long accessTime = securityProvider.getAccessTokenTime();

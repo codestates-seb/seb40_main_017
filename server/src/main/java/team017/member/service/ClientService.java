@@ -25,7 +25,7 @@ public class ClientService {
 	/* 존재하는 소비자인지 확인 */
 	public Client findVerifiedClient(long clientId) {
 		Optional<Client> optionalClient = clientRepository.findById(clientId);
-		Client findClient = optionalClient.orElseThrow(() -> new RuntimeException("Client Not Found"));
+		Client findClient = optionalClient.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
 		return findClient;
 	}
 

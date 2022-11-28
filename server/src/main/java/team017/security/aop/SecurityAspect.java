@@ -15,6 +15,8 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import team017.global.Exception.BusinessLogicException;
+import team017.global.Exception.ExceptionCode;
 import team017.security.jwt.SecurityProvider;
 import team017.security.jwt.refresh.RefreshToken;
 import team017.security.jwt.refresh.RefreshTokenRepository;
@@ -38,11 +40,12 @@ public class SecurityAspect {
 		String accessToken = request.getHeader("Authorization").replace("Bearer ", "");
 		Authentication authentication = securityProvider.getAuthentication(accessToken);
 		RefreshToken refreshTokenTable = refreshTokenRepository.findByKey(authentication.getName())
-			.orElseThrow(()-> new RuntimeException("리프레시 토큰이 존재하지 않습니다."));
+			.orElseThrow(()-> new BusinessLogicException(ExceptionCode.NOT_FOUND_TOKEN));
 		String refreshToken = refreshTokenTable.getValue();
 
 		if (accessToken == null) {
-			throw new RuntimeException("엑세스 토큰이 존재하지 않습니다.");
+			log.error("엑세스 토큰을 찾을 수 없습니다.");
+			throw new BusinessLogicException(ExceptionCode.NOT_FOUND_TOKEN);
 		}
 
 		/* 토큰 유효 시간 */

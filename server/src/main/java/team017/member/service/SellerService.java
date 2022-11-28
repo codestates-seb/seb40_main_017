@@ -29,7 +29,7 @@ public class SellerService {
     /* 존재하는 생산자인지 확인 */
     public Seller findVerifiedSeller(long sellerId) {
         Optional<Seller> optionalSeller = sellerRepository.findById(sellerId);
-        Seller findSeller = optionalSeller.orElseThrow(() -> new RuntimeException("Seller Not Found"));
+        Seller findSeller = optionalSeller.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
 
         return findSeller;
     }
