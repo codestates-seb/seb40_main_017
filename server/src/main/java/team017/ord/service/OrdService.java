@@ -17,6 +17,8 @@ import team017.ord.dto.OrdResponseDto;
 import team017.ord.entity.Ord;
 import team017.ord.mapper.OrdMapper;
 import team017.ord.repository.OrdRepository;
+import team017.product.Entity.Product;
+import team017.product.Repository.ProductRepository;
 import team017.product.Service.ProductService;
 
 import javax.transaction.Transactional;
@@ -29,6 +31,7 @@ public class OrdService {
     private final OrdRepository ordRepository;
     private final OrdMapper ordMapper;
     private final ProductService productService;
+    private final ProductRepository productRepository;
     private final BoardService boardService;
     private final BoardRepository boardRepository;
     private final ClientService clientService;
@@ -43,16 +46,25 @@ public class OrdService {
         Board findBoard = boardService.findVerifiedBoard(ordPostDto.getBoardId());
 
         //상품 존재 여부 확인
-        productService.findProduct(findBoard.getProduct().getProductId());
+        Product findProduct = productService.findProduct(findBoard.getProduct().getProductId());
 
-        //ord DB 저장
-        ord.setProduct(productService.findProduct(findBoard.getBoardId()));
-        ord.setClient(clientService.findVerifiedClient(findClient.getClientId()));
-        ordRepository.save(ord);
+        //주문 시 재고가 없다면
+        if(findProduct.getLeftStock() == 0){
+            findProduct.setStatus(Product.ProductStatus.PRD_SOLDOUT);
+            productRepository.save(findProduct);
+            throw new BusinessLogicException(ExceptionCode.PRODUCT_SOLDOUT);
+        }
+        //재고가 있다면
+        else{
+            //주문 등록 시, 재고에서 수량만큼 빼기
+            findProduct.setLeftStock(findProduct.getLeftStock() - ord.getQuantity());
+            productRepository.save(findProduct);
 
-        //주문 등록 시, 재고에서 수량만큼 빼기
-        findBoard.setLeftStock(findBoard.getLeftStock() - ord.getQuantity());
-        boardRepository.save(findBoard);
+            //ord DB 저장
+            ord.setProduct(productService.findProduct(findBoard.getBoardId()));
+            ord.setClient(clientService.findVerifiedClient(findClient.getClientId()));
+            ordRepository.save(ord);
+        }
 
         OrdResponseDto responseDto = ordMapper.ordToOrdResponseDto(ord);
 

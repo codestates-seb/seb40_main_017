@@ -105,7 +105,7 @@ public class KakaoPayService {
         Ord findOrd = ordService.findVerifiedOrd(ordId);
         Board findBoard = findOrd.getProduct().getBoard();
 
-        findBoard.setLeftStock(findBoard.getLeftStock() + findOrd.getQuantity());
+        findBoard.getProduct().setLeftStock(findBoard.getProduct().getLeftStock() + findOrd.getQuantity());
         boardRepository.save(findBoard);
         ordService.deleteOrd(ordId);
     }
