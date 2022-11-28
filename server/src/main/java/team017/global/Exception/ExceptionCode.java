@@ -23,7 +23,8 @@ public enum ExceptionCode {
 	MEMBER_EXISTS(409, "이미 존재하는 이메일입니다."),
 	WRONG_ACCESS(400, "잘못된 접근입니다."),
 
-	ORDER_NOT_FOUND(404, "Order not found");
+	ORDER_NOT_FOUND(404, "Order not found"),
+	PRODUCT_SOLDOUT(404, "Product soldout");
 
 	@Getter
 	private int status;
