@@ -18,7 +18,7 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
     Page<Board> findBoardsByProduct_Category(PageRequest pageRequest , int category );
 
     Page<Board> findBySeller_SellerId(Long sellerId, Pageable pageable);
-    @Query("SELECT new team017.board.Dto.BoardForSellerMyPageDto( b.boardId, b.title, b.product.stock, b.leftStock, b.createdAt) "
+    @Query("SELECT new team017.board.Dto.BoardForSellerMyPageDto( b.boardId, b.title, b.product.stock, b.product.leftStock, b.createdAt) "
         + "FROM Board as b  WHERE b.seller.sellerId = :sellerId ORDER BY b.boardId DESC")
     List<BoardForSellerMyPageDto> sellerBoard(@Param("sellerId") Long sellerId);
 

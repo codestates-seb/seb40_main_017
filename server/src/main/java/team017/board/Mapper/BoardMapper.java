@@ -51,7 +51,7 @@ public interface BoardMapper {
         ordResponseDto.setPhone(board.getSeller().getMember().getPhone());
         ordResponseDto.setStock(board.getProduct().getStock());
         ordResponseDto.setCategory(board.getProduct().getCategory());
-        ordResponseDto.setLeftStock(board.getLeftStock());
+        ordResponseDto.setLeftStock(board.getProduct().getLeftStock());
         ordResponseDto.setCreateAt(board.getCreatedAt());
         ordResponseDto.setModifiedAt(board.getModifiedAt());
 

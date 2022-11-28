@@ -12,6 +12,7 @@ import team017.product.Entity.Product;
 import team017.review.entity.Review;
 
 import javax.persistence.*;
+import javax.validation.constraints.PositiveOrZero;
 
 @Getter
 @Setter
@@ -32,9 +33,6 @@ public class Board extends Auditable {
 
     @Column(nullable = false )
     private int reviewNum;
-
-    @Column(nullable = false)
-    private int leftStock;
 
     @Column(nullable = false)
     private double reviewAvg ;

@@ -12,6 +12,8 @@ import team017.member.entity.Seller;
 import team017.ord.entity.Ord;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.PositiveOrZero;
 
 @Getter
 @Setter
@@ -29,17 +31,23 @@ public class Product {
 
     @ColumnDefault(value ="'PRD_SELLING'")
     @Enumerated(EnumType.STRING)
-    private ProductStatus status; //판매 상태
+    private ProductStatus status;
 
     @Column(nullable = false)
+    @PositiveOrZero
+    @Max(999)
     private int stock;
+
+    @Column(nullable = false)
+    @PositiveOrZero
+    @Max(999)
+    private int leftStock;
 
     @Column(nullable = false)
     private int category;
 
     @Column
     private String mainImage;
-
 
     /* 🍋게시판 - 상품 일대일 연관 관계 : 상품 참조*/
     @OneToOne(mappedBy = "product",cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, targetEntity = Board.class )
@@ -62,14 +70,6 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Ord> ordList = new ArrayList<>();
 
-    /* 🍑상품 - 주문 연관 관계 편의 메서드 */
-    // public void setOrd(Ord ord) {
-    //     this.ord = ord;
-    //
-    //     if(ord.getProduct() != this){
-    //         ord.setProduct(this);
-    //     }
-    // }
     public void addOrd(Ord ord) {
         ordList.add(ord);
 
