@@ -9,6 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class SellerPatchDto {
 	private String name;
+	private long sellerId;
 	private String phone;
 	private String password;
 	private String address;

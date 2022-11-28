@@ -7,13 +7,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import team017.member.service.ClientService;
 import team017.ord.dto.OrdPostDto;
 import team017.ord.dto.OrdResponseDto;
 import team017.ord.entity.Ord;
 import team017.ord.mapper.OrdMapper;
 import team017.ord.service.OrdService;
-import team017.product.Service.ProductService;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;

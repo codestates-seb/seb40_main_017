@@ -3,15 +3,11 @@ package team017.ord.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.LazyCollection;
 import team017.global.audit.Auditable;
 import team017.member.entity.Client;
-import team017.member.entity.Seller;
 import team017.product.Entity.Product;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @Setter

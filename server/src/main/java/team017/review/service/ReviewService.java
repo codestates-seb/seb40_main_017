@@ -47,17 +47,14 @@ public class ReviewService {
         return findVerifiedReviewById(reviewId);
     }
 
-    public Review updateReview(Review review, Long clientId){
-        Review foundReview = findReview(review.getReviewId());
-        verifyWriter(clientId, foundReview.getClient().getClientId()); // 작성자와 수정자가 같은지 확인
-
-
-
-        Optional.ofNullable(review.getContext()).ifPresent(context -> foundReview.setContext(context));
-        Optional.ofNullable(review.getImage()).ifPresent(image -> foundReview.setImage(image));
-
-        return reviewRepository.save(foundReview);
-    }
+//    public Review updateReview(Review review, Long clientId){
+//        Review foundReview = findReview(review.getReviewId());
+//        verifyWriter(clientId, foundReview.getClient().getClientId()); // 작성자와 수정자가 같은지 확인
+//        Optional.ofNullable(review.getContext()).ifPresent(context -> foundReview.setContext(context));
+//        Optional.ofNullable(review.getImage()).ifPresent(image -> foundReview.setImage(image));
+//
+//        return reviewRepository.save(foundReview);
+//    }
 
     public void deleteReview(Long reviewId, Long clientId){
         Review foundReview = findVerifiedReviewById(reviewId);
@@ -82,12 +79,12 @@ public class ReviewService {
     }
 
     private void verifiedBoard(Review review) {
-        boardService.findVerifiedBoard(review.getBoard().getBoardId());
+        boardService.getBoard(review.getBoard().getBoardId());
     }
 
-    public Page<Review> findReviews(int page, int size){
-        return reviewRepository.findAll(PageRequest.of(page, size, Sort.by("createdAt").descending()));
-    }
+//    public Page<Review> findReviews(int page, int size){
+//        return reviewRepository.findAll(PageRequest.of(page, size, Sort.by("createdAt").descending()));
+//    }
 
     public Page<Review> findReviewByBoards(Long boardId, int page, int size){
         return reviewRepository.findByBoard_BoardId(boardId, PageRequest.of(page, size, Sort.by("createdAt").descending()));

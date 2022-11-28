@@ -13,7 +13,6 @@ import team017.comments.entity.Comment;
 import team017.comments.mapper.CommentMapper;
 import team017.comments.service.CommentService;
 import team017.global.response.MultiResponseDto;
-import team017.global.response.SingleResponseDto;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;

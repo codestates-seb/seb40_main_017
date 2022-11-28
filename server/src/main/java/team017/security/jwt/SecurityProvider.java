@@ -90,10 +90,10 @@ public class SecurityProvider{
 				.compact();
 
 		/* 배포 용 */
-		return accessToken;
+//		return accessToken;
 
 		/* 테스트 용*/
-		// return BEARER_TYPE + accessToken;
+		 return BEARER_TYPE + accessToken;
 	}
 
 	/* 🦊 Refresh Token 생성 */
