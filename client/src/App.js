@@ -11,7 +11,8 @@ import FruitsPage from './pages/crops/FruitsPage';
 import VegetablePage from './pages/crops/VegetablePage';
 import GrainPage from './pages/crops/GrainPage';
 import NutsPage from './pages/crops/NutsPage';
-
+import SellerformPage from './pages/sellers/SellerformPage';
+import BuyFormPage from './pages/payments/BuyFormPage';
 import styled from 'styled-components';
 import { configureStore } from '@reduxjs/toolkit';
 import userSlice from './features/user/userSlice';
@@ -19,6 +20,10 @@ import { Provider } from 'react-redux';
 import { useCallback, useEffect, useState } from 'react';
 import { getCookie } from './features/cookie';
 import LogoutPage from './pages/users/LogoutPage';
+import paySlice from './features/pay/paySlice';
+import CompletePage from './pages/payments/CompletePage';
+import FailPage from './pages/payments/FailPage';
+import SellerPatchPage from './pages/sellers/SellerPatchPage';
 import { updateSession } from './api/login';
 import SellerInfoPage from './pages/sellers/SellerInfoPage';
 import CropInfoPage from './pages/crops/CropInfoPage';
@@ -45,6 +50,7 @@ const App = () => {
   const store = configureStore({
     reducer: {
       user: userSlice,
+      pay: paySlice,
     },
   });
   //  Provider 로부터 상태를 받는 위치가 아니기 때문에 store 변수에서 직접 dispatch 받아옴
@@ -92,6 +98,12 @@ const App = () => {
                   <Route path="/boards/grain" element={<GrainPage />} />
                   <Route path="/boards/nut" element={<NutsPage />} />
                   <Route path="/boards/:boardId" element={<CropInfoPage />} />
+                  <Route path="/sell" element={<SellerformPage />} />
+                  <Route path="/sell/patch" element={<SellerPatchPage />} />
+                  <Route path="/order" element={<BuyFormPage />} />
+                  <Route path="/order/pay/completed" element={<CompletePage />} />
+                  <Route path="/order/pay/fail" element={<FailPage />} />
+                  <Route path="/order/pay/cancel" element={<FailPage />} />
                 </Routes>
               </StyledContent>
               <Footer />

@@ -3,6 +3,8 @@ import { FiMenu } from 'react-icons/fi';
 import { getUser } from '../features/user/userSlice';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import Sidebar from './Sidebar';
+import { useState } from 'react';
 
 const Headerbox = styled.header`
   width: 100%;
@@ -13,6 +15,9 @@ const Headerbox = styled.header`
   z-index: 10;
   display: flex;
   justify-content: space-between;
+  .active {
+    left: 0em;
+  }
 `;
 
 const Menu = styled(FiMenu)`
@@ -32,8 +37,15 @@ const Logo = styled(Link)`
   color: var(--white);
   line-height: 80px;
   font-size: 30px;
-  margin-left: 20px;
+  margin-left: 100px;
   cursor: pointer;
+  @font-face {
+    font-family: 'BMEuljiro10yearslater';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-10-21@1.0/BMEuljiro10yearslater.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+  }
+  font-family: 'BMEuljiro10yearslater';
 `;
 
 const UserInfo = styled.div`
@@ -59,10 +71,21 @@ const UserInfo = styled.div`
 const Header = () => {
   //  Redux Provider 로 부터 사용자 정보 수신
   const user = useSelector(getUser);
+  const [sidebar, setSidebar] = useState(false);
+  const handleOnClick = () => {
+    if (!sidebar) {
+      setSidebar(true);
+      document.getElementById('sidebar').classList.add('active');
+    } else {
+      setSidebar(false);
+      document.getElementById('sidebar').classList.remove('active');
+    }
+  };
 
   return (
     <Headerbox>
-      <Menu />
+      <Menu onClick={handleOnClick} />
+      <Sidebar />
       <Logo to="/">17시 내고향</Logo>
       <UserInfo>
         {user.memberId ? (
