@@ -49,7 +49,7 @@ export const getSellerSaleList = ({ sellerId, page, size }, callback) => {
   apiServer({
     method: 'GET',
     url: `/mypage/${sellerId}`,
-    data: {
+    params: {
       sellerId,
       page,
       size,
@@ -68,7 +68,7 @@ export const getSellerSaleList = ({ sellerId, page, size }, callback) => {
           data: [
             {
               sellerId: 1,
-              productId: 1,
+              productId: 12,
               boardId: 1,
               title: '상품 게시판 제목 12',
               name: '김소비',
@@ -79,7 +79,7 @@ export const getSellerSaleList = ({ sellerId, page, size }, callback) => {
             },
             {
               sellerId: 1,
-              productId: 1,
+              productId: 11,
               boardId: 1,
               title: '상품 게시판 제목 11',
               name: '김소비',
@@ -90,7 +90,7 @@ export const getSellerSaleList = ({ sellerId, page, size }, callback) => {
             },
             {
               sellerId: 1,
-              productId: 1,
+              productId: 10,
               boardId: 1,
               title: '상품 게시판 제목 10',
               name: '김소비',
@@ -101,7 +101,7 @@ export const getSellerSaleList = ({ sellerId, page, size }, callback) => {
             },
             {
               sellerId: 1,
-              productId: 1,
+              productId: 9,
               boardId: 1,
               title: '상품 게시판 제목 9',
               name: '김소비',
@@ -112,7 +112,7 @@ export const getSellerSaleList = ({ sellerId, page, size }, callback) => {
             },
             {
               sellerId: 1,
-              productId: 1,
+              productId: 8,
               boardId: 1,
               title: '상품 게시판 제목 8',
               name: '김소비',
@@ -133,7 +133,7 @@ export const getSellerSaleList = ({ sellerId, page, size }, callback) => {
           data: [
             {
               sellerId: 1,
-              productId: 1,
+              productId: 7,
               boardId: 1,
               title: '상품 게시판 제목 7',
               name: '김소비',
@@ -144,7 +144,7 @@ export const getSellerSaleList = ({ sellerId, page, size }, callback) => {
             },
             {
               sellerId: 1,
-              productId: 1,
+              productId: 6,
               boardId: 1,
               title: '상품 게시판 제목 6',
               name: '김소비',
@@ -155,7 +155,7 @@ export const getSellerSaleList = ({ sellerId, page, size }, callback) => {
             },
             {
               sellerId: 1,
-              productId: 1,
+              productId: 5,
               boardId: 1,
               title: '상품 게시판 제목 5',
               name: '김소비',
@@ -166,7 +166,7 @@ export const getSellerSaleList = ({ sellerId, page, size }, callback) => {
             },
             {
               sellerId: 1,
-              productId: 1,
+              productId: 4,
               boardId: 1,
               title: '상품 게시판 제목 4',
               name: '김소비',
@@ -177,7 +177,7 @@ export const getSellerSaleList = ({ sellerId, page, size }, callback) => {
             },
             {
               sellerId: 1,
-              productId: 1,
+              productId: 3,
               boardId: 1,
               title: '상품 게시판 제목 3',
               name: '김소비',
@@ -198,7 +198,7 @@ export const getSellerSaleList = ({ sellerId, page, size }, callback) => {
           data: [
             {
               sellerId: 1,
-              productId: 1,
+              productId: 2,
               boardId: 1,
               title: '상품 게시판 제목 2',
               name: '김소비',
