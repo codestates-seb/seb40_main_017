@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-// import Header from './components/Header';
+import Header from './components/Header';
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/users/LoginPage';
 import SignupPage from './pages/users/SignupPage';
@@ -56,7 +56,7 @@ const App = () => {
       <BrowserRouter>
         <Provider store={store}>
           <StyledApp>
-            {/* <Header /> */}
+            <Header />
             <StyledContent>
               <Routes>
                 <Route path="/" element={<HomePage />} />
