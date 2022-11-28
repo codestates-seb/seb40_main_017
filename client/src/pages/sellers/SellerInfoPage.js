@@ -46,10 +46,37 @@ const StyledSellerInfo = styled.div`
           max-height: 100%;
         }
       }
+
+      @media (max-width: 1200px) {
+        width: 250px;
+      }
     }
 
     .seller-profile-info {
       flex: 1;
+    }
+
+    @media (max-width: 1000px) {
+      flex-direction: column;
+      align-items: center;
+
+      .seller-profile-image {
+        position: static;
+        top: auto;
+
+        flex: 1;
+        width: auto;
+        margin-right: 0;
+
+        picture {
+          max-width: 300px;
+        }
+      }
+
+      .seller-profile-info {
+        flex: 1;
+        width: 100%;
+      }
     }
   }
 `;
@@ -65,15 +92,25 @@ const StyledPreWrap = styled.p`
   min-height: 200px;
 
   white-space: pre-wrap;
+
+  @media (max-width: 800px) {
+    min-height: 100px;
+
+    border: 1px solid #a16d6d;
+  }
 `;
 const StyledBlock = styled.div`
   padding: 0 40px;
 
   & + div {
-    margin-top: 20px;
+    margin-top: 40px;
     padding-top: 40px;
 
     border-top: 5px solid #5d9061;
+  }
+
+  @media (max-width: 1000px) {
+    padding: 0;
   }
 `;
 const StyledDoubleBlock = styled.div`
@@ -98,6 +135,15 @@ const StyledDoubleBlock = styled.div`
 
     background-color: #5f5f5f;
   }
+
+  @media (max-width: 800px) {
+    flex-direction: column;
+    justify-content: auto;
+
+    &::before {
+      content: none;
+    }
+  }
 `;
 const StyledContentBox = styled.div`
   strong {
@@ -108,7 +154,6 @@ const StyledContentBox = styled.div`
 
   .content-box {
     padding: 40px;
-    margin-top: 20px;
 
     border-radius: 15px;
     background-color: #d5ccbe;
@@ -124,6 +169,12 @@ const StyledContentSubBox = styled.div`
   .content-sub-box {
     margin-top: 20px;
   }
+
+  @media (max-width: 800px) {
+    & + div {
+      margin-top: 20px;
+    }
+  }
 `;
 const StyledTable = styled.table`
   width: 100%;
@@ -137,6 +188,8 @@ const StyledTable = styled.table`
     font-size: 14px;
     font-weight: 400;
     padding: 10px 5px;
+
+    word-break: keep-all;
   }
 
   td {

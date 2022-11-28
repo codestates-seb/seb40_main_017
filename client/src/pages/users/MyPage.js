@@ -42,6 +42,10 @@ const StyledEditForm = styled.div`
       border-radius: 15px;
     }
   }
+
+  @media (max-width: 1000px) {
+    flex-wrap: wrap;
+  }
 `;
 const StyledAside = styled.div`
   position: relative;
@@ -105,6 +109,7 @@ const StyledTable = styled.table`
   th {
     font-size: 20px;
     padding: 15px 10px;
+    word-break: keep-all;
   }
 
   td {
@@ -118,7 +123,7 @@ const StyledClientTable = styled(StyledTable)`
       width: 20%;
     }
     col:nth-child(2) {
-      width: 10%;
+      width: 15%;
     }
     col:nth-child(3) {
       width: 20%;
@@ -127,7 +132,7 @@ const StyledClientTable = styled(StyledTable)`
       width: 20%;
     }
     col:nth-child(5) {
-      width: 30%;
+      width: 25%;
     }
   }
 
@@ -374,10 +379,39 @@ const StyledPhoto = styled.div`
       max-height: 100%;
     }
   }
+
+  @media (max-width: 1200px) {
+    width: 200px;
+    height: 200px;
+  }
+
+  @media (max-width: 1000px) {
+    flex: 100%;
+
+    width: auto;
+    height: auto;
+
+    picture {
+      max-width: 300px;
+      max-height: 300px;
+
+      margin: 0 auto;
+    }
+
+    margin-bottom: 50px;
+  }
 `;
 
 const StyledSellerAside = styled(StyledAside)`
   width: 250px;
+
+  @media (max-width: 1200px) {
+    width: 150px;
+  }
+
+  @media (max-width: 1000px) {
+    width: 100px;
+  }
 `;
 
 const StyledDoubleLayout = styled.div`
@@ -402,6 +436,15 @@ const StyledDoubleLayout = styled.div`
 
     background-color: #464646;
   }
+
+  @media (max-width: 1000px) {
+    flex-direction: column;
+    justify-content: auto;
+
+    &::before {
+      content: none;
+    }
+  }
 `;
 
 const StyledContentBox = styled.div`
@@ -417,6 +460,10 @@ const StyledContentBox = styled.div`
 
     border-radius: 15px;
     background-color: #d5ccbe;
+  }
+
+  @media (max-width: 1000px) {
+    margin-bottom: 20px;
   }
 `;
 
@@ -512,7 +559,7 @@ export const SellerMyPage = ({ handleDeleteMember }) => {
   //  Edit 모드 토글 핸들러
   const handleChangeEditMode = useCallback(() => {
     if (editMode) {
-      //  ON => OFF 데이터 초기
+      //  ON => OFF 데이터 초기화
       setUserName(seller.name);
       setUserPhone(seller.phone);
       setUserAddress(seller.address);
@@ -531,7 +578,7 @@ export const SellerMyPage = ({ handleDeleteMember }) => {
     setEditMode(false);
   }, []);
 
-  //  마이페이지 데이터 저장
+  // 마이페이지 데이터 저장
   const handleSubmitSeller = useCallback(
     async (event) => {
       event.preventDefault();
