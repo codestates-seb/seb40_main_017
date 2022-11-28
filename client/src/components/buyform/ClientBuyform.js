@@ -136,7 +136,6 @@ const ErrorBox = styled.div`
 
 export const ClientBuyForm = ({ nextButton, userData, itemData, count, price, setIsLoading }) => {
   const userFormData = userData;
-  console.log(userFormData);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const payInfo = useSelector((state) => state.pay.tid);
@@ -176,7 +175,6 @@ export const ClientBuyForm = ({ nextButton, userData, itemData, count, price, se
           dispatch(payActions.setPay({ orderid: res.data.ordId }));
         })
         .catch((err) => console.log(err));
-      // dispatch(payActions.setPay({ orderid: 1, tid: 777 }));
       console.log(payInfo);
       console.log(orderInfo);
       setIsLoading(false);
