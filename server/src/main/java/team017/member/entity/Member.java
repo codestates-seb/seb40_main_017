@@ -48,7 +48,7 @@ public class Member {
 
 	/* security 이용하여 역할 추가 */
 	@ElementCollection(fetch = FetchType.EAGER)
-	private List<String> roles = new ArrayList<>();
+	private List<String> roles;
 
 
 	/* 💜 소비자 - 회원 일대일 연관 관계 : 회원 참조*/
@@ -77,11 +77,11 @@ public class Member {
 		}
 	}
 
-	public Member(String name, String email, //String password,
+	public Member(String name, String email, String password,
 		ProviderType providerType, String role, List<String> roles) {
 		this.name = name;
 		this.email = email;
-		//this.password = password;
+		this.password = password;
 		this.providerType = providerType;
 		this.role = role;
 		this.roles = roles;

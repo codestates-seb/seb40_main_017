@@ -29,6 +29,7 @@ public interface BoardMapper {
     @Mapping(target = "name", expression = "java(board.getSeller().getMember().getName())")
     BoardTotalResponseDto productToBoardTotalResponseDto(Product product, Board board);
 
+
     default OrdSellerResponseDto ordToOrdSellerResponseDto(Board board){
         if( board == null){
             return null;
@@ -40,6 +41,7 @@ public interface BoardMapper {
         Product product = new Product();
         product.setProductId(board.getProduct().getBoard().getBoardId());
 
+
         OrdSellerResponseDto ordResponseDto = new OrdSellerResponseDto();
         ordResponseDto.setBoardId(product.getProductId());
         ordResponseDto.setSellerId(seller.getSellerId());
@@ -50,6 +52,8 @@ public interface BoardMapper {
         ordResponseDto.setStock(board.getProduct().getStock());
         ordResponseDto.setCategory(board.getProduct().getCategory());
         ordResponseDto.setLeftStock(board.getLeftStock());
+        ordResponseDto.setCreateAt(board.getCreatedAt());
+        ordResponseDto.setModifiedAt(board.getModifiedAt());
 
         return ordResponseDto;
 

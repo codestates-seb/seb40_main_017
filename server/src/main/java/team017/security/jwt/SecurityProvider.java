@@ -108,7 +108,7 @@ public class SecurityProvider{
 
 	public Authentication getAuthentication(String accessToken) {
 
-		/* 1. 토큰 복호화 */
+		/* 토큰 복호화 */
 		Map<String, Object> claims = parseClaims(accessToken);
 
 		/* 만약 복호화 한 토큰 안에 권한이 없으면 예외 던지기 */
@@ -122,8 +122,6 @@ public class SecurityProvider{
 		/* UserDetails 객체를 만들어 Authentication 리턴 */
 		UserDetails principal = new User((String)claims.get("username"), "", authorities);
 
-		/* 2. 권한이 잘 리턴 되는지 확인 */
-		log.info("2. 리턴 된 권한 : " + principal.getAuthorities());
 
 		return new UsernamePasswordAuthenticationToken(principal, null, authorities);
 	}

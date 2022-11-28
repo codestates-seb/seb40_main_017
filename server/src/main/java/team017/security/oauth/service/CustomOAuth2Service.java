@@ -61,14 +61,15 @@ public class CustomOAuth2Service extends DefaultOAuth2UserService {
 	private Member createMember(OAuth2UserInfo userInfo, ProviderType providerType) {
 
 		/* 멤버 생성 -> 이름, 이메일, 비밀번호, 소셜 타입, 역할, 권한 */
-		Member member = new Member(
-			userInfo.getName(),
-			userInfo.getEmail(),
-			//"Need Password?",
-			providerType,
-			"SOCIAL",
-			List.of("SOCIAL")
-		);
+		Member member = Member.builder()
+			.email(userInfo.getEmail())
+			.name(userInfo.getName())
+			.password(null)
+			.socialId(userInfo.getId())
+			.providerType(ProviderType.KAKAO)
+			.role("SOCIAL")
+			.roles(List.of("SOCIAL"))
+			.build();
 
 		return memberRepository.saveAndFlush(member);
 	}
