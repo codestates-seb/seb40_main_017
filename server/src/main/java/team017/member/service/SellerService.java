@@ -26,7 +26,7 @@ public class SellerService {
     private final BoardRepository boardRepository;
     private final MemberService memberService;
 
-    /* 존재하는 생산자인지 확인 + 생산자 정보 리턴 */
+    /* 존재하는 생산자인지 확인 */
     public Seller findVerifiedSeller(long sellerId) {
         Optional<Seller> optionalSeller = sellerRepository.findById(sellerId);
         Seller findSeller = optionalSeller.orElseThrow(() -> new RuntimeException("Seller Not Found"));
@@ -37,7 +37,6 @@ public class SellerService {
     /* 생산자 조회 */
     @Transactional(readOnly = true)
     public Seller findSeller(long sellerId) {
-        correctSeller(sellerId);
         Seller seller = findVerifiedSeller(sellerId);
 
         return seller;
@@ -45,17 +44,20 @@ public class SellerService {
 
     /* 생산자 정보 수정 */
     public Seller updateSeller(long sellerId, Seller seller) {
-        log.info("# 생산자 정보 수정 서비스 시작!");
+        correctSeller(sellerId);
         Seller findSeller = findVerifiedSeller(sellerId);
         Optional.ofNullable(seller.getIntroduce()).ifPresent(introduce -> findSeller.setIntroduce(introduce));
         Optional.ofNullable(seller.getImageUrl()).ifPresent(image -> findSeller.setImageUrl(image));
 
-        log.info("# 생산자 정보 수정 서비스 저장 직전!");
         return sellerRepository.save(findSeller);
     }
 
     public List<BoardForSellerMyPageDto> getSellerBoard(long sellerId) {
         List<BoardForSellerMyPageDto> sellerBoard = boardRepository.sellerBoard(sellerId);
+
+        if (sellerBoard.size() > 5) {
+            sellerBoard = sellerBoard.subList(0, 5);
+        }
 
         return sellerBoard;
     }
@@ -71,4 +73,3 @@ public class SellerService {
         }
     }
 }
-

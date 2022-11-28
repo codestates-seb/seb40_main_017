@@ -4,8 +4,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -60,7 +60,7 @@ public class SocialController {
 	}
 
 	/* 소셜 로그인 수정 -> only 권한 */
-	@PatchMapping("/social/{member_id}")
+	@PutMapping("/social/{member_id}")
 	public ResponseEntity patchSocial(@PathVariable("member_id") long memberId,
 			@RequestBody SocialPatchDto patchDto) {
 		Member member = securityService.updateSocial(patchDto.getRole(), memberId);

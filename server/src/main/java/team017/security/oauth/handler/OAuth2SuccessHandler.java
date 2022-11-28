@@ -39,7 +39,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 	private final RefreshTokenRepository refreshTokenRepository;
 	private final HttpSessionOAuth2AuthorizationRequestRepository authRepository;
 	private final SecurityProvider securityProvider;
-	private static String REDIRECT_URL = "http://localhost:3000/oauth/redirect";
+	private static String REDIRECT_URL = "http://localhost:8080/login/oauth2/code/kakao";
 
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
