@@ -1,24 +1,27 @@
 import styled from 'styled-components';
 import { AiFillStar } from 'react-icons/ai';
+import { Link } from 'react-router-dom';
 
-function CropBoard({ item: { name, title, price, mainImage, reviewAvg, reviewNum, sellerImage } }) {
+function CropBoard({ item: { boardId, name, title, price, mainImage, reviewAvg, reviewNum, sellerImage } }) {
   return (
-    <Container>
-      <CropImage src={mainImage} alt="썸네일" />
-      <CropInfo>
-        <p>{title}</p>
-        <p>{price}원</p>
-        <p>리뷰 {reviewNum}개</p>
-        <SellerInfo>
-          <p>{name}</p>
-          <Review>
-            <Star />
-            <p>{reviewAvg}/5</p>
-          </Review>
-          <SellerImage src={sellerImage} alt="판매자사진" />
-        </SellerInfo>
-      </CropInfo>
-    </Container>
+    <Link to={`/boards/${boardId}`}>
+      <Container>
+        <CropImage src={mainImage} alt="썸네일" />
+        <CropInfo>
+          <p>{title}</p>
+          <p>{price}원</p>
+          <p>리뷰 {reviewNum}개</p>
+          <SellerInfo>
+            <p>{name}</p>
+            <Review>
+              <Star />
+              <p>{reviewAvg}/5</p>
+            </Review>
+            <SellerImage src={sellerImage} alt="판매자사진" />
+          </SellerInfo>
+        </CropInfo>
+      </Container>
+    </Link>
   );
 }
 

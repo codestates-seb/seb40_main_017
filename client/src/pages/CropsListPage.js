@@ -3,29 +3,47 @@ import { useState, useEffect } from 'react';
 import CropBoard from '../components/CropBoard';
 import Loader from '../components/Loader';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 function CropListPage() {
   const [items, setItems] = useState([]);
   const [hasMore, sethasMore] = useState(true);
   const [page, setPage] = useState(2);
 
+  //fetch
   useEffect(() => {
     const getBoards = async () => {
       const res = await fetch(`${process.env.REACT_APP_API_URL}/boards?page=1&size=10`);
       const data = await res.json();
-      setItems(data);
       console.log('data:', data);
+      setItems(data.data);
     };
     getBoards();
   }, []);
 
-  console.log('items:', items);
+  //axios
+  // useEffect(() => {
+  //   const getBoards = async () => {
+  //     const res = await axios.get(`${process.env.REACT_APP_API_URL}/boards?page=1&size=10`)
+  //     setItems(res);
+  //   };
+  //   getBoards();
+  // }, []);
 
+  console.log('items:', items.data);
+
+  //fetch
   const fetchBoards = async () => {
     const res = await fetch(`${process.env.REACT_APP_API_URL}/boards?page=${page}&size=10`);
     const data = await res.json();
-    return data;
+    return data.data;
   };
+
+  //axios
+  // const fetchBoards = async () => {
+  //   const res = await axios.get(`${process.env.REACT_APP_API_URL}/boards?page=${page}&size=10`);
+  //   return res;
+  // };
 
   const fetchData = async () => {
     const commentsFormServer = await fetchBoards();
@@ -45,11 +63,21 @@ function CropListPage() {
         </CropInfo>
         <CategoryList>
           <ol>
-            <li>전체상품</li>
-            <li>과일</li>
-            <li>야채</li>
-            <li>쌀/잡곡</li>
-            <li>견과류</li>
+            <Link to="/boards">
+              <li>전체상품</li>
+            </Link>
+            <Link to="/boards/fruit">
+              <li>과일</li>
+            </Link>
+            <Link to="/boards/vegetable">
+              <li>야채</li>
+            </Link>
+            <Link to="/boards/grain">
+              <li>쌀/잡곡</li>
+            </Link>
+            <Link to="/boards/nut">
+              <li>견과류</li>
+            </Link>
           </ol>
         </CategoryList>
         <InfiniteScroll
@@ -61,7 +89,7 @@ function CropListPage() {
         >
           <BoardList>
             {items.map((item) => {
-              return <CropBoard key={item.boardId} item={item} />;
+              return <CropBoard key={item.boardId} boardId={item.boardId} item={item} />;
             })}
           </BoardList>
         </InfiniteScroll>

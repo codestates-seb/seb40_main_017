@@ -101,7 +101,7 @@
       "name": "박생산",
       "title": "백미 500g",
       "price": 1000,
-      "category": 1,
+      "category": 2,
       "reviewAvg": 3.5,
       "url": "https://via.placeholder.com/600/d32776",
       "mainImage": "https://via.placeholder.com/150/d32776"
@@ -125,7 +125,7 @@
       "name": "박생산",
       "title": "백미 500g",
       "price": 1000,
-      "category": 1,
+      "category": 4,
       "reviewAvg": 3.5,
       "url": "https://via.placeholder.com/600/56a8c2",
       "mainImage": "https://via.placeholder.com/150/56a8c2"

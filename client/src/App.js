@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Header from './components/Header';
+// import Header from './components/Header';
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/users/LoginPage';
 import SignupPage from './pages/users/SignupPage';
@@ -7,7 +7,7 @@ import MyPage from './pages/users/MyPage';
 import CropsListPage from './pages/CropsListPage';
 import FruitsPage from './pages/crops/FruitsPage';
 import VegetablePage from './pages/crops/VegetablePage';
-import RicePage from './pages/crops/RicePage';
+import GrainPage from './pages/crops/GrainPage';
 import NutsPage from './pages/crops/NutsPage';
 import styled from 'styled-components';
 import { configureStore } from '@reduxjs/toolkit';
@@ -16,6 +16,8 @@ import { Provider } from 'react-redux';
 import { useEffect } from 'react';
 import { getCookie } from './features/cookie';
 import LogoutPage from './pages/users/LogoutPage';
+import CropInfoPage from './pages/crops/CropInfoPage';
+import Footer from './components/Footer';
 
 const StyledApp = styled.main`
   display: flex;
@@ -54,7 +56,7 @@ const App = () => {
       <BrowserRouter>
         <Provider store={store}>
           <StyledApp>
-            <Header />
+            {/* <Header /> */}
             <StyledContent>
               <Routes>
                 <Route path="/" element={<HomePage />} />
@@ -65,10 +67,12 @@ const App = () => {
                 <Route path="/boards" element={<CropsListPage />} />
                 <Route path="/boards/fruit" element={<FruitsPage />} />
                 <Route path="/boards/vegetable" element={<VegetablePage />} />
-                <Route path="/boards/grain" element={<RicePage />} />
+                <Route path="/boards/grain" element={<GrainPage />} />
                 <Route path="/boards/nut" element={<NutsPage />} />
+                <Route path="/boards/:boardId" element={<CropInfoPage />} />
               </Routes>
             </StyledContent>
+            <Footer />
           </StyledApp>
         </Provider>
       </BrowserRouter>
