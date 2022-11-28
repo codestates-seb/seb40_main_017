@@ -1,10 +1,11 @@
 import styled from 'styled-components';
 import { AiFillStar } from 'react-icons/ai';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const ARRAY = [0, 1, 2, 3, 4];
 
-function StarRate() {
+function StarRate(props) {
   const [clicked, setClicked] = useState([false, false, false, false, false]);
 
   const handleStarClick = (index) => {
@@ -15,12 +16,15 @@ function StarRate() {
     setClicked(clickStates);
   };
 
-  //   useEffect(() => {
-  //     sendReview();
-  //   }, [clicked]);
+  useEffect(() => {
+    sendReview();
+  }, [clicked]);
 
-  //   const sendReview = () => {
-  //     let score = clicked.filter(Boolean).length;
+  const sendReview = () => {
+    let score = clicked.filter(Boolean).length;
+    axios.post(`${process.env.REACT_APP_API_URL}/boards/${props.boardId}/reviews`, { star: score });
+    console.log(score);
+  };
   //     fetch('http://52.78.63.175:8000/movie', {
   //       method: 'POST',
   //       Headers: {
