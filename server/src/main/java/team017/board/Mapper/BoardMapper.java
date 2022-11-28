@@ -35,7 +35,6 @@ public interface BoardMapper {
             return null;
         }
 
-        int soldStock = board.getProduct().getStock() - board.getLeftStock();
         Seller seller = new Seller();
         seller.setSellerId(board.getSeller().getSellerId());
 
