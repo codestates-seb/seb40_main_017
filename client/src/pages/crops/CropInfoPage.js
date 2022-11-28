@@ -1,13 +1,110 @@
 import styled from 'styled-components';
-import lettuce from '../../assets/styles/img/lettuce.jpg';
-import CropDetail from '../../assets/styles/img/CropDetail.png';
 import { AiOutlinePlusCircle, AiOutlineMinusCircle } from 'react-icons/ai';
-import StarRate from '../../components/StarRate';
 import { Link } from 'react-scroll';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import Paging from '../../components/Paging';
+import { Review } from '../../components/Review';
+// import { Viewer } from '@toast-ui/react-editor';
+import '@toast-ui/editor/dist/toastui-editor.css';
+// import CommentPaging from '../../components/CommentPaging';
+
+function CropInfoPage() {
+  const { boardId } = useParams();
+  const [board, setBoard] = useState({});
+  // console.log(boardId);
+
+  //BoardFetch
+  const GetCropInfo = async () => {
+    const response = await axios.get(`${process.env.REACT_APP_API_URL}/boards/${boardId}`);
+    setBoard(response.data);
+  };
+  useEffect(() => {
+    GetCropInfo();
+  }, []);
+
+  // const CommentOnSubmitHandler = async (e) => {
+  //   e.preventDefault();
+  //   const context = e.target.context.value;
+  //   await axios.post(`${process.env.REACT_APP_API_URL}/boards/{board_id}/reviews`, { context });
+  //   // GetComment();
+  // };
+
+  return (
+    <Background>
+      <Container>
+        <Crop>
+          <CropImage src={board.mainImage} alt="상품이미지" />
+          <CropInfo>
+            <CropTitle>
+              <p>{board.title}</p>
+              <p>{board.price}원</p>
+            </CropTitle>
+            <PurchaseCount>
+              <p>구매수량</p>
+              <Plus />
+              <Count>1</Count>
+              <Minus />
+            </PurchaseCount>
+            <p>남은수량 {board.stock}개</p>
+            <p>생산자 정보 바로가기</p>
+            <GreenButton>구매</GreenButton>
+          </CropInfo>
+        </Crop>
+        <ContentDiv>
+          <Menubar>
+            <ul>
+              <Link to="a" spy={true} smooth={true}>
+                <li>상품설명</li>
+              </Link>
+              <Link to="b" spy={true} smooth={true}>
+                <li>리뷰</li>
+              </Link>
+              <Link to="c" spy={false} smooth={true}>
+                <li>리뷰작성</li>
+              </Link>
+              <Link to="d" spy={false} smooth={true}>
+                <li>문의</li>
+              </Link>
+              <Link to="e" spy={false} smooth={true}>
+                <li className="lastlist">문의작성</li>
+              </Link>
+            </ul>
+          </Menubar>
+          <MenuLink>
+            <div id="a">{board.content}</div>
+            <Review />
+            <div id="d">
+              <h2>문의</h2>
+              {/* <CommentPaging /> */}
+              {/* {commentList?.map((comment) => (
+                <ol key={comment.clientId}>
+                  <li>{comment.commentId}</li>
+                  <li>{comment.context}</li>
+                  <li>{comment.name}</li>
+                  <li>{comment.createdAt}</li>
+                </ol>
+              ))} */}
+            </div>
+            <div id="e">
+              <h2>문의작성</h2>
+              <Layout>
+                <p>문의</p>
+                {/* <form onSubmit={CommentOnSubmitHandler}>
+                  <input name="context" />
+                  <input type="submit" value="등록하기" />
+                </form> */}
+              </Layout>
+              <GreenButton>등록하기</GreenButton>
+            </div>
+          </MenuLink>
+        </ContentDiv>
+      </Container>
+    </Background>
+  );
+}
+
+export default CropInfoPage;
 
 const Background = styled.div`
   background-color: var(--off-white);
@@ -94,11 +191,6 @@ const GreenButton = styled.button`
   cursor: pointer;
 `;
 
-const CropDetails = styled.img`
-  width: 100%;
-  height: 100%;
-`;
-
 const ContentDiv = styled.div``;
 
 const Menubar = styled.div`
@@ -147,13 +239,6 @@ const MenuLink = styled.div`
   }
 `;
 
-// const ContentBox = styled.textarea`
-//   width: 700px;
-//   height: 200px;
-//   resize: none;
-//   border: 1px solid var(--light-gray);
-// `;
-
 const Layout = styled.div`
   display: flex;
   text-align: center;
@@ -161,129 +246,3 @@ const Layout = styled.div`
     margin-right: 30px;
   }
 `;
-
-function CropInfoPage() {
-  const { boardId } = useParams();
-  const [board, setBoard] = useState({});
-
-  //BoardFetch
-  const GetReview = async () => {
-    const response = await axios.get(`${process.env.REACT_APP_API_URL}/boards/${boardId}`);
-    setBoard(response.data);
-  };
-  useEffect(() => {
-    GetReview();
-  }, []);
-
-  // const ReviewOnSubmitHandler = async (e) => {
-  //   e.preventDefault();
-  //   const context = e.target.context.value;
-  //   await axios.post(SERVER_URL, { context });
-  //   GetReview();
-  // };
-
-  // useEffect(() => {
-  //   GetComment();
-  // }, []);
-
-  // const CommentOnSubmitHandler = async (e) => {
-  //   e.preventDefault();
-  //   const context = e.target.context.value;
-  //   await axios.post(SERVER_URL, { context });
-  //   GetComment();
-  // };
-
-  return (
-    <Background>
-      <Container>
-        <Crop>
-          <CropImage src={lettuce} alt="상추" />
-          <CropInfo>
-            <CropTitle>
-              <p>양파(2kg)</p>
-              <p>5,700원</p>
-            </CropTitle>
-            <PurchaseCount>
-              <p>구매수량</p>
-              <Plus />
-              <Count>1</Count>
-              <Minus />
-            </PurchaseCount>
-            <p>남은수량 999개</p>
-            <p>생산자 정보 바로가기</p>
-            <GreenButton>구매</GreenButton>
-          </CropInfo>
-        </Crop>
-        <ContentDiv>
-          <Menubar>
-            <ul>
-              <Link to="a" spy={true} smooth={true}>
-                <li>상품설명</li>
-              </Link>
-              <Link to="b" spy={true} smooth={true}>
-                <li>리뷰</li>
-              </Link>
-              <Link to="c" spy={false} smooth={true}>
-                <li>리뷰작성</li>
-              </Link>
-              <Link to="d" spy={false} smooth={true}>
-                <li>문의</li>
-              </Link>
-              <Link to="e" spy={false} smooth={true}>
-                <li className="lastlist">문의작성</li>
-              </Link>
-            </ul>
-          </Menubar>
-          <MenuLink>
-            <div id="a">
-              <CropDetails src={CropDetail} alt="상품설명" />
-            </div>
-            <div id="b">
-              <h2>리뷰</h2>
-              <Paging />
-            </div>
-            <div id="c">
-              <h2>리뷰작성</h2>
-              <Layout className="firstlayout">
-                <p>별점</p>
-                <StarRate />
-              </Layout>
-              <Layout>
-                <p>상세리뷰</p>
-                <form onSubmit={ReviewOnSubmitHandler}>
-                  <textarea name="context" />
-                  <input type="submit" value="등록하기" />
-                </form>
-              </Layout>
-            </div>
-            <div id="d">
-              <h2>문의</h2>
-              {commentList?.map((comment) => (
-                <ol key={comment.clientId}>
-                  {/* reviewId 가 undefined여서 unique key prop 오류가 뜨는거 같아서 서버연결해서 확인해봐야함 */}
-                  <li>{comment.commentId}</li>
-                  <li>{comment.context}</li>
-                  <li>{comment.name}</li>
-                  <li>{comment.createdAt}</li>
-                </ol>
-              ))}
-            </div>
-            <div id="e">
-              <h2>문의작성</h2>
-              <Layout>
-                <p>문의</p>
-                <form onSubmit={CommentOnSubmitHandler}>
-                  <input name="context" />
-                  <input type="submit" value="등록하기" />
-                </form>
-              </Layout>
-              <GreenButton>등록하기</GreenButton>
-            </div>
-          </MenuLink>
-        </ContentDiv>
-      </Container>
-    </Background>
-  );
-}
-
-export default CropInfoPage;

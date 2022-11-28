@@ -1,30 +1,31 @@
 import styled from 'styled-components';
 import ReactPaginate from 'react-paginate';
 import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 
-const Paging = () => {
+const ReviewPaging = () => {
   const [items, setItems] = useState([]);
-
+  const { boardId } = useParams();
   const [pageCount, setpageCount] = useState(0);
 
   let limit = 5;
 
   useEffect(() => {
-    const getComments = async () => {
-      const res = await fetch(`${process.env.REACT_APP_API_URL}/comments/?_page=1&_limit=${limit}`);
+    const getReviews = async () => {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/boards/comments/${boardId}/?_page=1&_limit=${limit}`);
       const data = await res.json();
       const total = res.headers.get('x-total-count');
       setpageCount(Math.ceil(total / 5));
       // console.log(Math.ceil(total / 5));
       setItems(data);
     };
-    getComments();
+    getReviews();
   }, []);
 
   console.log(items);
 
-  const fetchComments = async (currentPage) => {
-    const res = await fetch(`${process.env.REACT_APP_API_URL}/comments?_page=${currentPage}&_limit=${limit}`);
+  const fetchReviews = async (currentPage) => {
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/boards/comments/${boardId}/?_page=${currentPage}&_limit=${limit}`);
     const data = await res.json();
     return data;
   };
@@ -34,7 +35,7 @@ const Paging = () => {
 
     let currentPage = page.selected + 1;
 
-    const commentsFormServer = await fetchComments(currentPage);
+    const commentsFormServer = await fetchReviews(currentPage);
 
     setItems(commentsFormServer);
   };
@@ -71,7 +72,7 @@ const Paging = () => {
   );
 };
 
-export default Paging;
+export default ReviewPaging;
 
 const PaginationBox = styled.div`
   .pagination {

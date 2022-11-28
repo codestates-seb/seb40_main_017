@@ -4,7 +4,7 @@ import CropBoard from '../../components/CropBoard';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
-function VegetablePage() {
+function GrainPage() {
   const [items, setItems] = useState([]);
   const [hasMore, sethasMore] = useState(true);
   const [page, setPage] = useState(2);
@@ -71,7 +71,7 @@ function VegetablePage() {
         >
           <BoardList>
             {items.map((item) => {
-              if (item.category === 2) {
+              if (item.category === 3) {
                 return <CropBoard key={item.boardId} item={item} />;
               }
             })}
@@ -82,7 +82,7 @@ function VegetablePage() {
   );
 }
 
-export default VegetablePage;
+export default GrainPage;
 
 const Background = styled.div`
   background-color: var(--off-white);

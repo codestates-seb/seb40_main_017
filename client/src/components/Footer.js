@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const Footerbox = styled.div`
+const Footerbox = styled.footer`
   width: 100%;
   height: 200px;
   padding: 0 100px;
@@ -24,8 +24,8 @@ function Footer() {
     <Footerbox>
       <Logo>17시 내고향</Logo>
       <Team>
-        <p>FE: 남궁태욱 김민성 권수현</p>
-        <p>BE: 신지훈 가빈 신승현</p>
+        <p>FE</p>
+        <p>BE</p>
       </Team>
     </Footerbox>
   );

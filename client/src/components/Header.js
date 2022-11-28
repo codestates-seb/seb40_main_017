@@ -69,6 +69,7 @@ const UserInfo = styled.div`
 `;
 
 const Header = () => {
+  //  Redux Provider 로 부터 사용자 정보 수신
   const user = useSelector(getUser);
   const [sidebar, setSidebar] = useState(false);
   const handleOnClick = () => {
@@ -80,13 +81,14 @@ const Header = () => {
       document.getElementById('sidebar').classList.remove('active');
     }
   };
+
   return (
     <Headerbox>
       <Menu onClick={handleOnClick} />
       <Sidebar />
       <Logo to="/">17시 내고향</Logo>
       <UserInfo>
-        {user ? (
+        {user.memberId ? (
           <>
             <Link to="/mypage">마이페이지</Link>
             <Link to="/logout">로그아웃</Link>
