@@ -173,7 +173,7 @@ function SellerPatchPage() {
   // 수정할 페이지 정보 불러오기
   const getItem = async () => {
     await axios
-      .get(`${process.env.REACT_APP_API_URL}/boards/1`)
+      .get(`${process.env.REACT_APP_API_URL}/boards/4`)
       .then((res) => {
         console.log(res);
         console.log(res.data);
@@ -181,7 +181,6 @@ function SellerPatchPage() {
           return { ...prevState, ...res.data };
         });
         console.log('데이터 넣기');
-        setContent();
       })
       .catch((error) => console.log(error));
   };
@@ -194,6 +193,10 @@ function SellerPatchPage() {
     getItem();
     console.log(itemData);
   }, []);
+
+  useEffect(() => {
+    setContent();
+  }, [itemData]);
 
   // 메인이미지
   // useEffect(() => {
@@ -330,7 +333,7 @@ function SellerPatchPage() {
 
     if (window.confirm('확인')) {
       axios
-        .patch(`${process.env.REACT_APP_API_URL}/boards/1`, form)
+        .patch(`${process.env.REACT_APP_API_URL}/boards/4`, form)
         .then((res) => console.log(res))
         .catch((err) => console.log(err));
     }
