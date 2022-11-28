@@ -57,7 +57,7 @@ const UserInfo = styled.div`
 `;
 
 const Header = () => {
-  // @webius - Redux Provider 로 부터 사용자 정보 수신
+  //  Redux Provider 로 부터 사용자 정보 수신
   const user = useSelector(getUser);
 
   return (
