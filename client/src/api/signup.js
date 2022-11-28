@@ -33,7 +33,7 @@ export const signupMember = ({ userId, userPassword, userPasswordCheck, userName
 
           callback(true);
         } else {
-          // 오류 발생 시 메시지 경고 창 표시
+          //  오류 발생 시 메시지 경고 창 표시
           if (response.data.message) {
             alert(response.data.message);
           }

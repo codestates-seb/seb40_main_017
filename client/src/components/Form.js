@@ -52,7 +52,7 @@ const StyledFormGroup = styled.div`
 export const FormRadioGroup = ({ name, items, onChange }) => {
   return (
     <StyledFormGroup>
-      {/*  반복되는 데이터를 렌더할 땐 key 속성이 매우 중요함 */}
+      {/* @webius - 반복되는 데이터를 렌더할 땐 key 속성이 매우 중요함 */}
       {items.map((item) => (
         <label key={item.value}>
           <InputRadio name={name} defaultValue={item.value} defaultChecked={item.checked} onChange={onChange} />

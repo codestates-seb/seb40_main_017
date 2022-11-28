@@ -50,7 +50,7 @@ const LoginPage = () => {
 
   return (
     <>
-      {/* <></> 는 React.Fragment 요소를 의미하며, return 시 여러 하위 컴포넌트를 나열할 수 있도록 함 */}
+      {/*  <></> 는 React.Fragment 요소를 의미하며, return 시 여러 하위 컴포넌트를 나열할 수 있도록 함 */}
       {/*  화면 정중앙에 표시하도록 만든 Container 컴포넌트 */}
       <Container name="로그인">
         {/*  Form / FormInput / InputText / InputPassword / SubmitButton / LinkButton 은 모두 components/ 폴더 내 Button / Form / Input 스크립트를 참조 */}

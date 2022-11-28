@@ -46,10 +46,10 @@ const App = () => {
       user: userSlice,
     },
   });
-  // Provider 로부터 상태를 받는 위치가 아니기 때문에 store 변수에서 직접 dispatch 받아옴
+  //  Provider 로부터 상태를 받는 위치가 아니기 때문에 store 변수에서 직접 dispatch 받아옴
   const { dispatch } = store;
 
-  //  로그인 체크 후 렌더링
+  // 로그인 체크 후 렌더링
   const [loaded, setLoaded] = useState(false);
   const handleChangeLoaded = useCallback(() => {
     setLoaded(true);
