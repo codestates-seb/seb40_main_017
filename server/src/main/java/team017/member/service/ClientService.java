@@ -9,10 +9,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import team017.global.Exception.BusinessLogicException;
 import team017.global.Exception.ExceptionCode;
-import team017.member.dto.ClientPatchDto;
 import team017.member.entity.Client;
 import team017.member.entity.Member;
-import team017.member.mapper.MemberMapper;
 import team017.member.repository.ClientRepository;
 import team017.security.utils.SecurityUtil;
 
@@ -23,9 +21,8 @@ import team017.security.utils.SecurityUtil;
 public class ClientService {
 	private final ClientRepository clientRepository;
 	private final MemberService memberService;
-	private final MemberMapper mapper;
 
-	/* 존재하는 소비자인지 확인 + 소비자 정보 리턴 */
+	/* 존재하는 소비자인지 확인 */
 	public Client findVerifiedClient(long clientId) {
 		Optional<Client> optionalClient = clientRepository.findById(clientId);
 		Client findClient = optionalClient.orElseThrow(() -> new RuntimeException("Client Not Found"));
@@ -35,21 +32,17 @@ public class ClientService {
 	/* 소비자 조회 */
 	@Transactional(readOnly = true)
 	public Client findClient(long clientId) {
-		// correctClient(clientId);
+		correctClient(clientId);
 		Client client = findVerifiedClient(clientId);
 
 		return client;
 	}
 
 	/* 소비자 정보 수정 */
-	public Client updateClient(long clientId, ClientPatchDto patch) {
-		Client client = findClient(clientId);
-		long memberId = client.getMember().getMemberId();
-		Member member = memberService.updateMember(memberId, mapper.clientPatchDtoToMember(patch));
+	public Client updateClient(long clientId, Client client) {
 
-		clientRepository.save(client);
-
-		return client;
+		/* 현재 소비자는 따로 수정하는 부분이 없다. + findClient 에서 현재 로그인 유저 판별도 해서 안함. */
+		return clientRepository.save(findClient(clientId));
 	}
 
 	/* 로그인 한 사용자와 접근 사용자 판별 */

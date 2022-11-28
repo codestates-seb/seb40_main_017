@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BoardForSellerMyPageDto {
+    private long boardId;
 
     private String title;               //게시글 제목
 

@@ -7,7 +7,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import team017.global.Exception.BusinessLogicException;
 import team017.global.Exception.ExceptionCode;
@@ -63,7 +62,6 @@ public class MemberService {
 	/* 회원 수정 (멤버 파트) */
 	public Member updateMember(long memberId, Member member) {
 
-		log.info("# 멤버 수정 서비스 시작! ");
 		Member findMember = findVerifiedMember(memberId);
 
 		Optional.ofNullable(member.getName()).ifPresent(name -> findMember.setName(name));

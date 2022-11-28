@@ -42,42 +42,42 @@ public class SecurityConfig {
 			.apply(new JwtSecurityConfig(securityProvider))
 			.and()
 			.authorizeHttpRequests(authorize -> authorize
-					.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
 					/* 회원 관련 접근 제한 */
 					.antMatchers(HttpMethod.POST, "/members/signup").permitAll()
 					.antMatchers(HttpMethod.POST, "/login").permitAll()
 					.antMatchers(HttpMethod.POST, "/login/oauth").permitAll()
 					.antMatchers(HttpMethod.GET, "/members/client/**").hasRole("CLIENT")
-					.antMatchers(HttpMethod.PATCH, "members/client/**").hasRole("CLIENT")
+					.antMatchers(HttpMethod.PUT, "members/client/**").hasRole("CLIENT")
 					.antMatchers(HttpMethod.GET,"/members/seller/**").permitAll()
-					.antMatchers(HttpMethod.PATCH, "/members/seller/**").hasRole("SELLER")
+					.antMatchers(HttpMethod.PUT, "/members/seller/**").hasRole("SELLER")
 					.antMatchers(HttpMethod.DELETE, "/members/**").hasAnyRole("CLIENT", "SELLER")
 
 					/* 소셜 수정 권한 접근 */
-					// .antMatchers(HttpMethod.PATCH, "/social/**").hasRole("SOCIAL")
+					.antMatchers(HttpMethod.PUT, "/social/**").hasRole("SOCIAL")
 
 					/* 판매 게시판 관련 접근 제한 */
-					// .antMatchers(HttpMethod.GET, "/boards").permitAll()
-					// .antMatchers(HttpMethod.GET, "/boards/**").permitAll()
-					// .antMatchers(HttpMethod.POST, "/boards").hasRole("SELLER")
-					// .antMatchers(HttpMethod.PATCH, "/boards/*").hasRole("SELLER")
-					// .antMatchers(HttpMethod.DELETE, "/boards/*").hasRole("SELLER")
+					.antMatchers(HttpMethod.GET, "/boards").permitAll()
+					.antMatchers(HttpMethod.GET, "/boards/**").permitAll()
+					.antMatchers(HttpMethod.POST, "/boards").hasRole("SELLER")
+					.antMatchers(HttpMethod.PATCH, "/boards/*").hasRole("SELLER")
+					.antMatchers(HttpMethod.DELETE, "/boards/*").hasRole("SELLER")
 
 					/* 리뷰 관련 접근 제한 */
-					// .antMatchers(HttpMethod.GET, "/boards/reviews/**").permitAll()
-					// .antMatchers(HttpMethod.POST, "/boards/*/reviews").hasRole("CLIENT")
-					// .antMatchers(HttpMethod.PATCH, "/boars/reviews/**").hasRole("CLIENT")
-					// .antMatchers(HttpMethod.DELETE, "/boards/reviews/**").hasRole("CLIENT")
+					.antMatchers(HttpMethod.GET, "/boards/reviews/**").permitAll()
+					.antMatchers(HttpMethod.POST, "/boards/*/reviews").hasRole("CLIENT")
+					.antMatchers(HttpMethod.PATCH, "/boars/reviews/**").hasRole("CLIENT")
+					.antMatchers(HttpMethod.DELETE, "/boards/reviews/**").hasRole("CLIENT")
 
 					/* 주문 관련 접근 제한 */
-					// .antMatchers(HttpMethod.POST, "/orders").hasRole("CLIENT")
+					.antMatchers(HttpMethod.POST, "/orders").hasRole("CLIENT")
 
 					/* 문의 관련 접근 제한 */
-					// .antMatchers(HttpMethod.GET, "/comments/*").permitAll()
-					// .antMatchers(HttpMethod.POST, "/comments").hasAnyRole("SELLER", "CLIENT")
-					// .antMatchers(HttpMethod.PATCH, "/comments/**").hasAnyRole("SELLER", "CLIENT")
-					// .antMatchers(HttpMethod.DELETE, "/comments/**").hasAnyRole("SELLER", "CLIENT")
+					.antMatchers(HttpMethod.GET, "/comments/*").permitAll()
+					.antMatchers(HttpMethod.POST, "/comments").hasAnyRole("SELLER", "CLIENT")
+					.antMatchers(HttpMethod.PATCH, "/comments/**").hasAnyRole("SELLER", "CLIENT")
+					.antMatchers(HttpMethod.DELETE, "/comments/**").hasAnyRole("SELLER", "CLIENT")
+					.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
 					/* 그 외 접근 허용 */
 					.anyRequest().permitAll()

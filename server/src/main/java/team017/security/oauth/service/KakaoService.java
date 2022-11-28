@@ -110,7 +110,7 @@ public class KakaoService {
 		if(member == null) {
 			member = Member.builder()
 				.socialId(profile.getId())
-				.password(null) //필요없으니 일단 아무거도 안넣음. 원하는데로 넣으면 됌
+				.password(null)
 				.name(profile.getKakao_account().getProfile().getNickname())
 				.email(profile.getKakao_account().getEmail())
 				.role("SOCIAL")

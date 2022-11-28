@@ -30,5 +30,9 @@ public class OrdSellerResponseDto { //판매 내역 조회
 
     private int category;
 
-    private int leftStock;
+    private int soldStock;
+
+    private LocalDateTime createAt;
+
+    private LocalDateTime modifiedAt;
 }
