@@ -24,8 +24,8 @@ function Footer() {
     <Footerbox>
       <Logo>17시 내고향</Logo>
       <Team>
-        <p>FE</p>
-        <p>BE</p>
+        <p>FE : 남궁태욱 김민성 권수현</p>
+        <p>BE : 신지훈 가빈 신승현</p>
       </Team>
     </Footerbox>
   );
