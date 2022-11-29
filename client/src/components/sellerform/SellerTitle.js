@@ -78,7 +78,6 @@ export const SellerTitle = ({ nextButton, formData, setFormData }) => {
     handleSubmit,
   } = useForm();
   const onSubmit = (data) => {
-    console.log(data);
     if (watch('title') && watch('stock')) {
       setFormData({ ...formData, ...data });
       nextButton();

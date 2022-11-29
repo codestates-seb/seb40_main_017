@@ -78,13 +78,11 @@ export const SellerPrice = ({ nextButton, formData, setFormData }) => {
     handleSubmit,
   } = useForm();
   const onSubmit = (data) => {
-    console.log(data);
     if (watch('price') && watch('category')) {
       setFormData({ ...formData, ...data });
       nextButton();
     }
   };
-  console.log(errors);
 
   return (
     <>
