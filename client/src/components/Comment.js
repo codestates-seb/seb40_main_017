@@ -3,34 +3,30 @@ import ReactPaginate from 'react-paginate';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import StarRate from './StarRate';
-// import { apiServer } from '../features/axios';
 
-//REVIEW GET, POST
+//Comment GET, POST
 
-export const Review = () => {
+export const Comment = () => {
   const [items, setItems] = useState([]);
   const { boardId } = useParams();
   const [pageCount, setpageCount] = useState(0);
 
-  //ReviewGet
-  const getReviews = async () => {
-    const res = await fetch(`${process.env.REACT_APP_API_URL}/boards/reviews/${boardId}?page=1&size=5`);
+  //CommentGet
+  const getComment = async () => {
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/comments/${boardId}?page=1&size=5`);
     const data = await res.json();
     setpageCount(Math.ceil(data.data.length / 2));
-    console.log(pageCount);
     setItems(data.data);
   };
 
   useEffect(() => {
-    getReviews();
+    getComment();
   }, []);
 
   console.log(items);
-  console.log(items.clientId);
 
-  const fetchReviews = async (currentPage) => {
-    const res = await fetch(`${process.env.REACT_APP_API_URL}/boards/reviews/${boardId}?page=${currentPage}&size=5`);
+  const fetchComment = async (currentPage) => {
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/comments/${boardId}?page=${currentPage}&size=5`);
     const data = await res.json();
     return data.data;
   };
@@ -41,41 +37,31 @@ export const Review = () => {
 
     let currentPage = page.selected + 1;
 
-    const commentsFormServer = await fetchReviews(currentPage);
+    const commentsFormServer = await fetchComment(currentPage);
 
     setItems(commentsFormServer);
   };
 
-  // ReviewPost
-  const reviewOnSubmitHandler = async (e) => {
+  // CommentPost
+  const ReviewOnSubmitHandler = async (e) => {
     e.preventDefault();
     const context = e.target.context.value;
-    await axios.post(`${process.env.REACT_APP_API_URL}/boards/${boardId}/reviews`, {
-      context: context,
-      clientId: 3,
-      image: 3,
-      star: 1,
-    });
-    getReviews();
+    await axios.post(`${process.env.REACT_APP_API_URL}/comments`, { context: context, boardId: 1, memberId: 3 });
+    getComment();
   };
-
-  // ReviewDelete
-  // const removeReview = async (reviewId) => {
-  //   const response = await axios.delete(`${process.env.REACT_APP_API_URL}//boards/reviews/${reviewId}`);
-  //   return response;
-  // };
 
   return (
     <Container>
-      <div id="b">
-        <h2>리뷰</h2>
-        {items.map((review) => {
+      <div id="d">
+        <h2>문의</h2>
+        {items.map((comment) => {
           return (
-            <Reviewlist key={review.clientId}>
-              <div>{review.reviewId}</div>
-              <div>{review.context}</div>
-              <div>{review.name}</div>
-              <div>{review.createdAt}</div>
+            <Reviewlist key={comment.clientId}>
+              <div>{comment.commentId}</div>
+              <div>{comment.context}</div>
+              {/* <button>수정하기</button> */}
+              <div>{comment.name}</div>
+              <div>{comment.createdAt}</div>
             </Reviewlist>
           );
         })}
@@ -95,15 +81,11 @@ export const Review = () => {
           />
         </PaginationBox>
       </div>
-      <div id="c">
-        <h2>리뷰작성</h2>
+      <div id="e">
+        <h2>문의작성</h2>
         <Layout>
-          <p>별점</p>
-          <StarRate borardId={boardId} />
-        </Layout>
-        <Layout className="formlayout">
-          <p>상세리뷰</p>
-          <Form onSubmit={reviewOnSubmitHandler}>
+          <p>상세문의</p>
+          <Form onSubmit={ReviewOnSubmitHandler}>
             <TextBox name="context" placeholder="8글자이상 작성해주세요." />
             <Submitbox type="submit" value="등록하기" />
           </Form>
@@ -214,8 +196,6 @@ const Layout = styled.div`
   text-align: center;
   > :first-child {
     margin-right: 30px;
-  }
-  .formlayout {
   }
 `;
 

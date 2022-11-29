@@ -35,6 +35,9 @@ const GlobalStyle = createGlobalStyle`
     --brown: #543939;
     --light-brown: #b2956d;
     --darker-gray: #d5ccbe; 
+    --light-orange: #f24e1e;
+    --light-gray: #E6E6E6;
+    --lighter-gray: #fafafa;
   }
 
 `;
