@@ -268,15 +268,15 @@ const SellerInfoPage = () => {
       const newSaleList = saleData.data;
       const data = newSaleList.map((sale) => {
         return {
-          sellerId: sale.sellerId,
-          productId: sale.productId,
           boardId: sale.boardId,
+          sellerId: sale.sellerId,
           title: sale.title,
           name: sale.name,
           price: sale.price,
+          phone: sale.phone,
           stock: sale.stock,
           category: sale.category,
-          soldStock: sale.soldStock,
+          leftStock: sale.leftStock,
         };
       });
 
@@ -375,10 +375,10 @@ const SellerInfoPage = () => {
                         <tbody>
                           {saleList.map((sale) => {
                             return (
-                              <tr key={sale.productId}>
+                              <tr key={sale.boardId}>
                                 <td>{sale.title}</td>
                                 <td>{sale.stock}</td>
-                                <td>2022-11-14</td>
+                                <td>{}</td>
                               </tr>
                             );
                           })}

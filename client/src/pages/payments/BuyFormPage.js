@@ -47,7 +47,8 @@ const ProgressBarBox = styled.div`
 function BuyFoamPage() {
   const [index, setIndex] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
-
+  // const payInfo = useSelector((state) => state.pay.tid);
+  // const userInfo = useSelector((state) => state.user.clientId);
   const [userData, setUserData] = useState({
     memberId: 1,
     clientId: 2,
@@ -87,7 +88,15 @@ function BuyFoamPage() {
   const userInfo = useSelector((state) => state.user.clientId);
 
   useEffect(() => {
-    console.log('데이터 받아오기');
+    const getUserData = async () => {
+      await axios
+        .get(`${process.env.REACT_APP_API_URL}/members/client/1`)
+        .then((res) => {
+          console.log(res.data);
+          setUserData({ ...userData, ...res.data });
+        })
+        .catch((error) => console.log(error));
+    };
     const getItem = async () => {
       // await axios
       //   .get(`${process.env.REACT_APP_API_URL}/boards/4`)
@@ -103,16 +112,9 @@ function BuyFoamPage() {
         })
         .catch((error) => console.log(error));
     };
-    const getUserData = async () => {
-      await apiServer({ method: 'GET', url: `/members/client/${userInfo}` })
-        .then((res) => {
-          console.log(res.data);
-          setUserData({ ...userData, ...res.data });
-        })
-        .catch((error) => console.log(error));
-    };
     getUserData();
     getItem();
+    console.log(userData);
   }, []);
 
   const count = countInfo;

@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
+import KakaoLoginImage from '../assets/images/kakao_login_medium_wide.png';
+
 const ButtonStyle = `
   display: block;
 
@@ -49,4 +51,27 @@ const StyledLinkButton = styled(Link)`
 //  to 속성을 받아 페이지를 넘어갈 수 있도록 컴포넌트 구현
 export const LinkButton = ({ to, children }) => {
   return <StyledLinkButton to={to}>{children}</StyledLinkButton>;
+};
+
+const StyledAnchorButton = styled.a`
+  ${ButtonStyle}
+`;
+
+export const AnchorButton = ({ href, children }) => {
+  return <StyledAnchorButton href={href}>{children}</StyledAnchorButton>;
+};
+
+const StyleSnsButton = styled.a`
+  display: block;
+  margin-top: 12px;
+  font-size: 0;
+  cursor: pointer;
+`;
+
+export const KakaoSubmitbutton = ({ href }) => {
+  return (
+    <StyleSnsButton href={href}>
+      <img src={KakaoLoginImage} alt="카카오 로그인" width={'100%'} />
+    </StyleSnsButton>
+  );
 };

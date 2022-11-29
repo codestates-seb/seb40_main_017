@@ -246,7 +246,7 @@ export const ClientMyPage = ({ handleDeleteMember }) => {
           name: order.name,
           address: order.address,
           phone: order.phone,
-          productNum: order.productNum,
+          quantity: order.quantity,
         };
       });
 
@@ -347,7 +347,7 @@ export const ClientMyPage = ({ handleDeleteMember }) => {
                   <td>{order.title}</td>
                   <td>{order.name}</td>
                   <td>{order.phone}</td>
-                  <td>{order.productNum}</td>
+                  <td>{order.quantity}</td>
                   <td>{order.address}</td>
                 </tr>
               );
@@ -628,15 +628,15 @@ export const SellerMyPage = ({ handleDeleteMember }) => {
       const newSaleList = saleData.data;
       const data = newSaleList.map((sale) => {
         return {
-          sellerId: sale.sellerId,
-          productId: sale.productId,
           boardId: sale.boardId,
+          sellerId: sale.sellerId,
           title: sale.title,
           name: sale.name,
           price: sale.price,
+          phone: sale.phone,
           stock: sale.stock,
           category: sale.category,
-          soldStock: sale.soldStock,
+          leftStock: sale.leftStock,
         };
       });
 
@@ -759,10 +759,10 @@ export const SellerMyPage = ({ handleDeleteMember }) => {
                 <tbody>
                   {saleList.map((sale) => {
                     return (
-                      <tr key={sale.productId}>
+                      <tr key={sale.boardId}>
                         <td>{sale.title}</td>
                         <td>{sale.stock}</td>
-                        <td>2022-11-14</td>
+                        <td>{}</td>
                       </tr>
                     );
                   })}
