@@ -12,9 +12,13 @@ const Headerbox = styled.header`
   background-color: var(--green);
   position: sticky;
   top: 0;
-  z-index: 10;
+  z-index: 99;
   display: flex;
   justify-content: space-between;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   .active {
     left: 0em;
   }
@@ -82,10 +86,15 @@ const Header = () => {
     }
   };
 
+  const handleLinkOnClick = () => {
+    setSidebar(false);
+    document.getElementById('sidebar').classList.remove('active');
+  };
+
   return (
     <Headerbox>
       <Menu onClick={handleOnClick} />
-      <Sidebar />
+      <Sidebar handleLinkOnClick={handleLinkOnClick} />
       <Logo to="/">17시 내고향</Logo>
       <UserInfo>
         {user.memberId ? (
