@@ -43,44 +43,61 @@ public class SecurityConfig {
 			.and()
 			.authorizeHttpRequests(authorize -> authorize
 
-					/* 회원 관련 접근 제한 */
-					.antMatchers(HttpMethod.POST, "/members/signup").permitAll()
-					.antMatchers(HttpMethod.POST, "/login").permitAll()
-					.antMatchers(HttpMethod.POST, "/login/oauth").permitAll()
-					.antMatchers(HttpMethod.GET, "/members/client/**").hasRole("CLIENT")
-					.antMatchers(HttpMethod.PUT, "members/client/**").hasRole("CLIENT")
-					.antMatchers(HttpMethod.GET,"/members/seller/**").permitAll()
-					.antMatchers(HttpMethod.PUT, "/members/seller/**").hasRole("SELLER")
-					.antMatchers(HttpMethod.DELETE, "/members/**").hasAnyRole("CLIENT", "SELLER")
+				/* 메인 페이지는 모두 접근이 가능해야한다. */
+				.antMatchers(HttpMethod.GET, "/").permitAll() /* 메인 페이지 */
 
-					/* 소셜 수정 권한 접근 */
-					.antMatchers(HttpMethod.PUT, "/social/**").hasRole("SOCIAL")
+				/* 회원 관련 접근 제한 */
+				.antMatchers(HttpMethod.POST, "/members/signup").permitAll() /* 자체 회원가입 */
+				.antMatchers(HttpMethod.POST, "/login").permitAll() /* 자체 로그인 */
+				.antMatchers(HttpMethod.GET, "/login/**").permitAll() /* 소셜 로그인을 위해 */
+				.antMatchers(HttpMethod.POST, "/login/**").permitAll() /* 소셜 로그인을 위해 */
+				.antMatchers(HttpMethod.GET, "/members/client/**").hasRole("CLIENT") /* 소비자 정보 조회 */
+				.antMatchers(HttpMethod.PUT, "/members/client/**").hasRole("CLIENT") /* 소비자 정보 수정 */
+				.antMatchers(HttpMethod.GET,"/members/seller/**").permitAll() /* 생산자 정보 조회 -> 모두가 조회 가능 */
+				.antMatchers(HttpMethod.PUT, "/members/seller/**").hasRole("SELLER") /* 생산자 정보 수정 */
+				.antMatchers(HttpMethod.DELETE, "/members/**").hasAnyRole("CLIENT", "SELLER") /* 회원 탈퇴 */
+				.antMatchers(HttpMethod.GET, "/access").permitAll() /* 새로고침 */
+				.antMatchers(HttpMethod.GET, "/mypage/sold/*").permitAll() /* 생산자 게시판 조회 */
+				.antMatchers(HttpMethod.GET, "/mypage/*").hasRole("CLIENT") /* 구매자 주문내역 조회 */
 
-					/* 판매 게시판 관련 접근 제한 */
-					.antMatchers(HttpMethod.GET, "/boards").permitAll()
-					.antMatchers(HttpMethod.GET, "/boards/**").permitAll()
-					.antMatchers(HttpMethod.POST, "/boards").hasRole("SELLER")
-					.antMatchers(HttpMethod.PATCH, "/boards/*").hasRole("SELLER")
-					.antMatchers(HttpMethod.DELETE, "/boards/*").hasRole("SELLER")
+				/* 소셜 수정 권한 접근 */
+				.antMatchers(HttpMethod.PUT, "/social/**").hasRole("SOCIAL") /* 만약 소셜 권한을 부여할 경우 */
 
-					/* 리뷰 관련 접근 제한 */
-					.antMatchers(HttpMethod.GET, "/boards/reviews/**").permitAll()
-					.antMatchers(HttpMethod.POST, "/boards/*/reviews").hasRole("CLIENT")
-					.antMatchers(HttpMethod.PATCH, "/boars/reviews/**").hasRole("CLIENT")
-					.antMatchers(HttpMethod.DELETE, "/boards/reviews/**").hasRole("CLIENT")
+				/* 판매 게시판 관련 접근 제한 */
+				.antMatchers(HttpMethod.GET, "/boards").permitAll() /* 판매 게시판 조회 */
+				.antMatchers(HttpMethod.GET, "/boards/**").permitAll() /* 판매 게시판 세부 조회 */
+				.antMatchers(HttpMethod.POST, "/boards").hasRole("SELLER") /* 판매 게시판 등록 */
+				.antMatchers(HttpMethod.PATCH, "/boards/*").hasRole("SELLER") /* 판매 게시판 수정 */
+				.antMatchers(HttpMethod.DELETE, "/boards/*").hasRole("SELLER") /* 판매 게시판 삭제*/
 
-					/* 주문 관련 접근 제한 */
-					.antMatchers(HttpMethod.POST, "/orders").hasRole("CLIENT")
+				/* 리뷰 관련 접근 제한 */
+				// .antMatchers(HttpMethod.GET, "/boards/reviews/**").permitAll() /* 리뷰 조회 -> 판매 게시판 세부 조회 덕분에 없어도 됨. */
+				.antMatchers(HttpMethod.POST, "/boards/*/reviews").hasRole("CLIENT") /* 리뷰 등록 */
+				// .antMatchers(HttpMethod.PATCH, "/boars/reviews/**").hasRole("CLIENT") /* 리뷰 수정 */
+				.antMatchers(HttpMethod.DELETE, "/boards/reviews/**").hasRole("CLIENT") /* 리뷰 삭제 */
 
-					/* 문의 관련 접근 제한 */
-					.antMatchers(HttpMethod.GET, "/comments/*").permitAll()
-					.antMatchers(HttpMethod.POST, "/comments").hasAnyRole("SELLER", "CLIENT")
-					.antMatchers(HttpMethod.PATCH, "/comments/**").hasAnyRole("SELLER", "CLIENT")
-					.antMatchers(HttpMethod.DELETE, "/comments/**").hasAnyRole("SELLER", "CLIENT")
-					.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+				/* 주문 관련 접근 제한 */
+				.antMatchers(HttpMethod.POST, "/orders").hasRole("CLIENT") /* 주문 등록 */
+				.antMatchers(HttpMethod.DELETE, "/orders/**").hasRole("CLIENT") /* 주문 삭제 */
 
-					/* 그 외 접근 허용 */
-					.anyRequest().permitAll()
+				/* 결제 관련 접근 제한 */
+				.antMatchers(HttpMethod.GET, "/order/pay/completed").permitAll() /* 결제 승인 요청 */
+				.antMatchers(HttpMethod.GET, "/order/pay/cancel").permitAll() /* 결제 취소 */
+				.antMatchers(HttpMethod.GET, "/order/pay/fail").permitAll() /* 결제 실패 */
+				.antMatchers(HttpMethod.GET, "/orders/*").permitAll() /* 결제 성공 -> 주문 내역 조회 필요 */
+				.antMatchers(HttpMethod.GET, "/order/pay/*").hasRole("CLIENT") /* 결제 요청 */
+
+				/* 문의 관련 접근 제한 */
+				.antMatchers(HttpMethod.GET, "/comments/*").permitAll() /* 문의 조회 */
+				.antMatchers(HttpMethod.POST, "/comments").hasAnyRole("SELLER", "CLIENT") /* 문의 등록 */
+				.antMatchers(HttpMethod.PATCH, "/comments/**").hasAnyRole("SELLER", "CLIENT") /* 문의 수정 */
+				.antMatchers(HttpMethod.DELETE, "/comments/**").hasAnyRole("SELLER", "CLIENT") /* 문의 삭제 */
+
+				/* 혹시 모르는 options 발생 시 허용 */
+				.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+
+				/* 접근 제한 확인을 위해 나머지는 접근할 수 없는 권한으로 설정 */
+				.anyRequest().hasRole("ADMIN")
 			)
 			// .oauth2Login(oauth -> oauth
 			// 	.successHandler(oAuth2AuthenticationSuccessHandler())
@@ -117,18 +134,18 @@ public class SecurityConfig {
 	}
 
 	/* Oauth 인증 성공 핸들러*/
-	@Bean
-	public OAuth2SuccessHandler oAuth2AuthenticationSuccessHandler() {
-		return new OAuth2SuccessHandler(
-			refreshTokenRepository,
-			oAuth2AuthorizationRequestRepository(),
-			securityProvider
-		);
-	}
-
-	/* Oauth 인증 실패 핸들러*/
-	@Bean
-	public OAuth2FailureHandler oAuth2AuthenticationFailureHandler() {
-		return new OAuth2FailureHandler(oAuth2AuthorizationRequestRepository());
-	}
+	// @Bean
+	// public OAuth2SuccessHandler oAuth2AuthenticationSuccessHandler() {
+	// 	return new OAuth2SuccessHandler(
+	// 		refreshTokenRepository,
+	// 		oAuth2AuthorizationRequestRepository(),
+	// 		securityProvider
+	// 	);
+	// }
+	//
+	// /* Oauth 인증 실패 핸들러*/
+	// @Bean
+	// public OAuth2FailureHandler oAuth2AuthenticationFailureHandler() {
+	// 	return new OAuth2FailureHandler(oAuth2AuthorizationRequestRepository());
+	// }
 }
