@@ -56,15 +56,6 @@ function BuyFormPage() {
   const userInfo = useSelector((state) => state.user.clientId);
 
   useEffect(() => {
-    const getUserData = async () => {
-      await axios
-        .get(`${process.env.REACT_APP_API_URL}/members/client/1`)
-        .then((res) => {
-          console.log(res.data);
-          setUserData({ ...userData, ...res.data });
-        })
-        .catch((error) => console.log(error));
-    };
     const getItem = async () => {
       await apiServer({ method: 'GET', url: `/boards/${boardInfo}` })
         .then((res) => {
@@ -73,9 +64,16 @@ function BuyFormPage() {
         })
         .catch((error) => console.log(error));
     };
+    const getUserData = async () => {
+      await apiServer({ method: 'GET', url: `/members/client/${userInfo}` })
+        .then((res) => {
+          console.log(res.data);
+          setUserData({ ...userData, ...res.data });
+        })
+        .catch((error) => console.log(error));
+    };
     getUserData();
     getItem();
-    console.log(userData);
   }, []);
 
   const count = countInfo;
