@@ -5,6 +5,7 @@ import { MultiStepBuyProgressBar } from '../../components/buyform/MultiStepBuyPr
 import { DotSpinner } from '@uiball/loaders';
 import { useSelector } from 'react-redux';
 import { apiServer } from '../../features/axios';
+import { useLocation } from 'react-router-dom';
 
 const FormLayout = styled.div`
   background: var(--off-white);
@@ -35,7 +36,6 @@ const MultiStepBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  /* background: darkmagenta; */
 `;
 
 const ProgressBarBox = styled.div`
@@ -79,6 +79,11 @@ function BuyFoamPage() {
     mainImage: 'https://waymophototest.s3-ap-northeast-2.amazonaws.com/당근-1.png',
   });
 
+  const location = useLocation();
+  const boardInfo = location.state.boardId;
+  const countInfo = location.state.quantity;
+  console.log(boardInfo);
+  console.log(countInfo);
   const userInfo = useSelector((state) => state.user.clientId);
 
   useEffect(() => {
@@ -91,7 +96,7 @@ function BuyFoamPage() {
       //     setItemData({ ...itemData, ...res.data });
       //   })
       //   .catch((error) => console.log(error));
-      await apiServer({ method: 'GET', url: `/boards/1` })
+      await apiServer({ method: 'GET', url: `/boards/${boardInfo}` })
         .then((res) => {
           console.log(res.data);
           setItemData({ ...itemData, ...res.data });
@@ -110,7 +115,7 @@ function BuyFoamPage() {
     getItem();
   }, []);
 
-  const count = 10;
+  const count = countInfo;
   const totalPrice = itemData.price * count;
 
   const nextButton = () => {
