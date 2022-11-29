@@ -1,6 +1,7 @@
 package team017.ord.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -23,7 +24,7 @@ import team017.product.Service.ProductService;
 
 import javax.transaction.Transactional;
 import java.util.Optional;
-
+@Slf4j
 @RequiredArgsConstructor
 @Transactional
 @Service
@@ -37,7 +38,7 @@ public class OrdService {
     private final ClientService clientService;
 
     //주문은 Client 만 할 수 있고, 판매자는 내역만 조회로 가져간다
-    public OrdResponseDto createOrd(Ord ord, OrdPostDto ordPostDto) {
+    public OrdResponseDto createOrd(OrdPostDto ordPostDto) {
 
         //판매자 존재 여부 확인
         Client findClient = clientService.findClient(ordPostDto.getClientId());
@@ -50,12 +51,41 @@ public class OrdService {
 
         //주문 시 재고가 없다면
         if(findProduct.getLeftStock() == 0){
+
+            System.out.print("현재 상태:");
+            System.out.print(findProduct.getStatus());
+            System.out.println();
+            System.out.print(findProduct.getMainImage());
+            System.out.println();
+            System.out.print(findProduct.getPrice());
+            System.out.println();
+
             findProduct.setStatus(Product.ProductStatus.PRD_SOLDOUT);
-            productRepository.save(findProduct);
+            findProduct.setMainImage("왜 안바뀌는가.png");
+            findProduct.setPrice(11111);
+            productRepository.saveAndFlush(findProduct);
+
+            System.out.println();
+            System.out.print("현재 상태:");
+            System.out.print(findProduct.getStatus());
+            System.out.println();
+            System.out.print(findProduct.getMainImage());
+            System.out.println();
+            System.out.print(findProduct.getPrice());
+            System.out.println();
+
             throw new BusinessLogicException(ExceptionCode.PRODUCT_SOLDOUT);
         }
         //재고가 있다면
         else{
+
+            Ord ord = ordMapper.ordPostDtoToOrd(ordPostDto);
+
+            //재고 < 수량
+            if(findProduct.getLeftStock() < ord.getQuantity()){
+                throw new BusinessLogicException(ExceptionCode.PRODUCT_NOT_ENOUGH);
+            }
+            //재고 > 수량
             //주문 등록 시, 재고에서 수량만큼 빼기
             findProduct.setLeftStock(findProduct.getLeftStock() - ord.getQuantity());
             productRepository.save(findProduct);
@@ -64,11 +94,12 @@ public class OrdService {
             ord.setProduct(productService.findProduct(findBoard.getBoardId()));
             ord.setClient(clientService.findVerifiedClient(findClient.getClientId()));
             ordRepository.save(ord);
+            OrdResponseDto responseDto = ordMapper.ordToOrdResponseDto(ord);
+
+            return responseDto;
+
         }
 
-        OrdResponseDto responseDto = ordMapper.ordToOrdResponseDto(ord);
-
-        return responseDto;
     }
 
     public void deleteOrd(Long ordId){
