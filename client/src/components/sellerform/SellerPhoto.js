@@ -143,28 +143,18 @@ export const SellerPhoto = ({ nextButton, formData, setFormData }) => {
     // the name of the file uploaded is used to upload it to S3
     await ReactS3Client.uploadFile(file, file.name)
       .then((data) => {
-        console.log(data.location);
-        // setLink(data.location);
         link = data.location;
         return link;
       })
       .catch((err) => console.error(err));
   };
 
-  const onSubmit = async (data) => {
+  const onSubmit = async () => {
     const file = watch('mainimage');
-    console.log(data);
-    console.log(img);
-    // if (watch('mainimage')) {
     if (img.length !== 0) {
-      console.log('파일 있음');
-      console.log(file[0]);
       await uploadFile(file[0]);
-      console.log(link);
       let imgData = { mainImage: link };
-      console.log(data);
       await setFormData({ ...formData, ...imgData });
-      console.log(formData);
       nextButton();
     }
   };
@@ -186,9 +176,7 @@ export const SellerPhoto = ({ nextButton, formData, setFormData }) => {
           return alert('첨부파일 사이즈는 4MB 이내로 등록 가능합니다.');
         }
 
-        console.log(file);
         reader.readAsDataURL(file);
-
         img.push(file);
       }
 
@@ -199,7 +187,6 @@ export const SellerPhoto = ({ nextButton, formData, setFormData }) => {
         }
       };
     }
-    console.log(img);
   }, [image]);
 
   const getPreviewMain = () => {
@@ -208,8 +195,6 @@ export const SellerPhoto = ({ nextButton, formData, setFormData }) => {
       const imgNameArr = previewImg.filter((el, idx) => idx !== index);
       setImg([...imgArr]);
       setPreviewImg([...imgNameArr]);
-      console.log(img);
-      // setForm({ ...form, mainimage: img });
     };
     if (img === null || img.length === 0) {
       return (
