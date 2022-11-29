@@ -73,7 +73,7 @@ function SellerformPage() {
   const [index, setIndex] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
-    sellerId: 1,
+    sellerId: userInfo,
     title: '',
     stock: '',
     price: '',

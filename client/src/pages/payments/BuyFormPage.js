@@ -4,7 +4,8 @@ import { MultiStepBuyForm } from '../../components/buyform/MultiStepBuyForm';
 import { MultiStepBuyProgressBar } from '../../components/buyform/MultiStepBuyProgressBar';
 import axios from 'axios';
 import { DotSpinner } from '@uiball/loaders';
-// import { useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { apiServer } from '../../features/axios';
 
 const FormLayout = styled.div`
   background: var(--off-white);
@@ -47,8 +48,7 @@ const ProgressBarBox = styled.div`
 function BuyFoamPage() {
   const [index, setIndex] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
-  // const payInfo = useSelector((state) => state.pay.tid);
-  // const userInfo = useSelector((state) => state.user.clientId);
+
   const [userData, setUserData] = useState({
     memberId: 1,
     clientId: 2,
@@ -80,16 +80,10 @@ function BuyFoamPage() {
     mainImage: 'https://waymophototest.s3-ap-northeast-2.amazonaws.com/당근-1.png',
   });
 
+  const userInfo = useSelector((state) => state.user.clientId);
+
   useEffect(() => {
-    const getUserData = async () => {
-      await axios
-        .get(`${process.env.REACT_APP_API_URL}/members/client/1`)
-        .then((res) => {
-          console.log(res.data);
-          setUserData({ ...userData, ...res.data });
-        })
-        .catch((error) => console.log(error));
-    };
+    console.log('데이터 받아오기');
     const getItem = async () => {
       await axios
         .get(`${process.env.REACT_APP_API_URL}/boards/4`)
@@ -99,29 +93,17 @@ function BuyFoamPage() {
         })
         .catch((error) => console.log(error));
     };
+    const getUserData = async () => {
+      await apiServer({ method: 'GET', url: `/members/client/${userInfo}` })
+        .then((res) => {
+          console.log(res.data);
+          setUserData({ ...userData, ...res.data });
+        })
+        .catch((error) => console.log(error));
+    };
     getUserData();
     getItem();
-    console.log(userData);
   }, []);
-
-  // const itemData = {
-  //   boardId: 1,
-  //   productId: 1,
-  //   sellerId: 1,
-  //   name: '박생산',
-  //   title: '쌀을 팝니다',
-  //   content: '이 쌀은 맛이 좋아요!',
-  //   price: 1000,
-  //   stock: 200,
-  //   category: 2,
-  //   status: 'PRD_SELLING',
-  //   view: 3,
-  //   createdAt: '2022-11-20T22:03:07.452223',
-  //   modifiedAt: '2022-11-20T22:16:35.8949572',
-  //   reviewAvg: 2.0,
-  //   soldStock: 0,
-  //   mainImage: 'https://waymophototest.s3-ap-northeast-2.amazonaws.com/당근-1.png',
-  // };
 
   const count = 10;
   const totalPrice = itemData.price * count;

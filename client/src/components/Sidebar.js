@@ -11,7 +11,7 @@ const SidebarLayout = styled.nav`
   border: 2px solid var(--white);
   border-radius: 1em;
   position: fixed;
-  top: 75px;
+  top: 80px;
   left: -15em;
   transition: 0.3s;
   z-index: 10;
@@ -52,7 +52,7 @@ const StyledLink = styled(NavLink)`
   }
 `;
 
-function Sidebar() {
+function Sidebar({ handleLinkOnClick }) {
   return (
     <>
       <SidebarLayout id="sidebar">
@@ -60,12 +60,24 @@ function Sidebar() {
           <img src="https://ifh.cc/g/CK2xWM.png" alt="logo" />
         </LogoBox>
         <SidebarBox>
-          <StyledLink to={'/'}>홈</StyledLink>
-          <StyledLink to={'/boards/fruit'}>전체상품</StyledLink>
-          <StyledLink to={'/boards/fruit'}>과일</StyledLink>
-          <StyledLink to={'/boards/vegetable'}>채소</StyledLink>
-          <StyledLink to={'/boards/grain'}>쌀 / 잡곡</StyledLink>
-          <StyledLink to={'/boards/nut'}>견과류</StyledLink>
+          <StyledLink onClick={handleLinkOnClick} to={'/'}>
+            홈
+          </StyledLink>
+          <StyledLink onClick={handleLinkOnClick} to={'/boards/'}>
+            전체상품
+          </StyledLink>
+          <StyledLink onClick={handleLinkOnClick} to={'/boards/fruit'}>
+            과일
+          </StyledLink>
+          <StyledLink onClick={handleLinkOnClick} to={'/boards/vegetable'}>
+            채소
+          </StyledLink>
+          <StyledLink onClick={handleLinkOnClick} to={'/boards/grain'}>
+            쌀 / 잡곡
+          </StyledLink>
+          <StyledLink onClick={handleLinkOnClick} to={'/boards/nut'}>
+            견과류
+          </StyledLink>
         </SidebarBox>
       </SidebarLayout>
     </>
