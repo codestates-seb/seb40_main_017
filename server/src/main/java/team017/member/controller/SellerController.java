@@ -40,7 +40,7 @@ public class SellerController {
 
 	/* 판매자 마이 페이지 조회 */
 	@GetMapping("/{seller_id}")
-	@ReissueToken
+	// @ReissueToken /* 셀러는 전체 조회이기 때문에 토큰 없음 */
 	public ResponseEntity getSeller(@PathVariable("seller_id") @Positive long sellerId) {
 		Member member = sellerService.findSeller(sellerId).getMember();
 
