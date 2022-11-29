@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { MultiStepBuyForm } from '../../components/buyform/MultiStepBuyForm';
 import { MultiStepBuyProgressBar } from '../../components/buyform/MultiStepBuyProgressBar';
-import axios from 'axios';
 import { DotSpinner } from '@uiball/loaders';
 import { useSelector } from 'react-redux';
 import { apiServer } from '../../features/axios';
@@ -85,8 +84,14 @@ function BuyFoamPage() {
   useEffect(() => {
     console.log('데이터 받아오기');
     const getItem = async () => {
-      await axios
-        .get(`${process.env.REACT_APP_API_URL}/boards/4`)
+      // await axios
+      //   .get(`${process.env.REACT_APP_API_URL}/boards/4`)
+      //   .then((res) => {
+      //     console.log(res.data);
+      //     setItemData({ ...itemData, ...res.data });
+      //   })
+      //   .catch((error) => console.log(error));
+      await apiServer({ method: 'GET', url: `/boards/1` })
         .then((res) => {
           console.log(res.data);
           setItemData({ ...itemData, ...res.data });
