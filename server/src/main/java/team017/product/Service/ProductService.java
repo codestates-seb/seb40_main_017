@@ -21,7 +21,7 @@ public class ProductService {
 
     public Product createProduct(Seller seller, BoardPostDto boardPostDto) {
         Product product = productMapper.boardPostDtoToProduct(boardPostDto);
-        product.setStatus(Product.ProductStatus.valueOf("PRD_SELLING"));
+        product.setStatus(Product.ProductStatus.PRD_SELLING);
         product.setSeller(seller);
         Product productSaved = productRepository.save(product);
         return productSaved;

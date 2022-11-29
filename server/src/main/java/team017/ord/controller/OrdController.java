@@ -28,7 +28,7 @@ public class OrdController {
     @PostMapping
     public ResponseEntity postOrd(@RequestBody @Valid OrdPostDto ordPostDto){
 
-        OrdResponseDto response = ordService.createOrd(ordMapper.ordPostDtoToOrd(ordPostDto),ordPostDto);
+        OrdResponseDto response = ordService.createOrd(ordPostDto);
 
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }

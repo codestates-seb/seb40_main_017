@@ -19,7 +19,6 @@ import javax.validation.constraints.PositiveOrZero;
 @Setter
 @Entity
 @NoArgsConstructor
-@DynamicInsert
 @Table(name = "Product")
 public class Product {
     @Id
@@ -29,18 +28,18 @@ public class Product {
     @Column(nullable = false)
     private int price;
 
-    @ColumnDefault(value ="'PRD_SELLING'")
+    @Column
     @Enumerated(EnumType.STRING)
-    private ProductStatus status;
+    private ProductStatus status = ProductStatus.PRD_SELLING;
 
     @Column(nullable = false)
     @PositiveOrZero
-    @Max(999)
+    @Max(50)
     private int stock;
 
     @Column(nullable = false)
     @PositiveOrZero
-    @Max(999)
+    @Max(50)
     private int leftStock;
 
     @Column(nullable = false)
