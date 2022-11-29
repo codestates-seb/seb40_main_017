@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
-import axios from 'axios';
+// import axios from 'axios';
+import { apiServer } from '../../features/axios';
+import { DotSpinner } from '@uiball/loaders';
 
 const PayFormBox = styled.div`
   width: 100%;
@@ -50,6 +52,7 @@ const PayInfo = styled.div`
 
 export const PayForm = ({ price }) => {
   const [isCheck, setIsCheck] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const orderId = useSelector((state) => state.pay.orderid);
 
   console.log(orderId);
@@ -63,14 +66,23 @@ export const PayForm = ({ price }) => {
 
   const handleOnClick = async () => {
     if (isCheck) {
-      await axios
-        .get(`${process.env.REACT_APP_API_URL}/order/pay/${orderId}`)
+      setIsLoading(true);
+      await apiServer({ method: 'GET', url: `/order/pay/${orderId}` })
         .then((res) => {
           console.log(res);
           console.log(res.data.next_redirect_pc_url);
-          // window.location.href = res.data.next_redirect_pc_url;
+          window.location.href = res.data.next_redirect_pc_url;
         })
         .catch((err) => console.log(err));
+
+      // await axios
+      //   .get(`${process.env.REACT_APP_API_URL}/order/pay/${orderId}`)
+      //   .then((res) => {
+      //     console.log(res);
+      //     console.log(res.data.next_redirect_pc_url);
+      //     // window.location.href = res.data.next_redirect_pc_url;
+      //   })
+      //   .catch((err) => console.log(err));
     }
   };
   return (
@@ -79,17 +91,20 @@ export const PayForm = ({ price }) => {
         <ImgInfo>
           <img src="https://ifh.cc/g/TPDLfn.jpg" alt="결제" />
         </ImgInfo>
-        <PayInfo>
-          <h2>총금액</h2>
-          <div>가격</div>
-          <div>{price}원</div>
-          <p>생산자 산지직거래 상품으로 환불, 반품은 불가합니다.</p>
-          <div>
-            <input type={'checkbox'} id="결제확인" name="결제확인" onClick={(e) => changeCheck(e)} />
-            <label htmlFor="결제확인">결제 확인 했습니다.</label>
-          </div>
-          <button onClick={handleOnClick}>결제하기</button>
-        </PayInfo>
+        {!isLoading && (
+          <PayInfo>
+            <h2>총금액</h2>
+            <div>가격</div>
+            <div>{price}원</div>
+            <p>생산자 산지직거래 상품으로 환불, 반품은 불가합니다.</p>
+            <div>
+              <input type={'checkbox'} id="결제확인" name="결제확인" onClick={(e) => changeCheck(e)} />
+              <label htmlFor="결제확인">결제 확인 했습니다.</label>
+            </div>
+            <button onClick={handleOnClick}>결제하기</button>
+          </PayInfo>
+        )}
+        {isLoading && <DotSpinner className="animation" size={70} speed={1.75} color="var(--green)" />}
       </PayFormBox>
     </>
   );

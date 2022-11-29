@@ -3,12 +3,11 @@ import { Editor } from '@toast-ui/react-editor';
 import '@toast-ui/editor/dist/toastui-editor.css';
 import S3 from 'react-aws-s3';
 import { useRef } from 'react';
-import axios from 'axios';
+import { apiServer } from '../../features/axios';
 
 const ContentBox = styled.div`
   width: 85%;
   height: 100%;
-  /* background: blanchedalmond; */
   position: relative;
   display: flex;
   flex-direction: column;
@@ -98,9 +97,9 @@ export const SellerContent = ({ nextButton, formData, setFormData, setIsLoading 
   const handleOnSubmit = async () => {
     if (window.confirm('등록완료하기')) {
       setIsLoading(true);
-      await axios({
-        url: `${process.env.REACT_APP_API_URL}/boards`,
+      await apiServer({
         method: 'post',
+        url: `/boards`,
         data: JSON.stringify(formData),
         headers: { 'Content-Type': 'application/json' },
       })
