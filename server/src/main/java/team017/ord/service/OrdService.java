@@ -26,7 +26,6 @@ import javax.transaction.Transactional;
 import java.util.Optional;
 @Slf4j
 @RequiredArgsConstructor
-@Transactional
 @Service
 public class OrdService {
     private final OrdRepository ordRepository;
@@ -51,34 +50,13 @@ public class OrdService {
 
         //주문 시 재고가 없다면
         if(findProduct.getLeftStock() == 0){
-
-            System.out.print("현재 상태:");
-            System.out.print(findProduct.getStatus());
-            System.out.println();
-            System.out.print(findProduct.getMainImage());
-            System.out.println();
-            System.out.print(findProduct.getPrice());
-            System.out.println();
-
             findProduct.setStatus(Product.ProductStatus.PRD_SOLDOUT);
-            findProduct.setMainImage("왜 안바뀌는가.png");
-            findProduct.setPrice(11111);
-            productRepository.saveAndFlush(findProduct);
-
-            System.out.println();
-            System.out.print("현재 상태:");
-            System.out.print(findProduct.getStatus());
-            System.out.println();
-            System.out.print(findProduct.getMainImage());
-            System.out.println();
-            System.out.print(findProduct.getPrice());
-            System.out.println();
+            productRepository.save(findProduct);
 
             throw new BusinessLogicException(ExceptionCode.PRODUCT_SOLDOUT);
         }
         //재고가 있다면
         else{
-
             Ord ord = ordMapper.ordPostDtoToOrd(ordPostDto);
 
             //재고 < 수량
@@ -97,26 +75,28 @@ public class OrdService {
             OrdResponseDto responseDto = ordMapper.ordToOrdResponseDto(ord);
 
             return responseDto;
-
         }
-
     }
 
+    @Transactional
     public void deleteOrd(Long ordId){
         Ord foundOrd = findVerifiedOrd(ordId);
         ordRepository.delete(foundOrd);
     }
 
+    @Transactional
     public Ord findVerifiedOrd(Long ordId){
         Optional<Ord> optionalOrd = ordRepository.findById(ordId);
         Ord findOrd = optionalOrd.orElseThrow(() -> new BusinessLogicException(ExceptionCode.ORDER_NOT_FOUND));
         return findOrd;
     }
 
+    @Transactional
     public Page<Ord> findClientOrd(Long clientId, int page, int size){
         return ordRepository.findByClient_ClientId(clientId, PageRequest.of(page, size, Sort.by("createdAt").descending()));
     }
 
+    @Transactional
     public Page<Board> findSellerOrd(Long sellerId, int page, int size){
         return boardRepository.findBySeller_SellerId(sellerId, PageRequest.of(page, size, Sort.by("createdAt").descending()));
     }
