@@ -110,11 +110,13 @@ public class KakaoService {
 		if(member == null) {
 			member = Member.builder()
 				.socialId(profile.getId())
-				.password(null)
+				.password("소셜 로그인임")
 				.name(profile.getKakao_account().getProfile().getNickname())
 				.email(profile.getKakao_account().getEmail())
-				.role("SOCIAL")
-				.roles(List.of("SOCIAL"))
+				// .role("SOCIAL")
+				.role("CLIENT")
+				// .roles(List.of("SOCIAL"))
+				.roles(List.of("CLIENT"))
 				.providerType(ProviderType.KAKAO)
 				.build();
 
