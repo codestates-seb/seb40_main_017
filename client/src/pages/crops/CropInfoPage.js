@@ -5,14 +5,13 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { Review } from '../../components/Review';
-// import { Viewer } from '@toast-ui/react-editor';
-import '@toast-ui/editor/dist/toastui-editor.css';
-// import CommentPaging from '../../components/CommentPaging';
+import { Comment } from '../../components/Comment';
+import { PurchaseButton, Linktoseller } from '../../components/CropInfoElement';
 
 function CropInfoPage() {
   const { boardId } = useParams();
   const [board, setBoard] = useState({});
-  // console.log(boardId);
+  const [quantity, setQuantity] = useState(0);
 
   //BoardFetch
   const GetCropInfo = async () => {
@@ -22,14 +21,6 @@ function CropInfoPage() {
   useEffect(() => {
     GetCropInfo();
   }, []);
-
-  // const CommentOnSubmitHandler = async (e) => {
-  //   e.preventDefault();
-  //   const context = e.target.context.value;
-  //   await axios.post(`${process.env.REACT_APP_API_URL}/boards/{board_id}/reviews`, { context });
-  //   // GetComment();
-  // };
-
   return (
     <Background>
       <Container>
@@ -38,17 +29,27 @@ function CropInfoPage() {
           <CropInfo>
             <CropTitle>
               <p>{board.title}</p>
-              <p>{board.price}원</p>
+              <p>{board.price} 원</p>
             </CropTitle>
             <PurchaseCount>
               <p>구매수량</p>
-              <Plus />
-              <Count>1</Count>
-              <Minus />
+              <Minus
+                onClick={() => {
+                  setQuantity(quantity - 1);
+                }}
+              />
+              <Count>{quantity}</Count>
+              <Plus
+                onClick={() => {
+                  setQuantity(quantity + 1);
+                }}
+              />
             </PurchaseCount>
             <p>남은수량 {board.stock}개</p>
-            <p>생산자 정보 바로가기</p>
-            <GreenButton>구매</GreenButton>
+            <Flexbox>
+              <Linktoseller />
+              <PurchaseButton boardId={boardId} quantity={quantity} />
+            </Flexbox>
           </CropInfo>
         </Crop>
         <ContentDiv>
@@ -74,29 +75,7 @@ function CropInfoPage() {
           <MenuLink>
             <div id="a">{board.content}</div>
             <Review />
-            <div id="d">
-              <h2>문의</h2>
-              {/* <CommentPaging /> */}
-              {/* {commentList?.map((comment) => (
-                <ol key={comment.clientId}>
-                  <li>{comment.commentId}</li>
-                  <li>{comment.context}</li>
-                  <li>{comment.name}</li>
-                  <li>{comment.createdAt}</li>
-                </ol>
-              ))} */}
-            </div>
-            <div id="e">
-              <h2>문의작성</h2>
-              <Layout>
-                <p>문의</p>
-                {/* <form onSubmit={CommentOnSubmitHandler}>
-                  <input name="context" />
-                  <input type="submit" value="등록하기" />
-                </form> */}
-              </Layout>
-              <GreenButton>등록하기</GreenButton>
-            </div>
+            <Comment />
           </MenuLink>
         </ContentDiv>
       </Container>
@@ -135,6 +114,7 @@ const CropImage = styled.img`
 
 const CropInfo = styled.div`
   height: 500px;
+  width: 100%;
   > * {
     margin: 10px 0 30px 0;
   }
@@ -142,6 +122,7 @@ const CropInfo = styled.div`
 
 const CropTitle = styled.div`
   font-weight: 700;
+  width: 100%;
   border-bottom: 1px solid var(--light-gray);
   padding-bottom: 30px;
   > :first-child {
@@ -170,32 +151,21 @@ const Count = styled.div`
   align-items: center;
 `;
 
-const Plus = styled(AiOutlineMinusCircle)`
+const Minus = styled(AiOutlineMinusCircle)`
   font-size: 25px;
   color: var(--light-gray);
 `;
 
-const Minus = styled(AiOutlinePlusCircle)`
+const Plus = styled(AiOutlinePlusCircle)`
   font-size: 25px;
   color: var(--light-gray);
-`;
-
-const GreenButton = styled.button`
-  all: unset;
-  margin-top: 20px;
-  background-color: var(--green);
-  color: var(--white);
-  width: 30px;
-  padding: 20px 90px;
-  border-radius: 5px;
-  cursor: pointer;
 `;
 
 const ContentDiv = styled.div``;
 
 const Menubar = styled.div`
   position: sticky;
-  top: 0;
+  top: 80px;
   z-index: 10;
   ul {
     width: 100%;
@@ -223,7 +193,7 @@ const Menubar = styled.div`
 
 const MenuLink = styled.div`
   > div {
-    padding: 60px 0;
+    padding-top: 145px;
   }
   h2 {
     margin-bottom: 20px;
@@ -239,10 +209,7 @@ const MenuLink = styled.div`
   }
 `;
 
-const Layout = styled.div`
+const Flexbox = styled.div`
   display: flex;
-  text-align: center;
-  > :first-child {
-    margin-right: 30px;
-  }
+  justify-content: space-between;
 `;
