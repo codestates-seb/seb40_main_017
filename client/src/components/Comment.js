@@ -2,7 +2,9 @@ import styled from 'styled-components';
 import ReactPaginate from 'react-paginate';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import axios from 'axios';
+import { apiServer } from '../features/axios';
+import { useSelector } from 'react-redux';
+import { getUser } from '../features/user/userSlice';
 
 //Comment GET, POST
 
@@ -10,6 +12,7 @@ export const Comment = () => {
   const [items, setItems] = useState([]);
   const { boardId } = useParams();
   const [pageCount, setpageCount] = useState(0);
+  const memberId = useSelector(getUser);
 
   //CommentGet
   const getComment = async () => {
@@ -43,10 +46,28 @@ export const Comment = () => {
   };
 
   // CommentPost
-  const ReviewOnSubmitHandler = async (e) => {
+  // const ReviewOnSubmitHandler = async (e) => {
+  //   e.preventDefault();
+  //   const context = e.target.context.value;
+  //   await axios.post(`${process.env.REACT_APP_API_URL}/comments`, { context: context, boardId: 1, memberId: 3 });
+  //   getComment();
+  // };
+
+  const CommentOnSubmitHandler = async (e) => {
     e.preventDefault();
     const context = e.target.context.value;
-    await axios.post(`${process.env.REACT_APP_API_URL}/comments`, { context: context, boardId: 1, memberId: 3 });
+    await apiServer({
+      method: 'POST',
+      url: `/comments`,
+      data: JSON.stringify({
+        context: context,
+        memberId: memberId,
+        boardId: boardId,
+      }),
+      headers: { 'Content-Type': 'application/json' },
+    })
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
     getComment();
   };
 
@@ -85,7 +106,7 @@ export const Comment = () => {
         <h2>문의작성</h2>
         <Layout>
           <p>상세문의</p>
-          <Form onSubmit={ReviewOnSubmitHandler}>
+          <Form onSubmit={CommentOnSubmitHandler}>
             <TextBox name="context" placeholder="8글자이상 작성해주세요." />
             <Submitbox type="submit" value="등록하기" />
           </Form>

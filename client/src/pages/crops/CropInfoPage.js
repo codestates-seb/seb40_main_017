@@ -45,7 +45,7 @@ function CropInfoPage() {
                 }}
               />
             </PurchaseCount>
-            <p>남은수량 {board.stock}개</p>
+            <p>남은수량 {board.leftStock}개</p>
             <Flexbox>
               <Linktoseller />
               <PurchaseButton boardId={boardId} quantity={quantity} />
