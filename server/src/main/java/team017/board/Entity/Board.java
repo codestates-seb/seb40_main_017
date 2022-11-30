@@ -12,7 +12,6 @@ import team017.product.Entity.Product;
 import team017.review.entity.Review;
 
 import javax.persistence.*;
-import javax.validation.constraints.PositiveOrZero;
 
 @Getter
 @Setter

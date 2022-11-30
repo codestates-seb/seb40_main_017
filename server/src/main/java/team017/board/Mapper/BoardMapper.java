@@ -8,17 +8,17 @@ import team017.board.Dto.BoardTotalResponseDto;
 import team017.board.Entity.Board;
 import team017.member.entity.Seller;
 import team017.ord.dto.OrdSellerResponseDto;
-import team017.ord.entity.Ord;
 import team017.product.Entity.Product;
-import team017.review.repository.ReviewRepository;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface BoardMapper {
+
     Board boardPostDtoToBoard(BoardPostDto boardPostDto);
+
+    List<OrdSellerResponseDto> ordToOrdSellerResponseDtos(List<Board> boards);
+
     @Mapping(target = "status", expression = "java(product.getStatus())")
     @Mapping(target = "sellerId", expression = "java(board.getSeller().getSellerId())")
     @Mapping(target = "name", expression = "java(board.getSeller().getMember().getName())")
@@ -28,7 +28,6 @@ public interface BoardMapper {
     @Mapping(target = "sellerImage", expression = "java(board.getSeller().getImageUrl())")
     @Mapping(target = "name", expression = "java(board.getSeller().getMember().getName())")
     BoardTotalResponseDto productToBoardTotalResponseDto(Product product, Board board);
-
 
     default OrdSellerResponseDto ordToOrdSellerResponseDto(Board board){
         if( board == null){
@@ -40,7 +39,6 @@ public interface BoardMapper {
 
         Product product = new Product();
         product.setProductId(board.getProduct().getBoard().getBoardId());
-
 
         OrdSellerResponseDto ordResponseDto = new OrdSellerResponseDto();
         ordResponseDto.setBoardId(product.getProductId());
@@ -56,8 +54,5 @@ public interface BoardMapper {
         ordResponseDto.setModifiedAt(board.getModifiedAt());
 
         return ordResponseDto;
-
     }
-    List<OrdSellerResponseDto> ordToOrdSellerResponseDtos(List<Board> boards);
-
 }
