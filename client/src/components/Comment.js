@@ -5,7 +5,6 @@ import { useParams } from 'react-router-dom';
 import { apiServer } from '../features/axios';
 import { useSelector } from 'react-redux';
 import { getUser } from '../features/user/userSlice';
-import { TimeCheck } from './TimeCheck';
 
 //Comment GET, POST
 
@@ -104,11 +103,10 @@ export const Comment = () => {
             <Reviewlist key={comment.createdAt}>
               <div>{comment.commentId}</div>
               <div>{comment.context}</div>
-              {/* <button>수정하기</button> */}
               <div>{comment.name}</div>
               <input onClick={patchComment} type="submit" value="수정하기" />
               <button onClick={removeComment}>삭제</button>
-              <div>{TimeCheck(comment.createdAt)}</div>
+              <div>{comment.createdAt}</div>
             </Reviewlist>
           );
         })}

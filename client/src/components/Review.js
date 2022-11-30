@@ -6,7 +6,6 @@ import { useParams } from 'react-router-dom';
 import StarRate from './StarRate';
 import { apiServer } from '../features/axios';
 import { useSelector } from 'react-redux';
-import { TimeCheck } from './TimeCheck';
 
 //REVIEW GET, POST
 export const Review = () => {
@@ -87,12 +86,12 @@ export const Review = () => {
         <h2>리뷰</h2>
         {items.map((review) => {
           return (
-            <Reviewlist key={review.createdAt}>
+            <Reviewlist key={review.reviewId}>
               <div>{review.reviewId}</div>
               <div>{review.context}</div>
               <div>{review.name}</div>
               <button onClick={removeReview}>삭제</button>
-              <div>{TimeCheck(review.createdAt)}</div>
+              <div>{review.createdAt}</div>
             </Reviewlist>
           );
         })}

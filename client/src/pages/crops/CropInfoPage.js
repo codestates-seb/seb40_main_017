@@ -8,8 +8,7 @@ import { Review } from '../../components/Review';
 import { Comment } from '../../components/Comment';
 import { PurchaseButton, PatchButton, Linktoseller } from '../../components/CropInfoElement';
 import { apiServer } from '../../features/axios';
-import { Viewer } from '@toast-ui/react-editor';
-import '@toast-ui/editor/dist/toastui-editor.css';
+import ItemViewer from '../../components/Viewer';
 
 function CropInfoPage() {
   const { boardId } = useParams();
@@ -94,7 +93,7 @@ function CropInfoPage() {
           </Menubar>
           <MenuLink>
             <div id="a">
-              <Viewer initialValue={markdownData} />
+              <ItemViewer content={board.content} className="viewerstyle" />
             </div>
             <Review />
             <Comment />
@@ -228,6 +227,11 @@ const MenuLink = styled.div`
   .firstlayout {
     border-bottom: 1px solid var(--light-gray);
     margin-bottom: 50px;
+  }
+
+  .viewerstyle {
+    width: 500px;
+    height: 500px;
   }
 `;
 
