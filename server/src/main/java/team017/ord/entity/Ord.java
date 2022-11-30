@@ -45,7 +45,6 @@ public class Ord extends Auditable {
 	private OrdStatus status = OrdStatus.ORD_REQUEST;
 
 	public enum OrdStatus {
-
 		ORD_REQUEST(1, "주문 요청"),
 		PAY_COMPLETE(2, "결제 완료");
 
