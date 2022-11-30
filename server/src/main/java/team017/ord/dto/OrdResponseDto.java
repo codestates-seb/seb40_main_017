@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import team017.ord.entity.Ord;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -21,6 +22,6 @@ public class OrdResponseDto {
     private int totalPrice;
     private int quantity;
     private Ord.OrdStatus ordStatus;
-    private LocalDateTime createdAt;
+    private LocalDate createdAt;
 }
 

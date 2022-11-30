@@ -1,6 +1,6 @@
 package team017.global.audit;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.EntityListeners;
@@ -21,9 +21,9 @@ public class Auditable {
 	/* 생성 시간 */
 	@CreatedDate
 	@Column(updatable = false)
-	private LocalDateTime createdAt;
+	private LocalDate createdAt;
 
 	/* 수정 시간 */
 	@LastModifiedDate
-	private LocalDateTime modifiedAt;
+	private LocalDate modifiedAt;
 }

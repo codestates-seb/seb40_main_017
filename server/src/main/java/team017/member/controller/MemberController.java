@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import team017.global.Exception.BusinessLogicException;
 import team017.global.Exception.ExceptionCode;
+import team017.mail.EmailService;
 import team017.member.dto.MemberDto;
 import team017.member.entity.Member;
 import team017.member.mapper.MemberMapper;
@@ -32,12 +33,16 @@ public class MemberController {
 	private final SecurityService securityService;
 	private final MemberService memberService;
 	private final MemberMapper mapper;
+	private final EmailService emailService;
 
 	/* 회원 가입 */
 	@PostMapping("/members/signup")
-	public ResponseEntity postMember(@Valid @RequestBody MemberDto.Post requestBody) {
+	public ResponseEntity postMember(@Valid @RequestBody MemberDto.Post requestBody) throws Exception {
 		memberService.correctPassword(requestBody.getPassword(), requestBody.getPasswordCheck());
 		Member createMember = memberService.createMember(mapper.memberDtoToMember(requestBody));
+
+		/* 회원가입 메세지 발송 -> 비동기 처리  */
+		emailService.sendSimpleMessage(createMember.getEmail());
 
 		/* 로그인 시도를 위한 LoginRequestDto 생성 */
 		LoginRequestDto loginRequestDto = new LoginRequestDto(createMember.getEmail(), requestBody.getPassword());
