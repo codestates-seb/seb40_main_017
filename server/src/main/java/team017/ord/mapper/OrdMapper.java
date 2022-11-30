@@ -50,5 +50,23 @@ public interface OrdMapper {
         return ordResponseDto;
 
     }
+    default OrdClientResponseDto ordToOrdClientResponseDto(Ord ord){
+        if( ord == null){
+            return null;
+        }
+
+        OrdClientResponseDto ordResponseDto = new OrdClientResponseDto();
+        ordResponseDto.setOrdId(ord.getOrdId());
+        ordResponseDto.setClientId(ord.getClient().getClientId());
+        ordResponseDto.setBoardId(ord.getProduct().getBoard().getBoardId());
+        ordResponseDto.setTitle(ord.getProduct().getBoard().getTitle());
+        ordResponseDto.setName(ord.getClient().getMember().getName());
+        ordResponseDto.setAddress(ord.getAddress());
+        ordResponseDto.setPhone(ord.getPhone());
+        ordResponseDto.setQuantity(ord.getQuantity());
+
+        return ordResponseDto;
+
+    }
     List<OrdClientResponseDto> ordToOrdClientResponseDtos(List<Ord> ords);
 }
