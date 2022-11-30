@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { MultiStepBuyForm } from '../../components/buyform/MultiStepBuyForm';
 import { MultiStepBuyProgressBar } from '../../components/buyform/MultiStepBuyProgressBar';
-import axios from 'axios';
 import { DotSpinner } from '@uiball/loaders';
 import { useSelector } from 'react-redux';
 import { apiServer } from '../../features/axios';
+import { useLocation } from 'react-router-dom';
 
 const FormLayout = styled.div`
   background: var(--off-white);
@@ -36,7 +36,6 @@ const MultiStepBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  /* background: darkmagenta; */
 `;
 
 const ProgressBarBox = styled.div`
@@ -45,48 +44,20 @@ const ProgressBarBox = styled.div`
   margin-bottom: 2em;
 `;
 
-function BuyFoamPage() {
+function BuyFormPage() {
   const [index, setIndex] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
+  const [userData, setUserData] = useState({});
+  const [itemData, setItemData] = useState({});
 
-  const [userData, setUserData] = useState({
-    memberId: 1,
-    clientId: 2,
-    email: 'hello2@naver.com',
-    name: '김통신',
-    phone: '010-4444-4444',
-    address: '통신광역시 통신구 통신',
-    role: 'SELLER',
-    introduce: null,
-    imageUrl: null,
-  });
-
-  const [itemData, setItemData] = useState({
-    boardId: 1,
-    productId: 1,
-    sellerId: 1,
-    name: '박응답',
-    title: '통신테스트',
-    content: '이 쌀은 맛이 좋아요!',
-    price: 1000,
-    stock: 200,
-    category: 2,
-    status: 'PRD_SELLING',
-    view: 3,
-    createdAt: '2022-11-20T22:03:07.452223',
-    modifiedAt: '2022-11-20T22:16:35.8949572',
-    reviewAvg: 2.0,
-    soldStock: 0,
-    mainImage: 'https://waymophototest.s3-ap-northeast-2.amazonaws.com/당근-1.png',
-  });
-
+  const location = useLocation();
+  const boardInfo = location.state.boardId;
+  const countInfo = location.state.quantity;
   const userInfo = useSelector((state) => state.user.clientId);
 
   useEffect(() => {
-    console.log('데이터 받아오기');
     const getItem = async () => {
-      await axios
-        .get(`${process.env.REACT_APP_API_URL}/boards/4`)
+      await apiServer({ method: 'GET', url: `/boards/${boardInfo}` })
         .then((res) => {
           console.log(res.data);
           setItemData({ ...itemData, ...res.data });
@@ -105,7 +76,7 @@ function BuyFoamPage() {
     getItem();
   }, []);
 
-  const count = 10;
+  const count = countInfo;
   const totalPrice = itemData.price * count;
 
   const nextButton = () => {
@@ -134,12 +105,10 @@ function BuyFoamPage() {
             )}
             {isLoading && <DotSpinner size={40} speed={0.9} color="var(--green)" />}
           </MultiStepBox>
-          {/* <UserBox></UserBox>
-          <ItemBox></ItemBox> */}
         </FormBox>
       </FormLayout>
     </>
   );
 }
 
-export default BuyFoamPage;
+export default BuyFormPage;

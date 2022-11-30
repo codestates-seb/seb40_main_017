@@ -5,6 +5,7 @@ import axios from 'axios';
 import { Editor } from '@toast-ui/react-editor';
 import '@toast-ui/editor/dist/toastui-editor.css';
 import S3 from 'react-aws-s3';
+// import { apiServer } from '../../features/axios';
 
 const SellerPostLayout = styled.div`
   background: var(--off-white);
@@ -158,7 +159,7 @@ const SellerPostButton = styled.button`
 function SellerPatchPage() {
   window.Buffer = window.Buffer || require('buffer').Buffer;
   const editorRef = useRef();
-  const [form, setForm] = useState({ sellerId: 1 });
+  const [form, setForm] = useState({ sellerId: '12' });
   const [img, setImg] = useState([]);
   const [previewImg, setPreviewImg] = useState([]);
   const [itemData, setItemData] = useState({});
@@ -173,7 +174,7 @@ function SellerPatchPage() {
   // 수정할 페이지 정보 불러오기
   const getItem = async () => {
     await axios
-      .get(`${process.env.REACT_APP_API_URL}/boards/4`)
+      .get(`${process.env.REACT_APP_API_URL}/boards/1`)
       .then((res) => {
         console.log(res);
         console.log(res.data);
@@ -333,9 +334,17 @@ function SellerPatchPage() {
 
     if (window.confirm('확인')) {
       axios
-        .patch(`${process.env.REACT_APP_API_URL}/boards/4`, form)
+        .patch(`${process.env.REACT_APP_API_URL}/boards/10`, form)
         .then((res) => console.log(res))
         .catch((err) => console.log(err));
+      // apiServer({
+      //   method: 'patch',
+      //   url: `/boards/10`,
+      //   data: JSON.stringify(form),
+      //   headers: { 'Content-Type': 'application/json' },
+      // })
+      //   .then((res) => console.log(res))
+      //   .catch((err) => console.log(err));
     }
   };
 

@@ -81,10 +81,8 @@ function SellerformPage() {
     mainImage: '이미지테스트',
     content: '테스트',
   });
-  console.log(userInfo);
   useEffect(() => {
     console.log(formData);
-    // setFormData({ ...formData });
   }, [formData]);
   const prevButton = () => {
     if (index > 1) {

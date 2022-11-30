@@ -3,8 +3,8 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { payActions } from '../../features/pay/paySlice';
-import axios from 'axios';
 import { useEffect } from 'react';
+import { apiServer } from '../../features/axios';
 
 const BuyFormBox = styled.div`
   width: 100%;
@@ -136,6 +136,7 @@ const ErrorBox = styled.div`
 
 export const ClientBuyForm = ({ nextButton, userData, itemData, count, price, setIsLoading }) => {
   const userFormData = userData;
+  console.log(userFormData);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const payInfo = useSelector((state) => state.pay.tid);
@@ -165,8 +166,7 @@ export const ClientBuyForm = ({ nextButton, userData, itemData, count, price, se
     console.log(newData);
     if (window.confirm('주문 확인')) {
       setIsLoading(true);
-      await axios
-        .post(`${process.env.REACT_APP_API_URL}/orders`, JSON.stringify(newData), { headers: { 'Content-Type': 'application/json' } })
+      await apiServer({ method: 'POST', url: `/orders`, data: JSON.stringify(newData), headers: { 'Content-Type': 'application/json' } })
         .then((res) => {
           console.log(res);
           console.log(res.data.ordId);
@@ -175,6 +175,7 @@ export const ClientBuyForm = ({ nextButton, userData, itemData, count, price, se
           dispatch(payActions.setPay({ orderid: res.data.ordId }));
         })
         .catch((err) => console.log(err));
+      // dispatch(payActions.setPay({ orderid: 1, tid: 777 }));
       console.log(payInfo);
       console.log(orderInfo);
       setIsLoading(false);

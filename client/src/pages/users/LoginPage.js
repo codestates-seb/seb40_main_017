@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { LinkButton, SubmitButton } from '../../components/Button';
+import { KakaoSubmitbutton, LinkButton, SubmitButton } from '../../components/Button';
 import Container from '../../components/Container';
 import { Form, FormInput } from '../../components/Form';
 import { InputPassword, InputText, useInput } from '../../components/Input';
@@ -64,6 +64,7 @@ const LoginPage = () => {
           <SubmitButton>로그인</SubmitButton>
           <LinkButton to="/signup">회원가입</LinkButton>
         </Form>
+        <KakaoSubmitbutton href={process.env.REACT_APP_KAKAO_LOGIN_URL}>카카오 로그인</KakaoSubmitbutton>
       </Container>
     </>
   );
