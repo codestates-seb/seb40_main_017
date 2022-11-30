@@ -17,6 +17,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import team017.member.entity.Member;
 import team017.member.entity.ProviderType;
 import team017.member.repository.MemberRepository;
@@ -24,8 +25,9 @@ import team017.security.oauth.dto.KakaoToken;
 import team017.security.oauth.info.KakaoProfile;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+// @Transactional
 public class KakaoService {
 	private final MemberRepository memberRepository;
 
@@ -46,6 +48,8 @@ public class KakaoService {
 
 	/* 엑세스 토큰 from Kakao */
 	public KakaoToken getAccessToken(String code) {
+		log.info("# 카카오 코드로 엑세스 토큰 발급 받기 , 카카오 서비스 시작");
+		log.error("# 카카오 코드로 엑세스 토큰 발급 받기 , 카카오 서비스 시작");
 
 		/* RequestParam */
 		// MultiValueMap<String, String> param = new LinkedMultiValueMap<>();
@@ -70,8 +74,6 @@ public class KakaoService {
 		HttpHeaders headers  = new HttpHeaders();
 		headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
 
-		// HttpBody 오브젝트 생성
-		// 일단 param들 변수화 안함.. 추후 예정
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 		params.add("grant_type", "authorization_code");
 		params.add("client_id", clientId);
@@ -83,13 +85,19 @@ public class KakaoService {
 		HttpEntity<MultiValueMap<String,String>> kakaoTokenRequest =
 			new HttpEntity<>(params, headers);
 
-		// 실제요청
 		ResponseEntity<String> response = restTemplate.exchange(
-			"https://kauth.kakao.com/oauth/token",
+			accessTokenUri,
 			HttpMethod.POST,
 			kakaoTokenRequest,
 			String.class
 		);
+
+		log.info(response.getBody());
+		log.error(response.getBody());
+		log.info(redirectUri);
+		log.error(redirectUri);
+		log.info(accessTokenUri);
+		log.error(accessTokenUri);
 
 		/* Json 으로 변환 */
 		ObjectMapper objectMapper = new ObjectMapper();
@@ -106,6 +114,10 @@ public class KakaoService {
 
 	/* 사용자 정보 가져오기 */
 	public KakaoProfile findProfile(String token) {
+
+		log.info("사용자 정보 가져오기 : {}", token);
+		log.error("사용자 정보 가져오기 : {}", token);
+
 		RestTemplate restTemplate = new RestTemplate();
 		HttpHeaders headers  = new HttpHeaders();
 		headers.add("Authorization", "Bearer " + token);
@@ -121,6 +133,10 @@ public class KakaoService {
 			String.class
 		);
 
+		log.info("find profile response entity exchange");
+		log.error("find profile response entity exchange");
+		log.info(response.getBody());
+		log.error(response.getBody());
 		// WebClient wc = WebClient.create(userInfoUri);
 		//
 		// String response = wc.post()
@@ -146,11 +162,16 @@ public class KakaoService {
 	/* 카카오 로그인 사용자 강제 회원 가입 */
 	@Transactional
 	public Member saveMember(String access_token) {
-		KakaoProfile profile = findProfile(access_token); //사용자 정보 받아오기
+		log.info("카카오 서비스 save member 시작");
+		log.error("카카오 서비스 save member 시작");
+
+		KakaoProfile profile = findProfile(access_token); /* 사용자 정보 받아오기 */
 		Member member = memberRepository.findMemberByEmail(profile.getKakao_account().getEmail());
 
 		/* 첫 이용자 강제 회원가입 */
 		if(member == null) {
+			log.info("사용자 강제 가입");
+			log.error("사용자 강제 가입");
 			member = Member.builder()
 				.socialId(profile.getId())
 				.password("소셜 로그인임")
@@ -165,6 +186,8 @@ public class KakaoService {
 
 			memberRepository.save(member);
 		}
+		log.info("return member : {}", member.getName());
+		log.error("return member : {}", member.getName());
 
 		return member;
 	}
