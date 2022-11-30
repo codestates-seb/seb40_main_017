@@ -8,6 +8,8 @@ import { Review } from '../../components/Review';
 import { Comment } from '../../components/Comment';
 import { PurchaseButton, PatchButton, Linktoseller } from '../../components/CropInfoElement';
 import { apiServer } from '../../features/axios';
+import { Viewer } from '@toast-ui/react-editor';
+import '@toast-ui/editor/dist/toastui-editor.css';
 
 function CropInfoPage() {
   const { boardId } = useParams();
@@ -22,6 +24,9 @@ function CropInfoPage() {
   useEffect(() => {
     GetCropInfo();
   }, []);
+
+  const markdownData = board.content;
+  console.log(markdownData);
 
   //BoardDelete
   const BoardDelete = async () => {
@@ -88,7 +93,9 @@ function CropInfoPage() {
             </ul>
           </Menubar>
           <MenuLink>
-            <div id="a">{board.content}</div>
+            <div id="a">
+              <Viewer initialValue={markdownData} />
+            </div>
             <Review />
             <Comment />
           </MenuLink>
