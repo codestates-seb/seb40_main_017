@@ -106,7 +106,7 @@ export const Comment = () => {
               <div>{comment.context}</div>
               {/* <button>수정하기</button> */}
               <div>{comment.name}</div>
-              <input onClick={patchComment} type="submit" value="update" />
+              <input onClick={patchComment} type="submit" value="수정하기" />
               <button onClick={removeComment}>삭제</button>
               <div>{TimeCheck(comment.createdAt)}</div>
             </Reviewlist>

@@ -60,7 +60,7 @@ function CropInfoPage() {
             </PurchaseCount>
             <p>남은수량 {board.leftStock}개</p>
             <Flexbox>
-              <Linktoseller />
+              <Linktoseller sellerId={board.sellerId} />
               <PurchaseButton boardId={boardId} quantity={quantity} />
               <PatchButton boardId={boardId} />
               <button onClick={BoardDelete}>삭제</button>
