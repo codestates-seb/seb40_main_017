@@ -54,7 +54,7 @@ public class KakaoPayService {
 
         // 외부 url 요청 통로 열기
         RestTemplate template = new RestTemplate();
-        template.setRequestFactory(new HttpComponentsClientHttpRequestFactory()); //에러 메시지 확인
+        template.setRequestFactory(new HttpComponentsClientHttpRequestFactory());       //에러 메시지 확인
 
         String url = "https://kapi.kakao.com/v1/payment/ready";
 
