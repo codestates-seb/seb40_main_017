@@ -1,7 +1,7 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://database-17farm.cgzeg2t2eys7.ap-northeast-2.rds.amazonaws.com:3306/mainproject?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC
+    url: jdbc:mysql://database-17farm.cgzeg2t2eys7.ap-northeast-2.rds.amazonaws.com:3306/mainproject?useSSL=false&characterEncoding=UTF-8&serverTimezone=Asia/Seoul
     username: project_17farm
     password:
   jpa:
@@ -21,11 +21,12 @@ spring:
       client:
         registration:
           kakao:
+            adminKey:
             clientId:
             clientSecret:
             clientAuthenticationMethod: post
             authorizationGrantType: authorization_code
-            redirectUri: http://15.165.61.75:8080/login/oauth2/code/kakao # "{baseUrl}/{action}/oauth2/code/{registrationId}"
+            redirectUri: http://17farm-server.shop:8080/login/oauth2/code/kakao # "{baseUrl}/{action}/oauth2/code/{registrationId}"
             scope:
               - profile_nickname
               - account_email
@@ -60,3 +61,18 @@ server:
   servlet:
     encoding:
       force-response: true
+mail:
+  smtp:
+    auth: true
+    host: smtp.gmail.com
+    port: 465
+    starttls:
+      enable: true
+      required: true
+    socketFactory:
+      class: javax.net.ssl.SSLSocketFactory
+      fallback: false
+      port: 465
+AdminMail:
+  id:
+  password:
