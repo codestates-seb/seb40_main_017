@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { Review } from '../../components/Review';
 import { Comment } from '../../components/Comment';
-import { PurchaseButton, Linktoseller } from '../../components/CropInfoElement';
+import { PurchaseButton, PatchButton, Linktoseller } from '../../components/CropInfoElement';
 
 function CropInfoPage() {
   const { boardId } = useParams();
@@ -49,6 +49,7 @@ function CropInfoPage() {
             <Flexbox>
               <Linktoseller />
               <PurchaseButton boardId={boardId} quantity={quantity} />
+              <PatchButton boardId={boardId} />
             </Flexbox>
           </CropInfo>
         </Crop>
