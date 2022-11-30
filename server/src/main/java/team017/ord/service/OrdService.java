@@ -58,7 +58,7 @@ public class OrdService {
         }
         //재고가 있다면
         else{
-            Ord ord = ordMapper.ordPostDtoToOrd(ordPostDto);
+            Ord ord = ordMapper.ordPostDtoToOrd(findClient,findProduct, ordPostDto);
 
             //재고 < 수량
             if(findProduct.getLeftStock() < ord.getQuantity()){
