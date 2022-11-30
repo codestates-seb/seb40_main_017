@@ -5,7 +5,9 @@ import axios from 'axios';
 import { Editor } from '@toast-ui/react-editor';
 import '@toast-ui/editor/dist/toastui-editor.css';
 import S3 from 'react-aws-s3';
-// import { apiServer } from '../../features/axios';
+import { apiServer } from '../../features/axios';
+import { useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 
 const SellerPostLayout = styled.div`
   background: var(--off-white);
@@ -159,10 +161,13 @@ const SellerPostButton = styled.button`
 function SellerPatchPage() {
   window.Buffer = window.Buffer || require('buffer').Buffer;
   const editorRef = useRef();
-  const [form, setForm] = useState({ sellerId: '12' });
+  const sellerInfo = useSelector((state) => state.user.sellerId);
+  const [form, setForm] = useState({ sellerId: sellerInfo, boardId: boardInfo });
   const [img, setImg] = useState([]);
   const [previewImg, setPreviewImg] = useState([]);
   const [itemData, setItemData] = useState({});
+  const location = useLocation();
+  const boardInfo = location.state.boardId;
 
   const handleOnchangeForm = (e) => {
     setForm({
@@ -174,7 +179,7 @@ function SellerPatchPage() {
   // 수정할 페이지 정보 불러오기
   const getItem = async () => {
     await axios
-      .get(`${process.env.REACT_APP_API_URL}/boards/1`)
+      .get(`${process.env.REACT_APP_API_URL}/boards/${boardInfo}`)
       .then((res) => {
         console.log(res);
         console.log(res.data);
@@ -333,18 +338,18 @@ function SellerPatchPage() {
     console.log(form);
 
     if (window.confirm('확인')) {
-      axios
-        .patch(`${process.env.REACT_APP_API_URL}/boards/10`, form)
-        .then((res) => console.log(res))
-        .catch((err) => console.log(err));
-      // apiServer({
-      //   method: 'patch',
-      //   url: `/boards/10`,
-      //   data: JSON.stringify(form),
-      //   headers: { 'Content-Type': 'application/json' },
-      // })
+      // axios
+      //   .patch(`${process.env.REACT_APP_API_URL}/boards/2`, form)
       //   .then((res) => console.log(res))
       //   .catch((err) => console.log(err));
+      apiServer({
+        method: 'patch',
+        url: `/boards/10`,
+        data: JSON.stringify(form),
+        headers: { 'Content-Type': 'application/json' },
+      })
+        .then((res) => console.log(res))
+        .catch((err) => console.log(err));
     }
   };
 
