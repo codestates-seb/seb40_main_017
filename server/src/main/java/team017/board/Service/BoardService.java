@@ -20,8 +20,6 @@ import team017.member.service.SellerService;
 import team017.product.Entity.Product;
 import team017.product.Repository.ProductRepository;
 import team017.product.Service.ProductService;
-import team017.review.entity.Review;
-import team017.review.repository.ReviewRepository;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -59,7 +57,6 @@ public class BoardService {
         return boardResponseDto;
     }
 
-
     public BoardResponseDto updateBoard(long boardId, BoardPatchDto boardPatchDto) {
 
         //boardId 존재 여부 확인
@@ -91,14 +88,12 @@ public class BoardService {
 
         //게시글 삭제
         productRepository.delete(findProduct);
-
     }
 
     public Board findVerifiedBoard(long boardId) {
         Optional<Board> optionalBoard = boardRepository.findById(boardId);
         Board findBoard = optionalBoard.orElseThrow(()-> new BusinessLogicException(ExceptionCode.BOARD_NOT_FOUND));
         return findBoard;
-
     }
 
     public BoardResponseDto getBoard(long boardId) {

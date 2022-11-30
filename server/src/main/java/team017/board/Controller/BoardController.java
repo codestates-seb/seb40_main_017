@@ -10,7 +10,6 @@ import team017.board.Dto.BoardPostDto;
 import team017.board.Dto.BoardResponseDto;
 import team017.board.Dto.BoardTotalResponseDto;
 import team017.board.Entity.Board;
-import team017.board.Mapper.BoardMapper;
 import team017.board.Service.BoardService;
 import team017.global.response.MultiResponseDto;
 

@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import team017.product.Entity.Product;
 
 import javax.validation.constraints.NotBlank;
 

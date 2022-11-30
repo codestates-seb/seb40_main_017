@@ -50,6 +50,7 @@ public class OrdService {
 
         //주문 시 재고가 없다면
         if(findProduct.getLeftStock() == 0){
+
             findProduct.setStatus(Product.ProductStatus.PRD_SOLDOUT);
             productRepository.save(findProduct);
 
