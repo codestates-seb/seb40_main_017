@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import { apiServer } from '../features/axios';
 import { useSelector } from 'react-redux';
 import { getUser } from '../features/user/userSlice';
+import { TimeCheck } from './TimeCheck';
 
 //Comment GET, POST
 
@@ -46,12 +47,6 @@ export const Comment = () => {
   };
 
   // CommentPost
-  // const ReviewOnSubmitHandler = async (e) => {
-  //   e.preventDefault();
-  //   const context = e.target.context.value;
-  //   await axios.post(`${process.env.REACT_APP_API_URL}/comments`, { context: context, boardId: 1, memberId: 3 });
-  //   getComment();
-  // };
 
   const CommentOnSubmitHandler = async (e) => {
     e.preventDefault();
@@ -61,10 +56,21 @@ export const Comment = () => {
       url: `/comments`,
       data: JSON.stringify({
         context: context,
-        memberId: memberId,
+        memberId: memberId.memberId,
         boardId: boardId,
       }),
       headers: { 'Content-Type': 'application/json' },
+    })
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+    getComment();
+  };
+
+  //CommentDelte
+  const removeComment = async () => {
+    await apiServer({
+      method: 'DELETE',
+      url: `/comments/${items[0].commentId}?memberId=${memberId.memberId}`,
     })
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
@@ -77,12 +83,13 @@ export const Comment = () => {
         <h2>문의</h2>
         {items.map((comment) => {
           return (
-            <Reviewlist key={comment.clientId}>
+            <Reviewlist key={comment.createdAt}>
               <div>{comment.commentId}</div>
               <div>{comment.context}</div>
               {/* <button>수정하기</button> */}
               <div>{comment.name}</div>
-              <div>{comment.createdAt}</div>
+              <button onClick={removeComment}>삭제</button>
+              <div>{TimeCheck(comment.createdAt)}</div>
             </Reviewlist>
           );
         })}

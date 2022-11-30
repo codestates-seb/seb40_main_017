@@ -6,9 +6,9 @@ import { useParams } from 'react-router-dom';
 import StarRate from './StarRate';
 import { apiServer } from '../features/axios';
 import { useSelector } from 'react-redux';
+import { TimeCheck } from './TimeCheck';
 
 //REVIEW GET, POST
-
 export const Review = () => {
   const [items, setItems] = useState([]);
   const { boardId } = useParams();
@@ -30,7 +30,6 @@ export const Review = () => {
   }, []);
 
   console.log(items);
-  console.log(items.clientId);
 
   const fetchReviews = async (currentPage) => {
     const res = await fetch(`${process.env.REACT_APP_API_URL}/boards/reviews/${boardId}?page=${currentPage}&size=5`);
@@ -71,10 +70,16 @@ export const Review = () => {
   };
 
   // ReviewDelete
-  // const removeReview = async (reviewId) => {
-  //   const response = await axios.delete(`${process.env.REACT_APP_API_URL}//boards/reviews/${reviewId}`);
-  //   return response;
-  // };
+  // reviewId 어떻게 받아오지...?
+  const removeReview = async () => {
+    await apiServer({
+      method: 'DELETE',
+      url: `/boards/reviews/${items[0].reviewId}?clientId=${clientId}`,
+    })
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+    getReviews();
+  };
 
   return (
     <Container>
@@ -82,11 +87,12 @@ export const Review = () => {
         <h2>리뷰</h2>
         {items.map((review) => {
           return (
-            <Reviewlist key={review.clientId}>
+            <Reviewlist key={review.createdAt}>
               <div>{review.reviewId}</div>
               <div>{review.context}</div>
               <div>{review.name}</div>
-              <div>{review.createdAt}</div>
+              <button onClick={removeReview}>삭제</button>
+              <div>{TimeCheck(review.createdAt)}</div>
             </Reviewlist>
           );
         })}
