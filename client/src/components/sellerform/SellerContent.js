@@ -95,6 +95,9 @@ export const SellerContent = ({ nextButton, formData, setFormData, setIsLoading 
   };
 
   const handleOnSubmit = async () => {
+    if (!formData.content) {
+      return alert('상품내용을 작성해주세요');
+    }
     if (window.confirm('등록완료하기')) {
       setIsLoading(true);
       await apiServer({

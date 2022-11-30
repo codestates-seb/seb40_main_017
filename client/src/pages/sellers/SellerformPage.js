@@ -79,7 +79,7 @@ function SellerformPage() {
     price: '',
     category: '',
     mainImage: '이미지테스트',
-    content: '테스트',
+    // content: '테스트',
   });
   useEffect(() => {
     console.log(formData);

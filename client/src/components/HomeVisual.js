@@ -96,6 +96,56 @@ const Homevisualbox = styled.div`
     background-image: url('https://ifh.cc/g/lonaMp.jpg');
     background-size: cover;
   }
+  @media (max-width: 1500px) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-left: 0;
+    .slide {
+      width: 40em;
+      margin: 0;
+      margin-left: 140px;
+    }
+    .swiper-slide {
+      margin-right: 0;
+    }
+  }
+  @media (max-width: 1199px) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-left: 0;
+    .text {
+      h1 {
+        font-size: 72px;
+      }
+    }
+  }
+  @media (max-width: 991px) {
+    padding-left: 0;
+    .swiper-slide {
+      display: flex;
+      align-items: center;
+    }
+    .first-slide {
+      width: 400px;
+      height: 400px;
+    }
+    .second-slide {
+      width: 400px;
+      height: 400px;
+    }
+    .third-slide {
+      width: 400px;
+      height: 400px;
+    }
+    .fourth-slide {
+      width: 400px;
+      height: 400px;
+    }
+  }
 `;
 
 function HomeVisual() {
@@ -114,7 +164,6 @@ function HomeVisual() {
   };
   const handleChange = () => {
     swiper.slideNext();
-    console.log(swiper);
     visualRef.current.style.backgroundColor = colors[swiper.realIndex];
     headerRef.current.innerText = whiteTexts[swiper.realIndex];
     darkheaderRef.current.innerText = darkerTexts[swiper.realIndex];
@@ -142,7 +191,7 @@ function HomeVisual() {
         <Swiper
           spaceBetween={80}
           slidesPerView={1}
-          centeredSlides={false}
+          centeredSlides={true}
           loop={true}
           onClick={handleSwiperChange}
           onSwiper={setSwiper}
