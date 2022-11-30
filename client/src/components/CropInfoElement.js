@@ -39,9 +39,9 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-export const Linktoseller = () => {
+export const Linktoseller = (props) => {
   return (
-    <Link to="/sell">
+    <Link to={`/seller/${props.sellerId}`}>
       <p>생산자 정보 바로가기</p>
     </Link>
   );
