@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -31,7 +32,7 @@ public class OrdSellerResponseDto { //판매 내역 조회
 
     private int leftStock;
 
-    private LocalDateTime createAt;
+    private LocalDate createAt;
 
-    private LocalDateTime modifiedAt;
+    private LocalDate modifiedAt;
 }

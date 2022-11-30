@@ -2,7 +2,7 @@ package team017.board.Dto;
 import lombok.*;
 import team017.product.Entity.Product;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -37,8 +37,8 @@ public class BoardResponseDto {
 
     private int leftStock;                  //잔여 재고
 
-    private LocalDateTime createdAt;        //게시글 생성 시간
+    private LocalDate createdAt;        //게시글 생성 시간
 
-    private LocalDateTime modifiedAt;       //게시글 수정 시간
+    private LocalDate modifiedAt;       //게시글 수정 시간
 
 }

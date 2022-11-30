@@ -31,7 +31,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'com.google.code.gson:gson'
-    implementation 'org.json:json:20171018'
 
     /* lombok > mapstruct */
     compileOnly 'org.projectlombok:lombok'
@@ -64,9 +63,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-aop'
 
     /* web flux */
-    implementation 'org.springframework.boot:spring-boot-starter-webflux'
-    implementation 'org.projectreactor:reactor-spring:1.0.1.RELEASE'
-    implementation("io.netty:netty-resolver-dns-native-macos:4.1.75.Final:osx-aarch_64")
+//    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+//    implementation 'org.projectreactor:reactor-spring:1.0.1.RELEASE'
+//    implementation("io.netty:netty-resolver-dns-native-macos:4.1.75.Final:osx-aarch_64")
 
     /* Thymeleaf */
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
@@ -74,7 +73,10 @@ dependencies {
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
 
     /* Redis */
-    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+//    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
+    /* Mail */
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
 
     //aws
     implementation 'io.awspring.cloud:spring-cloud-starter-aws:2.4.2'

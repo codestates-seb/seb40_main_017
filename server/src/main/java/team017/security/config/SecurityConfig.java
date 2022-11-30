@@ -78,12 +78,12 @@ public class SecurityConfig {
 
 				/* 주문 관련 접근 제한 */
 				.antMatchers(HttpMethod.POST, "/orders").hasRole("CLIENT") /* 주문 등록 */
-				.antMatchers(HttpMethod.DELETE, "/orders/**").hasRole("CLIENT") /* 주문 삭제 */
 
 				/* 결제 관련 접근 제한 */
 				.antMatchers(HttpMethod.GET, "/order/pay/completed").permitAll() /* 결제 승인 요청 */
 				.antMatchers(HttpMethod.GET, "/order/pay/cancel").permitAll() /* 결제 취소 */
 				.antMatchers(HttpMethod.GET, "/order/pay/fail").permitAll() /* 결제 실패 */
+				.antMatchers(HttpMethod.DELETE, "/orders/**").permitAll() /* 주문 삭제 -> 결제 취소 혹은 실패시 작동 */
 				.antMatchers(HttpMethod.GET, "/orders/*").permitAll() /* 결제 성공 -> 주문 내역 조회 필요 */
 				.antMatchers(HttpMethod.GET, "/order/pay/*").hasRole("CLIENT") /* 결제 요청 */
 
@@ -97,7 +97,7 @@ public class SecurityConfig {
 				.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
 				/* 접근 제한 확인을 위해 나머지는 접근할 수 없는 권한으로 설정 */
-				.anyRequest().hasRole("ADMIN")
+				.anyRequest().permitAll()
 			)
 			// .oauth2Login(oauth -> oauth
 			// 	.successHandler(oAuth2AuthenticationSuccessHandler())
