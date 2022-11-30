@@ -45,8 +45,8 @@ public class KakaoPayService {
         parameters.add("total_amount", Integer.toString(ord.getTotalPrice()));          //상품 총액
         parameters.add("tax_free_amount", "0");                                         //상품 총액
 
-        parameters.add("approval_url", "http://17farm-server.shop:8080/order/pay/completed");    // 결제승인시 넘어갈 redirect url,
-        parameters.add("cancel_url", "http://17farm-server.shop:8080/order/pay/cancel");         // 결제취소시 넘어갈 redirect url,
+        parameters.add("approval_url", "http://17farm-server.shop:8080/order/pay/completed");    // 결제 승인시 넘어갈 redirect url,
+        parameters.add("cancel_url", "http://17farm-server.shop:8080/order/pay/cancel");         // 결제 취소시 넘어갈 redirect url,
         parameters.add("fail_url", "http://17farm-server.shop:8080/order/pay/fail");             // 결제 실패시 넘어갈 redirect url,
 
         //Header + Body 합치기
@@ -73,11 +73,11 @@ public class KakaoPayService {
 
         // request
         MultiValueMap<String, String> parameters = new LinkedMultiValueMap<String, String>();
-        parameters.add("cid", "TC0ONETIME");                        //가맹점 코드
-        parameters.add("tid", readyResponseDto.getTid());           //결제 고유번호, 결제 준비 API 응답에 포함
+        parameters.add("cid", "TC0ONETIME");                                        //가맹점 코드
+        parameters.add("tid", readyResponseDto.getTid());                           //결제 고유번호, 결제 준비 API 응답에 포함
         parameters.add("partner_order_id", readyResponseDto.getPartner_order_id()); //가맹점 주문번호, 결제 준비 API 요청과 일치해야 함
-        parameters.add("partner_user_id", "17farm");                //가맹점 회원 id, 결제 준비 API 요청과 일치해야 함
-        parameters.add("pg_token", pgToken);                        //결제승인 요청을 인증하는 토큰
+        parameters.add("partner_user_id", "17farm");                                //가맹점 회원 id, 결제 준비 API 요청과 일치해야 함
+        parameters.add("pg_token", pgToken);                                        //결제승인 요청을 인증하는 토큰
 
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(parameters, this.getHeaders());
 
