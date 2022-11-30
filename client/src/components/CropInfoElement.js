@@ -11,7 +11,7 @@ export const PurchaseButton = (props) => {
 
 export const PatchButton = (props) => {
   return (
-    <Link to={`/sell/patch/${props.boardId}/`} state={{ boardId: props.boardId }}>
+    <Link to={`/sell/patch/${props.boardId}`} state={{ boardId: props.boardId }}>
       <Patchbutton>수정</Patchbutton>
     </Link>
   );
