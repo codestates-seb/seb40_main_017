@@ -94,11 +94,11 @@ public class OrdService {
 
     @Transactional
     public Page<Ord> findClientOrd(Long clientId, int page, int size){
-        return ordRepository.findByClient_ClientId(clientId, PageRequest.of(page, size, Sort.by("createdAt").descending()));
+        return ordRepository.findByClient_ClientId(clientId, PageRequest.of(page, size, Sort.by("ordId").descending()));
     }
 
     @Transactional
     public Page<Board> findSellerOrd(Long sellerId, int page, int size){
-        return boardRepository.findBySeller_SellerId(sellerId, PageRequest.of(page, size, Sort.by("createdAt").descending()));
+        return boardRepository.findBySeller_SellerId(sellerId, PageRequest.of(page, size, Sort.by("ordId").descending()));
     }
 }

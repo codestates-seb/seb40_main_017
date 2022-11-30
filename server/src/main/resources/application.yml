@@ -40,6 +40,11 @@ spring:
           SQL: DEBUG
           type:
             trace
+  thymeleaf:
+    cache: false
+    check-template-location: true
+    prefix: classpath:/templates/
+    suffix: .html
 cloud:
   aws:
     credentials:
@@ -57,3 +62,18 @@ server:
   servlet:
     encoding:
       force-response: true
+mail:
+  smtp:
+    auth: true
+    host: smtp.gmail.com
+    port: 465
+    starttls:
+      enable: true
+      required: true
+    socketFactory:
+      class: javax.net.ssl.SSLSocketFactory
+      fallback: false
+      port: 465
+AdminMail:
+  id:
+  password:
