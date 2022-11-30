@@ -8,7 +8,7 @@ export const setCookie = (name, value, expire = 1) => {
   const date = new Date();
   date.setTime(date.getTime() + expire * DAY);
 
-  document.cookie = `${name}=${value}; expires=${date.toUTCString()}`;
+  document.cookie = `${name}=${value}; path=/; expires=${date.toUTCString()}`;
 };
 
 //  쿠키 데이터를 받아오기 위해 만든 스크립트
@@ -31,5 +31,5 @@ export const getCookie = (name) => {
 export const removeCookie = (name) => {
   const date = new Date(0);
 
-  document.cookie = `${name}=; expires=${date.toUTCString()}`;
+  document.cookie = `${name}=; path=/; expires=${date.toUTCString()}`;
 };

@@ -116,7 +116,6 @@ export const useFile = (callback) => {
 
   //  새로 작성하지 않음
   const handleChange = useCallback((event) => {
-    console.log('file:', event);
     const files = event.target.files;
     const fileData = files[0];
 
