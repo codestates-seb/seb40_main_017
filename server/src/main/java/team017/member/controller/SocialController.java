@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import team017.global.Exception.BusinessLogicException;
 import team017.global.Exception.ExceptionCode;
 import team017.member.entity.Member;
@@ -24,6 +25,7 @@ import team017.security.oauth.service.KakaoService;
 import team017.security.jwt.service.SecurityService;
 
 @RestController
+@Slf4j
 @RequiredArgsConstructor
 public class SocialController {
 	private final SecurityService securityService;
@@ -42,9 +44,16 @@ public class SocialController {
 	/* frontend 로 부터 받은 인가 코드 받기 및 사용자 정보 받기, 회원가입 */
 	@GetMapping("/login/oauth2/code/kakao")
 	public ResponseEntity KakaoLogin(@RequestParam("code") String code) {
+		log.info("카카오에서 인가코드 발급 후 백엔드로 들어옴");
+		log.error("카카오에서 인가코드 발급 후 백엔드로 들어옴");
 
 		/* access 토큰 받기 */
 		KakaoToken oauthToken = kakaoService.getAccessToken(code);
+
+		log.info("소셜 컨트롤러, 액세스 토큰 발급 완료 : {}", oauthToken.getAccess_token());
+		log.error("소셜 컨트롤러, 액세스 토큰 발급 완료 : {}", oauthToken.getAccess_token());
+		log.info("컨트롤러 -> 서비스 : 사용자 정보 받고 회원가입");
+		log.error("컨트롤러 -> 서비스 : 사용자 정보 받고 회원가입");
 
 		/* 사용자 정보받기 및 회원가입 */
 		Member member = kakaoService.saveMember(oauthToken.getAccess_token());
