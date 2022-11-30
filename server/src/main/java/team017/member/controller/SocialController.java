@@ -1,14 +1,18 @@
 package team017.member.controller;
 
+import java.net.URI;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +28,7 @@ import team017.security.jwt.dto.TokenDto;
 import team017.security.oauth.service.KakaoService;
 import team017.security.jwt.service.SecurityService;
 
-@RestController
+@Controller
 @Slf4j
 @RequiredArgsConstructor
 public class SocialController {
@@ -38,7 +42,10 @@ public class SocialController {
 	/* test 로 직접 인가 코드 받기 */
 	// @GetMapping("/login/oauth2/code/kakao")
 	// public String KakaoCode(@RequestParam("code") String code) {
-	// 	return "카카오 로그인 인증완료, code: "  + code;
+	// 	URI uri = UriComponentsBuilder.fromUri(URI.create("http://localhost:8080/login/oauth"))
+	// 		.queryParam("code", code)
+	// 		.build().toUri();
+	// 	return "redirect:"+uri;
 	// }
 
 	/* frontend 로 부터 받은 인가 코드 받기 및 사용자 정보 받기, 회원가입 */
