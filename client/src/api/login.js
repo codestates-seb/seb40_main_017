@@ -104,7 +104,7 @@ export const useSessionCheck = (needLogin = true, to = '/login') => {
       if (hasSession !== needLogin) {
         navigate(to);
       }
-    }, 100);
+    }, 1000);
 
     return () => clearTimeout(delayId);
   }, [navigate, hasSession]);
