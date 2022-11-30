@@ -63,9 +63,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-aop'
 
     /* web flux */
-//    implementation 'org.springframework.boot:spring-boot-starter-webflux'
-//    implementation 'org.projectreactor:reactor-spring:1.0.1.RELEASE'
-//    implementation("io.netty:netty-resolver-dns-native-macos:4.1.75.Final:osx-aarch_64")
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    implementation 'org.projectreactor:reactor-spring:1.0.1.RELEASE'
+    implementation("io.netty:netty-resolver-dns-native-macos:4.1.75.Final:osx-aarch_64")
 
     /* Thymeleaf */
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
