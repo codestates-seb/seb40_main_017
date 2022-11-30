@@ -6,14 +6,16 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { Review } from '../../components/Review';
 import { Comment } from '../../components/Comment';
-import { PurchaseButton, Linktoseller } from '../../components/CropInfoElement';
+import { PurchaseButton, PatchButton, Linktoseller } from '../../components/CropInfoElement';
+import { apiServer } from '../../features/axios';
+import ItemViewer from '../../components/Viewer';
 
 function CropInfoPage() {
   const { boardId } = useParams();
   const [board, setBoard] = useState({});
   const [quantity, setQuantity] = useState(0);
 
-  //BoardFetch
+  //BoardGet
   const GetCropInfo = async () => {
     const response = await axios.get(`${process.env.REACT_APP_API_URL}/boards/${boardId}`);
     setBoard(response.data);
@@ -21,6 +23,21 @@ function CropInfoPage() {
   useEffect(() => {
     GetCropInfo();
   }, []);
+
+  const markdownData = board.content;
+  console.log(markdownData);
+
+  //BoardDelete
+  const BoardDelete = async () => {
+    await apiServer({
+      method: 'DELETE',
+      url: `/boards/${boardId}`,
+    })
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+    document.location.href = '/boards';
+  };
+
   return (
     <Background>
       <Container>
@@ -45,10 +62,12 @@ function CropInfoPage() {
                 }}
               />
             </PurchaseCount>
-            <p>남은수량 {board.stock}개</p>
+            <p>남은수량 {board.leftStock}개</p>
             <Flexbox>
-              <Linktoseller />
+              <Linktoseller sellerId={board.sellerId} />
               <PurchaseButton boardId={boardId} quantity={quantity} />
+              <PatchButton boardId={boardId} />
+              <button onClick={BoardDelete}>삭제</button>
             </Flexbox>
           </CropInfo>
         </Crop>
@@ -73,7 +92,9 @@ function CropInfoPage() {
             </ul>
           </Menubar>
           <MenuLink>
-            <div id="a">{board.content}</div>
+            <div id="a">
+              <ItemViewer content={board.content} className="viewerstyle" />
+            </div>
             <Review />
             <Comment />
           </MenuLink>
@@ -206,6 +227,11 @@ const MenuLink = styled.div`
   .firstlayout {
     border-bottom: 1px solid var(--light-gray);
     margin-bottom: 50px;
+  }
+
+  .viewerstyle {
+    width: 500px;
+    height: 500px;
   }
 `;
 

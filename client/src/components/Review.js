@@ -2,16 +2,18 @@ import styled from 'styled-components';
 import ReactPaginate from 'react-paginate';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import axios from 'axios';
+// import axios from 'axios';
 import StarRate from './StarRate';
-// import { apiServer } from '../features/axios';
+import { apiServer } from '../features/axios';
+import { useSelector } from 'react-redux';
 
 //REVIEW GET, POST
-
 export const Review = () => {
   const [items, setItems] = useState([]);
   const { boardId } = useParams();
   const [pageCount, setpageCount] = useState(0);
+  const clientId = useSelector((state) => state.user.clientId);
+  const [starCount, setStarCount] = useState(0);
 
   //ReviewGet
   const getReviews = async () => {
@@ -27,10 +29,10 @@ export const Review = () => {
   }, []);
 
   console.log(items);
-  console.log(items.clientId);
 
   const fetchReviews = async (currentPage) => {
     const res = await fetch(`${process.env.REACT_APP_API_URL}/boards/reviews/${boardId}?page=${currentPage}&size=5`);
+    console.log(boardId);
     const data = await res.json();
     return data.data;
   };
@@ -50,20 +52,33 @@ export const Review = () => {
   const reviewOnSubmitHandler = async (e) => {
     e.preventDefault();
     const context = e.target.context.value;
-    await axios.post(`${process.env.REACT_APP_API_URL}/boards/${boardId}/reviews`, {
-      context: context,
-      clientId: 3,
-      image: 3,
-      star: 1,
-    });
+    await apiServer({
+      method: 'POST',
+      url: `/boards/${boardId}/reviews`,
+      data: JSON.stringify({
+        context: context,
+        clientId: clientId,
+        image: '',
+        star: starCount,
+      }),
+      headers: { 'Content-Type': 'application/json' },
+    })
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
     getReviews();
   };
 
   // ReviewDelete
-  // const removeReview = async (reviewId) => {
-  //   const response = await axios.delete(`${process.env.REACT_APP_API_URL}//boards/reviews/${reviewId}`);
-  //   return response;
-  // };
+  // reviewId 어떻게 받아오지...?
+  const removeReview = async () => {
+    await apiServer({
+      method: 'DELETE',
+      url: `/boards/reviews/${items[0].reviewId}?clientId=${clientId}`,
+    })
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+    getReviews();
+  };
 
   return (
     <Container>
@@ -71,10 +86,11 @@ export const Review = () => {
         <h2>리뷰</h2>
         {items.map((review) => {
           return (
-            <Reviewlist key={review.clientId}>
+            <Reviewlist key={review.reviewId}>
               <div>{review.reviewId}</div>
               <div>{review.context}</div>
               <div>{review.name}</div>
+              <button onClick={removeReview}>삭제</button>
               <div>{review.createdAt}</div>
             </Reviewlist>
           );
@@ -99,7 +115,7 @@ export const Review = () => {
         <h2>리뷰작성</h2>
         <Layout>
           <p>별점</p>
-          <StarRate borardId={boardId} />
+          <StarRate setStarCount={setStarCount} />
         </Layout>
         <Layout className="formlayout">
           <p>상세리뷰</p>
