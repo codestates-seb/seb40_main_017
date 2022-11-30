@@ -46,13 +46,21 @@ function CropInfoPage() {
           <CropInfo>
             <CropTitle>
               <p>{board.title}</p>
-              <p>{board.price} 원</p>
+              <Layout>
+                <p>{board.price} 원</p>
+                <div>
+                  <PatchButton boardId={boardId} />
+                  <DeleteButton onClick={BoardDelete}>삭제</DeleteButton>
+                </div>
+              </Layout>
             </CropTitle>
             <PurchaseCount>
               <p>구매수량</p>
               <Minus
                 onClick={() => {
-                  setQuantity(quantity - 1);
+                  if (quantity > 0) {
+                    setQuantity(quantity - 1);
+                  }
                 }}
               />
               <Count>{quantity}</Count>
@@ -66,8 +74,6 @@ function CropInfoPage() {
             <Flexbox>
               <Linktoseller sellerId={board.sellerId} />
               <PurchaseButton boardId={boardId} quantity={quantity} />
-              <PatchButton boardId={boardId} />
-              <button onClick={BoardDelete}>삭제</button>
             </Flexbox>
           </CropInfo>
         </Crop>
@@ -238,4 +244,16 @@ const MenuLink = styled.div`
 const Flexbox = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  height: 5px;
+`;
+
+const Layout = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const DeleteButton = styled.button`
+  padding: 3px 5px;
+  margin-left: 5px;
 `;
