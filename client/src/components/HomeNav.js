@@ -35,8 +35,10 @@ const StyledLink = styled(NavLink)`
     height: 100px;
     border-radius: 50%;
     background: var(--brown);
+    transition: 0.3s;
     :hover {
       background: var(--light-brown);
+      scale: 1.2;
     }
   }
   .navicon {

@@ -141,6 +141,10 @@ const Homevisualbox = styled.div`
       width: 400px;
       height: 400px;
     }
+    .fourth-slide {
+      width: 400px;
+      height: 400px;
+    }
   }
 `;
 
