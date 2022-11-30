@@ -266,6 +266,10 @@ export const ClientMyPage = ({ handleDeleteMember }) => {
 
   //  마이페이지 조회
   useEffect(() => {
+    if (clientId == 0) {
+      return;
+    }
+
     //  마이페이지 데이터 조회
     getClient({ clientId }, handleRenderClient);
 
@@ -599,6 +603,7 @@ export const SellerMyPage = ({ handleDeleteMember }) => {
           if (newPhoto) {
             photo = newPhoto;
           }
+          console.log(photo, seller.photo, newPhoto, userPhotoFile);
         }
 
         //  마이페이지 데이터 업데이트
@@ -637,6 +642,8 @@ export const SellerMyPage = ({ handleDeleteMember }) => {
           stock: sale.stock,
           category: sale.category,
           leftStock: sale.leftStock,
+          createAt: sale.createAt,
+          modifiedAt: sale.modifiedAt,
         };
       });
 
@@ -656,6 +663,10 @@ export const SellerMyPage = ({ handleDeleteMember }) => {
 
   //  마이페이지 조회
   useEffect(() => {
+    if (sellerId == 0) {
+      return;
+    }
+
     //  마이페이지 데이터 조회
     getSeller({ sellerId }, handleRenderSeller);
 
@@ -762,7 +773,7 @@ export const SellerMyPage = ({ handleDeleteMember }) => {
                       <tr key={sale.boardId}>
                         <td>{sale.title}</td>
                         <td>{sale.stock}</td>
-                        <td>{}</td>
+                        <td>{sale.createAt}</td>
                       </tr>
                     );
                   })}
