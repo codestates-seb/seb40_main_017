@@ -14,19 +14,14 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface OrdMapper {
 
-    default Ord ordPostDtoToOrd(OrdPostDto ordPostDto){
+    default Ord ordPostDtoToOrd(Client client, Product product, OrdPostDto ordPostDto){
         if( ordPostDto == null){
             return null;
         }
-        Client.ClientBuilder client = Client.builder();
-        client.clientId(ordPostDto.getClientId());
-
-        Board board = new Board();
-        board.setBoardId(ordPostDto.getBoardId());
 
         Ord ord = new Ord();
-        ord.setClient(client.build());
-        //ord.setClientName(ordPostDto.getClientName());
+        ord.setClient(client);
+        ord.setProduct(product);
         ord.setAddress(ordPostDto.getAddress());
         ord.setPhone(ordPostDto.getPhone());
         ord.setTotalPrice(ordPostDto.getTotalPrice());
@@ -39,18 +34,11 @@ public interface OrdMapper {
         if( ord == null){
             return null;
         }
-        Client.ClientBuilder client = Client.builder();
-        client.clientId(ord.getClient().getClientId());
-
-        ord.setOrdId(ord.getOrdId());
-
-        Product product = new Product();
-        product.setProductId(ord.getProduct().getBoard().getBoardId());
 
         OrdResponseDto ordResponseDto = new OrdResponseDto();
         ordResponseDto.setOrdId(ord.getOrdId());
-        ordResponseDto.setClientId(client.build().getClientId());
-        ordResponseDto.setBoardId(product.getProductId());
+        ordResponseDto.setClientId(ord.getClient().getClientId());
+        ordResponseDto.setBoardId(ord.getProduct().getBoard().getBoardId());
         ordResponseDto.setName(ord.getClient().getMember().getName());
         ordResponseDto.setAddress(ord.getAddress());
         ordResponseDto.setPhone(ord.getPhone());
@@ -58,33 +46,6 @@ public interface OrdMapper {
         ordResponseDto.setQuantity(ord.getQuantity());
         ordResponseDto.setOrdStatus(ord.getStatus());
         ordResponseDto.setCreatedAt(ord.getCreatedAt());
-
-        return ordResponseDto;
-
-    }
-
-    default OrdClientResponseDto ordToOrdClientResponseDto(Ord ord){
-        if( ord == null){
-            return null;
-        }
-        Client.ClientBuilder client = Client.builder();
-        client.clientId(ord.getClient().getClientId());
-
-        ord.setOrdId(ord.getOrdId());
-
-        Product product = new Product();
-        product.setProductId(ord.getProduct().getBoard().getBoardId());
-
-
-        OrdClientResponseDto ordResponseDto = new OrdClientResponseDto();
-        ordResponseDto.setOrdId(ord.getOrdId());
-        ordResponseDto.setClientId(client.build().getClientId());
-        ordResponseDto.setBoardId(product.getProductId());
-        ordResponseDto.setTitle(ord.getProduct().getBoard().getTitle());
-        ordResponseDto.setName(ord.getClient().getMember().getName());
-        ordResponseDto.setAddress(ord.getAddress());
-        ordResponseDto.setPhone(ord.getPhone());
-        ordResponseDto.setQuantity(ord.getQuantity());
 
         return ordResponseDto;
 
