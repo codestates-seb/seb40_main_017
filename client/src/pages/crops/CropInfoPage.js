@@ -7,13 +7,14 @@ import axios from 'axios';
 import { Review } from '../../components/Review';
 import { Comment } from '../../components/Comment';
 import { PurchaseButton, PatchButton, Linktoseller } from '../../components/CropInfoElement';
+import { apiServer } from '../../features/axios';
 
 function CropInfoPage() {
   const { boardId } = useParams();
   const [board, setBoard] = useState({});
   const [quantity, setQuantity] = useState(0);
 
-  //BoardFetch
+  //BoardGet
   const GetCropInfo = async () => {
     const response = await axios.get(`${process.env.REACT_APP_API_URL}/boards/${boardId}`);
     setBoard(response.data);
@@ -21,6 +22,18 @@ function CropInfoPage() {
   useEffect(() => {
     GetCropInfo();
   }, []);
+
+  //BoardDelete
+  const BoardDelete = async () => {
+    await apiServer({
+      method: 'DELETE',
+      url: `/boards/${boardId}`,
+    })
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+    document.location.href = '/boards';
+  };
+
   return (
     <Background>
       <Container>
@@ -50,6 +63,7 @@ function CropInfoPage() {
               <Linktoseller />
               <PurchaseButton boardId={boardId} quantity={quantity} />
               <PatchButton boardId={boardId} />
+              <button onClick={BoardDelete}>삭제</button>
             </Flexbox>
           </CropInfo>
         </Crop>
