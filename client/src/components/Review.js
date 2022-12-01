@@ -21,16 +21,13 @@ export const Review = () => {
   const getReviews = async () => {
     const res = await fetch(`${process.env.REACT_APP_API_URL}/boards/reviews/${boardId}?page=1&size=5`);
     const data = await res.json();
-    setpageCount(Math.ceil(data.data.length / 2));
-    console.log(pageCount);
+    setpageCount(data.pageInfo.totalElements / 5);
     setItems(data.data);
   };
 
   useEffect(() => {
     getReviews();
   }, []);
-
-  console.log(items);
 
   const fetchReviews = async (currentPage) => {
     const res = await fetch(`${process.env.REACT_APP_API_URL}/boards/reviews/${boardId}?page=${currentPage}&size=5`);

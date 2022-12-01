@@ -20,7 +20,7 @@ export const Comment = () => {
   const getComment = async () => {
     const res = await fetch(`${process.env.REACT_APP_API_URL}/comments/${boardId}?page=1&size=5`);
     const data = await res.json();
-    setpageCount(Math.ceil(data.data.length / 2));
+    setpageCount(Math.ceil(data.pageInfo.totalElements / 5));
     setItems(data.data);
   };
 
@@ -102,7 +102,7 @@ export const Comment = () => {
         <h2>문의</h2>
         {items.map((comment) => {
           return (
-            <Reviewlist key={comment.createdAt}>
+            <Reviewlist key={user.meberId}>
               <div>{comment.context}</div>
               <div>{comment.name}</div>
               {!Edit ? (
