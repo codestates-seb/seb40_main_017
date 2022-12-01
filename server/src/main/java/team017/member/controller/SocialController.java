@@ -39,24 +39,9 @@ public class SocialController {
 	private final MemberMapper mapper;
 
 	/* 카카오 로그인 */
-
-	/* test 로 직접 인가 코드 받기 */
-	// @GetMapping("/login/oauth2/code/kakao")
-	// public String KakaoCode(@RequestParam("code") String code) {
-	// 	URI uri = UriComponentsBuilder.fromUri(URI.create("http://localhost:8080/login/kakao"))
-	// 		.queryParam("code", code)
-	// 		.build().toUri();
-	// 	return "redirect:"+uri;
-	// }
-	// @GetMapping("/login/oauth2/code/kakao")
-	// public String KakaoCode(@RequestParam("code") String code) {
-	// 	return "인가코드 발급 완료 : "+ code;
-	// }
-
 	/* frontend 로 부터 받은 인가 코드 받기 및 사용자 정보 받기, 회원가입 */
-	// @GetMapping("/login/kakao")
 	@GetMapping("/login/oauth2/code/kakao")
-	public ResponseEntity KakaoLogin(@RequestParam("code") String code) {
+	public ResponseEntity KakaoLogin(@RequestParam("code") String code) throws Exception {
 		log.info("카카오에서 인가코드 발급 후 백엔드로 들어옴");
 		log.error("카카오에서 인가코드 발급 후 백엔드로 들어옴");
 
