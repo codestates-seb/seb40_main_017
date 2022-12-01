@@ -11,7 +11,7 @@ const Footerbox = styled.footer`
 `;
 
 const Logo = styled.p`
-  font-size: 30px;
+  font-size: 187.5%;
 `;
 
 const Team = styled.div`

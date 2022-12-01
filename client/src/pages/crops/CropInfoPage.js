@@ -9,6 +9,8 @@ import { Comment } from '../../components/Comment';
 import { PurchaseButton, PatchButton, Linktoseller } from '../../components/CropInfoElement';
 import { apiServer } from '../../features/axios';
 import ItemViewer from '../../components/Viewer';
+import { useSelector } from 'react-redux';
+import { getUser } from '../../features/user/userSlice';
 
 function CropInfoPage() {
   const { boardId } = useParams();
@@ -38,6 +40,12 @@ function CropInfoPage() {
     document.location.href = '/boards';
   };
 
+  // const sellerCheck = () => {
+  //   board.sellerId === 현재로그인하고있는셀러아이디?);
+  // };
+
+  const user = useSelector(getUser);
+
   return (
     <Background>
       <Container>
@@ -48,10 +56,14 @@ function CropInfoPage() {
               <p>{board.title}</p>
               <Layout>
                 <p>{board.price} 원</p>
-                <div>
-                  <PatchButton boardId={boardId} />
-                  <DeleteButton onClick={BoardDelete}>삭제</DeleteButton>
-                </div>
+                {user.sellerId === board.sellerId ? (
+                  <div>
+                    <PatchButton boardId={boardId} />
+                    <DeleteButton onClick={BoardDelete}>삭제</DeleteButton>
+                  </div>
+                ) : (
+                  <></>
+                )}
               </Layout>
             </CropTitle>
             <PurchaseCount>
@@ -66,7 +78,9 @@ function CropInfoPage() {
               <Count>{quantity}</Count>
               <Plus
                 onClick={() => {
-                  setQuantity(quantity + 1);
+                  if (quantity < board.leftStock) {
+                    setQuantity(quantity + 1);
+                  }
                 }}
               />
             </PurchaseCount>
@@ -181,11 +195,13 @@ const Count = styled.div`
 const Minus = styled(AiOutlineMinusCircle)`
   font-size: 25px;
   color: var(--light-gray);
+  cursor: pointer;
 `;
 
 const Plus = styled(AiOutlinePlusCircle)`
   font-size: 25px;
   color: var(--light-gray);
+  cursor: pointer;
 `;
 
 const ContentDiv = styled.div``;
