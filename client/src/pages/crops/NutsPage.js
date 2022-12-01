@@ -40,8 +40,8 @@ function NutsPage() {
     <Background>
       <div>
         <CropInfo>
-          <p>Your Best Vegetable</p>
-          <p>“If you don’t try this, you won’t become the superhero you were meant to be”</p>
+          <p>이 상품 어때요?</p>
+          <p>“슬기로운 견과생활”</p>
         </CropInfo>
         <CategoryList>
           <ol>

@@ -4,24 +4,26 @@ import { Link } from 'react-router-dom';
 
 function CropBoard({ item: { boardId, name, title, price, mainImage, reviewAvg, reviewNum, sellerImage } }) {
   return (
-    <Link to={`/boards/${boardId}`}>
-      <Container>
+    <Container>
+      <Link to={`/boards/${boardId}`}>
         <CropImage src={mainImage} alt="썸네일" />
         <CropInfo>
           <p>{title}</p>
           <p>{price}원</p>
           <p>리뷰 {reviewNum}개</p>
           <SellerInfo>
-            <p>{name}</p>
-            <Review>
-              <Star />
-              <p>{reviewAvg}/5</p>
-            </Review>
+            <div className="layout">
+              <p>{name}</p>
+              <Review>
+                <Star />
+                <p>{reviewAvg}/5</p>
+              </Review>
+            </div>
             <SellerImage src={sellerImage} alt="판매자사진" />
           </SellerInfo>
         </CropInfo>
-      </Container>
-    </Link>
+      </Link>
+    </Container>
   );
 }
 
@@ -32,12 +34,13 @@ const Container = styled.div`
   width: 270px;
   height: 500px;
   margin: 50px;
-  cursor: pointer;
+  border-radius: 10px;
 `;
 
 const CropImage = styled.img`
   width: 270px;
   height: 270px;
+  border-radius: 10px 10px 0 0;
 `;
 
 const SellerImage = styled.img`
@@ -64,11 +67,13 @@ const CropInfo = styled.div`
 const SellerInfo = styled.div`
   display: flex;
   align-items: center;
-  > :first-child {
-    margin-right: 10px;
-  }
-  > :nth-child(3) {
-    margin: 0 0 0 90px;
+  justify-content: space-between;
+  width: 230px;
+  .layout {
+    display: flex;
+    > :first-child {
+      margin-right: 5px;
+    }
   }
 `;
 

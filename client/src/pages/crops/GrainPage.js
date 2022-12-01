@@ -40,8 +40,8 @@ function GrainPage() {
     <Background>
       <div>
         <CropInfo>
-          <p>Your Best Vegetable</p>
-          <p>“If you don’t try this, you won’t become the superhero you were meant to be”</p>
+          <p>이 상품 어때요?</p>
+          <p>THE 건강한 쌀과 잡곡”</p>
         </CropInfo>
         <CategoryList>
           <ol>

@@ -57,8 +57,8 @@ function CropListPage() {
     <Background>
       <div>
         <CropInfo>
-          <p>Your Best Vegetable</p>
-          <p>“If you don’t try this, you won’t become the superhero you were meant to be”</p>
+          <p>이 상품 어때요?</p>
+          <p>“소상공인 농산물 온라인 직거래 판매 17시 내고향”</p>
         </CropInfo>
         <CategoryList>
           <ol>
@@ -83,8 +83,8 @@ function CropListPage() {
           dataLength={items.length} //This is important field to render the next data
           next={fetchData}
           hasMore={hasMore}
-          loader={'로딩중'}
-          endMessage={'endMsg'}
+          loader={''}
+          endMessage={''}
         >
           <BoardList>
             {items.map((item) => {

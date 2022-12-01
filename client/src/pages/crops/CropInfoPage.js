@@ -4,13 +4,14 @@ import { Link } from 'react-scroll';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { Review } from '../../components/Review';
+// import { Review } from '../../components/Review';
 import { Comment } from '../../components/Comment';
 import { PurchaseButton, PatchButton, Linktoseller } from '../../components/CropInfoElement';
 import { apiServer } from '../../features/axios';
-import ItemViewer from '../../components/Viewer';
 import { useSelector } from 'react-redux';
 import { getUser } from '../../features/user/userSlice';
+import { Viewer } from '@toast-ui/react-editor';
+import '@toast-ui/editor/dist/toastui-editor.css';
 
 function CropInfoPage() {
   const { boardId } = useParams();
@@ -23,12 +24,12 @@ function CropInfoPage() {
     const response = await axios.get(`${process.env.REACT_APP_API_URL}/boards/${boardId}`);
     setBoard(response.data);
   };
+
   useEffect(() => {
     GetCropInfo();
   }, []);
 
-  const markdownData = board.content;
-  console.log(markdownData);
+  console.log(board);
 
   //BoardDelete
   const BoardDelete = async () => {
@@ -82,7 +83,13 @@ function CropInfoPage() {
             <p>남은수량 {board.leftStock}개</p>
             <Flexbox>
               <Linktoseller sellerId={board.sellerId} />
-              {board.leftStock === 0 ? 'SOLDOUT🥲' : <PurchaseButton boardId={boardId} quantity={quantity} />}
+              {board.leftStock === 0 ? (
+                'SOLDOUT'
+              ) : user.clientId ? (
+                <PurchaseButton boardId={boardId} quantity={quantity} />
+              ) : (
+                '구매를 원하신다면 회원가입해주세요'
+              )}
             </Flexbox>
           </CropInfo>
         </Crop>
@@ -108,9 +115,10 @@ function CropInfoPage() {
           </Menubar>
           <MenuLink>
             <div id="a">
-              <ItemViewer content={board.content} className="viewerstyle" />
+              <Viewer initialValue={board.content} />
+              {/* {board.content} */}
             </div>
-            <Review />
+            {/* <Review /> */}
             <Comment />
           </MenuLink>
         </ContentDiv>
@@ -246,9 +254,10 @@ const MenuLink = styled.div`
     margin-bottom: 50px;
   }
 
-  .viewerstyle {
-    width: 500px;
-    height: 500px;
+  .toastui-editor-contents {
+    p {
+      width: 500px;
+    }
   }
 `;
 
