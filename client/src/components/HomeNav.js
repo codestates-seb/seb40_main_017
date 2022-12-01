@@ -70,7 +70,19 @@ const StyledLink = styled(NavLink)`
     }
     margin: 5px;
   }
-  /* @media (max-width: 767px) { ... }  */
+  @media (max-width: 768px) {
+    p {
+      font-size: 14px;
+    }
+    .icon {
+      width: 50px;
+      height: 50px;
+    }
+    .navicon {
+      font-size: 20px;
+    }
+    margin: 0px;
+  }
 `;
 
 function HomeNav() {
