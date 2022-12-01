@@ -47,7 +47,8 @@ public class PaymentController {
         Long ordId = response.getOrdId();
         redirectAttributes.addAttribute("ordId", ordId);
 
-        return "redirect: https://www.17farm.shop/order/pay/completed";
+        return "redirect:http://waymophototest.s3-website.ap-northeast-2.amazonaws.com//order/pay/completed";
+        //return "redirect:https://www.17farm.shop/order/pay/completed";
         //return "redirect:http://localhost:3000/order/pay/completed";
     }
 
@@ -57,7 +58,8 @@ public class PaymentController {
         kakaoPayService.cancelOrFailPayment();
         log.info("결제 취소");
 
-        return "redirect: https://www.17farm.shop/order/pay/cancel";
+        return "redirect:http://waymophototest.s3-website.ap-northeast-2.amazonaws.com/order/pay/cancel";
+        //return "redirect:https://www.17farm.shop/order/pay/cancel";
         //return "redirect:http://localhost:3000/order/pay/fail";
     }
 
@@ -67,7 +69,8 @@ public class PaymentController {
         kakaoPayService.cancelOrFailPayment();
         log.info("결제 실패");
 
-        return "redirect: https://www.17farm.shop/order/pay/fail";
+        return "redirect:http://waymophototest.s3-website.ap-northeast-2.amazonaws.com/order/pay/fail";
+        //return "redirect:https://www.17farm.shop/order/pay/fail";
         //return "redirect:http://localhost:3000/order/pay/cancel";
     }
 }
