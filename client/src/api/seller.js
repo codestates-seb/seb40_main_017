@@ -50,7 +50,6 @@ export const getSellerSaleList = ({ sellerId, page, size }, callback) => {
     method: 'GET',
     url: `/mypage/sold/${sellerId}`,
     params: {
-      sellerId,
       page,
       size,
     },

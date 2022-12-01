@@ -1,0 +1,78 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://database-17farm.cgzeg2t2eys7.ap-northeast-2.rds.amazonaws.com:3306/mainproject?useSSL=false&characterEncoding=UTF-8&serverTimezone=Asia/Seoul
+    username: project_17farm
+    password:
+  jpa:
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    open-in-view: true
+    hibernate:
+      ddl-auto: create
+    defer-datasource-initialization: true
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+  security:
+    oauth2:
+      client:
+        registration:
+          kakao:
+            adminKey:
+            clientId:
+            clientSecret:
+            clientAuthenticationMethod: post
+            authorizationGrantType: authorization_code
+            redirectUri: http://17farm-server.shop:8080/login/oauth2/code/kakao # "{baseUrl}/{action}/oauth2/code/{registrationId}"
+            scope:
+              - profile_nickname
+              - account_email
+            clientName: Kakao
+        provider:
+          kakao:
+            authorizationUri: https://kauth.kakao.com/oauth/authorize
+            tokenUri: https://kauth.kakao.com/oauth/token
+            userInfoUri: https://kapi.kakao.com/v2/user/me
+            userNameAttribute: id
+cloud:
+  aws:
+    credentials:
+      access-key:
+      secret-key:
+    s3:
+      bucket: jihoon-bucket
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
+  logging:
+    level:
+      org:
+        hibernate:
+          SQL: DEBUG
+          type:
+            trace
+jwt:
+  secret-key:
+server:
+  servlet:
+    encoding:
+      force-response: true
+mail:
+  smtp:
+    auth: true
+    host: smtp.gmail.com
+    port: 465
+    starttls:
+      enable: true
+      required: true
+    socketFactory:
+      class: javax.net.ssl.SSLSocketFactory
+      fallback: false
+      port: 465
+AdminMail:
+  id:
+  password:
