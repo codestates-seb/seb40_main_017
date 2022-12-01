@@ -37,7 +37,7 @@ import team017.security.oauth.info.KakaoProfile;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-// @Transactional
+@Transactional
 public class KakaoService {
 	private final MemberRepository memberRepository;
 
@@ -47,16 +47,12 @@ public class KakaoService {
 	@Value("${spring.security.oauth2.client.registration.kakao.clientSecret}")
 	private String clientSecret;
 
-	// @Value("${spring.security.oauth2.client.registration.kakao.redirectUri}") -> 서버에서 배포하면 ip 주소로 들어옴
-	private String redirectUri = "http://17farm-server.shop:8080/login/oauth2/code/kakao";
-	// private String redirectUri = "https://17farm-server.shop:8080/login/oauth2/code/kakao";
-	// private String redirectUri = "http://localhost:8080/login/oauth2/code/kakao";
-
-	// @Value("${spring.security.oauth2.client.provider.kakao.tokenUri}")
-	private String accessTokenUri = "https://kauth.kakao.com/oauth/token";
-
-	// @Value("${spring.security.oauth2.client.provider.kakao.userInfoUri}")
-	private String userInfoUri = "https://kapi.kakao.com/v2/user/me";
+	/* 서버에서 배포하면 ip 주소로 들어옴 -> 직접 주입 */
+	// private final String redirectUri = "http://17farm-server.shop:8080/login/oauth2/code/kakao";
+	// private final String redirectUri = "https://17farm-server.shop:8080/login/oauth2/code/kakao";
+	private final String redirectUri = "http://localhost:8080/login/oauth2/code/kakao";
+	private final String accessTokenUri = "https://kauth.kakao.com/oauth/token";
+	private final String userInfoUri = "https://kapi.kakao.com/v2/user/me";
 
 	/* 엑세스 토큰 from Kakao */
 	public KakaoToken getAccessToken(String code) {
