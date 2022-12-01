@@ -5,8 +5,6 @@ import java.util.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.DynamicInsert;
 import team017.board.Entity.Board;
 import team017.member.entity.Seller;
 import team017.ord.entity.Ord;
@@ -97,28 +95,5 @@ public class Product {
         }
 
     }
-
-//    public enum CategoryType{
-//        FRUITS("1", "과일"),
-//        VEGETABLES("2", "채소"),
-//        GRANINS("3" , "곡물"),
-//        NUTS("4", "견과류");
-//
-//        private String code;
-//        private String value;
-//
-//        CategoryType(String value, String code) {
-//            this.code =code;
-//            this.value = value;
-//        }
-//
-//        public String getCode(){
-//            return code;
-//        }
-//        public String getValue(){
-//            return value;
-//        }
-//
-//    }
 
 }

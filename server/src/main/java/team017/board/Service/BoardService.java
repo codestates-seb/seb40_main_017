@@ -61,6 +61,8 @@ public class BoardService {
 
         //boardId 존재 여부 확인
         Board findBoard = findVerifiedBoard(boardPatchDto.getBoardId());
+        //update 하는 seller 확인
+        sellerService.correctSeller(findBoard.getSeller().getSellerId());
 
         //상품 update
         Product updatedProduct = productService.updateProduct(findBoard, boardPatchDto);
@@ -82,6 +84,9 @@ public class BoardService {
     public void deleteBoard(long boardId) {
         Board findBoard = findVerifiedBoard(boardId);
         Product findProduct = productService.findVerifiedProduct(findBoard.getProduct());
+
+        //delete 하는 seller 확인
+        sellerService.correctSeller(findBoard.getSeller().getSellerId());
 
         //상품 삭제
         boardRepository.delete(findBoard);
