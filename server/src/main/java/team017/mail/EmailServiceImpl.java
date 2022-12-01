@@ -37,7 +37,6 @@ public class EmailServiceImpl implements EmailService{
 
 	private MimeMessage createMessage(String to)throws Exception{
 		System.out.println("보내는 대상 : "+ to);
-		Member member = memberService.findMemberByEmail(to);
 
 		MimeMessage  message = emailSender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(message, false, "UTF-8");

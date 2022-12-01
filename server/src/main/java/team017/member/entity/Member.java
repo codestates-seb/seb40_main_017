@@ -25,13 +25,13 @@ public class Member {
 	@Column(length = 45, nullable = false, unique = true)
 	private String email;
 
-	@Column
+	@Column(nullable = false)
 	private String password;
 
-	@Column(length = 45)
+	@Column(length = 50, nullable = false)
 	private String phone;
 
-	@Column(length = 45)
+	@Column(length = 100, nullable = false)
 	private String address;
 
 	/* 소셜 로그인 아이디 추가 */
