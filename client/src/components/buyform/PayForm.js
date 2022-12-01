@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
-// import axios from 'axios';
 import { apiServer } from '../../features/axios';
 import { DotSpinner } from '@uiball/loaders';
 
@@ -74,15 +73,6 @@ export const PayForm = ({ price }) => {
           window.location.href = res.data.next_redirect_pc_url;
         })
         .catch((err) => console.log(err));
-
-      // await axios
-      //   .get(`${process.env.REACT_APP_API_URL}/order/pay/${orderId}`)
-      //   .then((res) => {
-      //     console.log(res);
-      //     console.log(res.data.next_redirect_pc_url);
-      //     // window.location.href = res.data.next_redirect_pc_url;
-      //   })
-      //   .catch((err) => console.log(err));
     }
   };
   return (

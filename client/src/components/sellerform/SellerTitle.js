@@ -101,11 +101,11 @@ export const SellerTitle = ({ nextButton, formData, setFormData }) => {
             </InputBox>
             <span>판매 수량</span>
             <InputBox>
-              <input placeholder="판매수량" type="number" {...register('stock', { required: true, min: 1, max: 99 })} />
+              <input placeholder="판매수량" type="number" {...register('stock', { required: true, min: 1, max: 50 })} />
               <ErrorBox>
                 {errors.stock?.type === 'required' && <p>판매 수량을 적어주세요</p>}
-                {errors.stock?.type === 'min' && <p>1개이상 99개 이하의 수량을 입력 해주세요</p>}
-                {errors.stock?.type === 'max' && <p> 99개 이하의 수량을 입력 해주세요</p>}
+                {errors.stock?.type === 'min' && <p>1개이상 50개 이하의 수량을 입력 해주세요</p>}
+                {errors.stock?.type === 'max' && <p> 50개 이하의 수량을 입력 해주세요</p>}
               </ErrorBox>
             </InputBox>
           </Fade>
