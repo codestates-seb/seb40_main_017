@@ -5,15 +5,13 @@ import lombok.Data;
 @Data
 public class KakaoProfile {
 
-	public String id; //User의 userid에 들어가기위해서 String으로 선언
+	public String id; /* 소셜 아이디로 들어갈 에정 */
 	public String connected_at; //
 	public Properties properties;
 	public KakaoAccount kakao_account;
 
 	public class Properties {
 		public String nickname;
-		public String profile_image; //이미지 경로 필드1
-		public String thumbnail_image;
 	}
 
 	@Data
