@@ -34,7 +34,7 @@ public class ClientController {
 
 	/* 소비자 마이 페이지 조회 */
 	@GetMapping("/{client_id}")
-	@ReissueToken
+	// @ReissueToken /* 토큰 재발급 안함 */
 	public ResponseEntity getClient(@PathVariable("client_id") @Positive long clientId) {
 		Member member = clientService.findClient(clientId).getMember();
 
@@ -44,7 +44,7 @@ public class ClientController {
 
 	/* 소비자 정보 수정 */
 	@PutMapping("/{client_id}")
-	@ReissueToken
+	// @ReissueToken /* 토큰 재발급 안함 */
 	public ResponseEntity putClient(@PathVariable("client_id") @Positive long clientId,
 		@RequestBody ClientPatchDto clientPatchDto) {
 		Client client = clientService.updateClient(clientId, mapper.clientPatchDtoToClient(clientPatchDto));
