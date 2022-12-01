@@ -80,6 +80,6 @@ public class CommentService {
     }
 
     public Page<Comment> findCommentByBoard(Long boardId, int page, int size) {
-        return commentRepository.findByBoard_BoardId(boardId, PageRequest.of(page, size, Sort.by("createdAt").descending()));
+        return commentRepository.findByBoard_BoardId(boardId, PageRequest.of(page, size, Sort.by("commentId").descending()));
     }
 }

@@ -87,6 +87,6 @@ public class ReviewService {
 //    }
 
     public Page<Review> findReviewByBoards(Long boardId, int page, int size){
-        return reviewRepository.findByBoard_BoardId(boardId, PageRequest.of(page, size, Sort.by("createdAt").descending()));
+        return reviewRepository.findByBoard_BoardId(boardId, PageRequest.of(page, size, Sort.by("reviewId").descending()));
     }
 }
