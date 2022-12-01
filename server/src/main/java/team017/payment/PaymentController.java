@@ -47,8 +47,8 @@ public class PaymentController {
         Long ordId = response.getOrdId();
         redirectAttributes.addAttribute("ordId", ordId);
 
-        //return "redirect: https://www.17farm.shop/order/pay/completed";
-        return "redirect:http://localhost:3000/order/pay/completed";
+        return "redirect: https://www.17farm.shop/order/pay/completed";
+        //return "redirect:http://localhost:3000/order/pay/completed";
     }
 
     // 결제 취소시 실행 url
@@ -57,8 +57,8 @@ public class PaymentController {
         kakaoPayService.cancelOrFailPayment();
         log.info("결제 취소");
 
-        //return "redirect: https://www.17farm.shop/order/pay/cancel";
-        return "redirect:http://localhost:3000/order/pay/fail";
+        return "redirect: https://www.17farm.shop/order/pay/cancel";
+        //return "redirect:http://localhost:3000/order/pay/fail";
     }
 
     // 결제 실패시 실행 url
@@ -67,7 +67,7 @@ public class PaymentController {
         kakaoPayService.cancelOrFailPayment();
         log.info("결제 실패");
 
-        //return "redirect: https://www.17farm.shop/order/pay/fail";
-        return "redirect:http://localhost:3000/order/pay/cancel";
+        return "redirect: https://www.17farm.shop/order/pay/fail";
+        //return "redirect:http://localhost:3000/order/pay/cancel";
     }
 }
