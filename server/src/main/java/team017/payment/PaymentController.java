@@ -34,28 +34,29 @@ public class PaymentController {
     }
 
     //결제 승인 요청
-    @GetMapping("/order/pay/completed")
-    public String payCompleted(@RequestParam("pg_token") String pgToken, RedirectAttributes redirectAttributes) {
+    @GetMapping("/order/pay/completed/{ord_id}")
+    public String payCompleted( @RequestParam("pg_token") String pgToken,
+                                @PathVariable("ord_id") long ordId, RedirectAttributes redirectAttributes) {
 
         log.info("!결제승인 요청 시작!") ;
         log.info("결제승인 요청을 인증하는 토큰: " + pgToken);
 
         // 카카오 결재 요청하기
-        OrdResponseDto response = kakaoPayService.payApprove(pgToken);
+        kakaoPayService.payApprove(ordId, pgToken);
+        //OrdResponseDto response = kakaoPayService.payApprove(pgToken);
         log.info("결제 완료");
 
-        Long ordId = response.getOrdId();
         redirectAttributes.addAttribute("ordId", ordId);
 
-        return "redirect:http://waymophototest.s3-website.ap-northeast-2.amazonaws.com//order/pay/completed";
+        return "redirect:http://waymophototest.s3-website.ap-northeast-2.amazonaws.com/order/pay/completed";
         //return "redirect:https://www.17farm.shop/order/pay/completed";
         //return "redirect:http://localhost:3000/order/pay/completed";
     }
 
     // 결제 취소시 실행 url
-    @GetMapping("/order/pay/cancel")
-    public String payCancel() {
-        kakaoPayService.cancelOrFailPayment();
+    @GetMapping("/order/pay/cancel/{ord_id}")
+    public String payCancel(@PathVariable("ord_id") long ordId) {
+        kakaoPayService.cancelOrFailPayment(ordId);
         log.info("결제 취소");
 
         return "redirect:http://waymophototest.s3-website.ap-northeast-2.amazonaws.com/order/pay/cancel";
@@ -64,9 +65,9 @@ public class PaymentController {
     }
 
     // 결제 실패시 실행 url
-    @GetMapping("/order/pay/fail")
-    public String payFail() {
-        kakaoPayService.cancelOrFailPayment();
+    @GetMapping("/order/pay/fail/{ord_id}")
+    public String payFail(@PathVariable("ord_id") long ordId) {
+        kakaoPayService.cancelOrFailPayment(ordId);
         log.info("결제 실패");
 
         return "redirect:http://waymophototest.s3-website.ap-northeast-2.amazonaws.com/order/pay/fail";

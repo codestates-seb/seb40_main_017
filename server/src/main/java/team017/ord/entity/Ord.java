@@ -30,6 +30,9 @@ public class Ord extends Auditable {
 	@Column
 	private int totalPrice;
 
+	@Column
+	private String tid;
+
 	/* 💛 소비자 - 주문 다대일 연관 관계 : 소비자 참조 */
 	@ManyToOne
 	@JoinColumn(name = "client_id")
