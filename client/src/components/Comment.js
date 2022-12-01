@@ -13,6 +13,7 @@ export const Comment = () => {
   const { boardId } = useParams();
   const [pageCount, setpageCount] = useState(0);
   const memberId = useSelector(getUser);
+  const user = useSelector(getUser);
 
   //CommentGet
   const getComment = async () => {
@@ -104,7 +105,8 @@ export const Comment = () => {
               <div>{comment.context}</div>
               <div>{comment.name}</div>
               {/* <PatchButton onClick={patchComment} type="submit" value="수정" /> */}
-              <button onClick={removeComment}>삭제</button>
+              {user.memberId === comment.memberId ? <button onClick={removeComment}>삭제</button> : ''}
+              {/* <button onClick={removeComment}>삭제</button> */}
               <div>{comment.createdAt}</div>
             </Reviewlist>
           );

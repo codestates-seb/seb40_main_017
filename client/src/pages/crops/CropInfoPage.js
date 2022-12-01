@@ -16,6 +16,7 @@ function CropInfoPage() {
   const { boardId } = useParams();
   const [board, setBoard] = useState({});
   const [quantity, setQuantity] = useState(0);
+  const user = useSelector(getUser);
 
   //BoardGet
   const GetCropInfo = async () => {
@@ -43,8 +44,6 @@ function CropInfoPage() {
   // const sellerCheck = () => {
   //   board.sellerId === 현재로그인하고있는셀러아이디?);
   // };
-
-  const user = useSelector(getUser);
 
   return (
     <Background>

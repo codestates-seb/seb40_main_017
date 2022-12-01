@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom';
 import StarRate from './StarRate';
 import { apiServer } from '../features/axios';
 import { useSelector } from 'react-redux';
+import { getUser } from '../features/user/userSlice';
 
 //REVIEW GET, POST
 export const Review = () => {
@@ -14,6 +15,7 @@ export const Review = () => {
   const [pageCount, setpageCount] = useState(0);
   const clientId = useSelector((state) => state.user.clientId);
   const [starCount, setStarCount] = useState(0);
+  const user = useSelector(getUser);
 
   //ReviewGet
   const getReviews = async () => {
@@ -88,7 +90,7 @@ export const Review = () => {
             <Reviewlist key={review.reviewId}>
               <div>{review.context}</div>
               <div>{review.name}</div>
-              <button onClick={removeReview}>삭제</button>
+              {user.clientId === review.clientId ? <button onClick={removeReview}>삭제</button> : ''}
               <div>{review.createdAt}</div>
             </Reviewlist>
           );
