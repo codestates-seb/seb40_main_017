@@ -29,6 +29,7 @@ import team017.security.jwt.SecurityProvider;
 import team017.security.jwt.refresh.RefreshToken;
 import team017.security.jwt.refresh.RefreshTokenRepository;
 import team017.security.utils.CookieUtil;
+import team017.security.utils.SecurityUtil;
 
 @Service
 @Slf4j
@@ -156,9 +157,8 @@ public class SecurityService {
 			throw new BusinessLogicException(ExceptionCode.NOT_EXPIRATION_TOKEN);
 		}
 
-		String username = (String)claims.get("username");
-
 		/* Refresh Token 확인 */
+		String username = (String)claims.get("username");
 		String refreshToken = CookieUtil.getCookie(request, "Refresh")
 			.map(Cookie::getValue)
 			.orElseThrow(() -> new BusinessLogicException(ExceptionCode.LOGOUT_MEMBER));
@@ -171,11 +171,9 @@ public class SecurityService {
 			log.error("유효하지 않은 refresh token");
 			throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED_TOKEN);
 		}
-		Date now = new Date();
-		long accessTime = securityProvider.getAccessTokenTime();
-		Date newAccessTime = new Date(now.getTime() + accessTime);
 
-		long validTime = securityProvider.getTokenClaims(refreshToken).getExpiration().getTime() - now.getTime();
+		long now = (new Date()).getTime();
+		long validTime = securityProvider.getTokenClaims(refreshToken).getExpiration().getTime() - now;
 
 		/* 리프레시 토큰이 하루 이내로 남았다면, 재 발급 (엑세스 토큰도 같이 재발급) */
 		if (validTime <= 1000 * 60 * 60 * 24) {
@@ -194,14 +192,9 @@ public class SecurityService {
 			CookieUtil.addCookie(response, "Refresh", refreshToken, cookieMaxAge);
 		}
 
-		TokenDto tokenDto = TokenDto.builder()
-				.grantType("Bearer ")
-				.accessToken(accessToken)
-				.refreshToken(refreshToken)
-				.accessTokenExpiresIn(newAccessTime.getTime())
-				.build();
-
-		return tokenDto;
+		/* 리프레시 토큰이 유효한데 보낸 설정이기에 예외 던지기 */
+		log.error("refresh token 이 만료되지 않았습니다.");
+		throw new BusinessLogicException(ExceptionCode.NOT_EXPIRATION_TOKEN);
 	}
 
 	/* social 역할 확인 */

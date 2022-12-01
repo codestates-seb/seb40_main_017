@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import team017.member.entity.Client;
 import team017.member.entity.Member;
 import team017.member.entity.ProviderType;
 import team017.member.repository.MemberRepository;
@@ -46,8 +47,10 @@ public class KakaoService {
 	@Value("${spring.security.oauth2.client.registration.kakao.clientSecret}")
 	private String clientSecret;
 
-	// @Value("${spring.security.oauth2.client.registration.kakao.redirectUri}")
+	// @Value("${spring.security.oauth2.client.registration.kakao.redirectUri}") -> 서버에서 배포하면 ip 주소로 들어옴
 	private String redirectUri = "http://17farm-server.shop:8080/login/oauth2/code/kakao";
+	// private String redirectUri = "https://17farm-server.shop:8080/login/oauth2/code/kakao";
+	// private String redirectUri = "http://localhost:8080/login/oauth2/code/kakao";
 
 	// @Value("${spring.security.oauth2.client.provider.kakao.tokenUri}")
 	private String accessTokenUri = "https://kauth.kakao.com/oauth/token";
@@ -184,21 +187,20 @@ public class KakaoService {
 		KakaoProfile profile = findProfile(access_token); /* 사용자 정보 받아오기 */
 		Member member = memberRepository.findMemberByEmail(profile.getKakao_account().getEmail());
 
-		/* 첫 이용자 강제 회원가입 */
+		/* 첫 이용자 강제 회원가입 -> 우선 구매자로 한정 배정하기로 함. 만약 프런트에서 소셜 권한에서 수정하는 페이지가 된다고 하면 바뀔 예정  */
 		if(member == null) {
 			log.info("사용자 강제 가입");
 			log.error("사용자 강제 가입");
-			member = Member.builder()
-				.socialId(profile.getId())
-				.password("소셜 로그인임")
-				.name(profile.getKakao_account().getProfile().getNickname())
-				.email(profile.getKakao_account().getEmail())
-				// .role("SOCIAL")
-				.role("CLIENT")
-				// .roles(List.of("SOCIAL"))
-				.roles(List.of("CLIENT"))
-				.providerType(ProviderType.KAKAO)
-				.build();
+			member = new Member(
+				profile.getKakao_account().getProfile().getNickname(),
+				profile.getKakao_account().getEmail(),
+				"소셜 로그인 사용자", /* 비밀번호 */
+				ProviderType.KAKAO,
+				"CLIENT",
+				List.of("CLIENT"),
+				profile.getId()
+ 			);
+			member.setClient(new Client());
 
 			memberRepository.save(member);
 		}

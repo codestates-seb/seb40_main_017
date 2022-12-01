@@ -78,12 +78,13 @@ public class Member {
 	}
 
 	public Member(String name, String email, String password,
-		ProviderType providerType, String role, List<String> roles) {
+		ProviderType providerType, String role, List<String> roles, String socialId) {
 		this.name = name;
 		this.email = email;
 		this.password = password;
 		this.providerType = providerType;
 		this.role = role;
 		this.roles = roles;
+		this.socialId = socialId;
 	}
 }
