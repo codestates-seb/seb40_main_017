@@ -41,10 +41,6 @@ function CropInfoPage() {
     document.location.href = '/boards';
   };
 
-  // const sellerCheck = () => {
-  //   board.sellerId === 현재로그인하고있는셀러아이디?);
-  // };
-
   return (
     <Background>
       <Container>
@@ -86,7 +82,7 @@ function CropInfoPage() {
             <p>남은수량 {board.leftStock}개</p>
             <Flexbox>
               <Linktoseller sellerId={board.sellerId} />
-              <PurchaseButton boardId={boardId} quantity={quantity} />
+              {board.leftStock === 0 ? '' : <PurchaseButton boardId={boardId} quantity={quantity} />}
             </Flexbox>
           </CropInfo>
         </Crop>
