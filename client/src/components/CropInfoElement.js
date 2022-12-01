@@ -18,14 +18,7 @@ export const PatchButton = (props) => {
 };
 
 const Patchbutton = styled.button`
-  all: unset;
-  margin-top: 20px;
-  background-color: var(--green);
-  color: var(--white);
-  width: 40px;
-  padding: 20px 90px;
-  border-radius: 5px;
-  cursor: pointer;
+  padding: 3px 5px;
 `;
 
 const Button = styled.button`
@@ -42,7 +35,18 @@ const Button = styled.button`
 export const Linktoseller = (props) => {
   return (
     <Link to={`/seller/${props.sellerId}`}>
-      <p>생산자 정보 바로가기</p>
+      <Info>생산자 정보 바로가기</Info>
     </Link>
   );
 };
+
+const Info = styled.p`
+  background-color: var(--light-green);
+  border-radius: 5px;
+  padding: 5px;
+  :hover {
+    background-color: var(--green);
+    color: var(--white);
+    transition: 0.5s;
+  }
+`;

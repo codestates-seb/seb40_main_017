@@ -9,11 +9,14 @@ import { Comment } from '../../components/Comment';
 import { PurchaseButton, PatchButton, Linktoseller } from '../../components/CropInfoElement';
 import { apiServer } from '../../features/axios';
 import ItemViewer from '../../components/Viewer';
+import { useSelector } from 'react-redux';
+import { getUser } from '../../features/user/userSlice';
 
 function CropInfoPage() {
   const { boardId } = useParams();
   const [board, setBoard] = useState({});
   const [quantity, setQuantity] = useState(0);
+  const user = useSelector(getUser);
 
   //BoardGet
   const GetCropInfo = async () => {
@@ -46,28 +49,40 @@ function CropInfoPage() {
           <CropInfo>
             <CropTitle>
               <p>{board.title}</p>
-              <p>{board.price} 원</p>
+              <Layout>
+                <p>{board.price} 원</p>
+                {user.sellerId === board.sellerId ? (
+                  <div>
+                    <PatchButton boardId={boardId} />
+                    <DeleteButton onClick={BoardDelete}>삭제</DeleteButton>
+                  </div>
+                ) : (
+                  <></>
+                )}
+              </Layout>
             </CropTitle>
             <PurchaseCount>
               <p>구매수량</p>
               <Minus
                 onClick={() => {
-                  setQuantity(quantity - 1);
+                  if (quantity > 0) {
+                    setQuantity(quantity - 1);
+                  }
                 }}
               />
               <Count>{quantity}</Count>
               <Plus
                 onClick={() => {
-                  setQuantity(quantity + 1);
+                  if (quantity < board.leftStock) {
+                    setQuantity(quantity + 1);
+                  }
                 }}
               />
             </PurchaseCount>
             <p>남은수량 {board.leftStock}개</p>
             <Flexbox>
               <Linktoseller sellerId={board.sellerId} />
-              <PurchaseButton boardId={boardId} quantity={quantity} />
-              <PatchButton boardId={boardId} />
-              <button onClick={BoardDelete}>삭제</button>
+              {board.leftStock === 0 ? 'SOLDOUT🥲' : <PurchaseButton boardId={boardId} quantity={quantity} />}
             </Flexbox>
           </CropInfo>
         </Crop>
@@ -165,7 +180,7 @@ const PurchaseCount = styled.div`
 const Count = styled.div`
   border: 1px solid var(--light-gray);
   width: 50px;
-  height: 20px;
+  height: 25px;
   border-radius: 5px;
   display: flex;
   justify-content: center;
@@ -175,11 +190,13 @@ const Count = styled.div`
 const Minus = styled(AiOutlineMinusCircle)`
   font-size: 25px;
   color: var(--light-gray);
+  cursor: pointer;
 `;
 
 const Plus = styled(AiOutlinePlusCircle)`
   font-size: 25px;
   color: var(--light-gray);
+  cursor: pointer;
 `;
 
 const ContentDiv = styled.div``;
@@ -238,4 +255,16 @@ const MenuLink = styled.div`
 const Flexbox = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  height: 5px;
+`;
+
+const Layout = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const DeleteButton = styled.button`
+  padding: 3px 5px;
+  margin-left: 5px;
 `;

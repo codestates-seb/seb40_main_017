@@ -13,6 +13,8 @@ export const Comment = () => {
   const { boardId } = useParams();
   const [pageCount, setpageCount] = useState(0);
   const memberId = useSelector(getUser);
+  const user = useSelector(getUser);
+  const [Edit, setEdit] = useState(false);
 
   //CommentGet
   const getComment = async () => {
@@ -101,11 +103,17 @@ export const Comment = () => {
         {items.map((comment) => {
           return (
             <Reviewlist key={comment.createdAt}>
-              <div>{comment.commentId}</div>
               <div>{comment.context}</div>
               <div>{comment.name}</div>
-              <input onClick={patchComment} type="submit" value="수정하기" />
-              <button onClick={removeComment}>삭제</button>
+              {!Edit ? (
+                <PatchButton type="submit" value="수정" onClick={patchComment} />
+              ) : (
+                <div>
+                  <input />
+                  <button onClick={setEdit(<input />)}>수정완료</button>
+                </div>
+              )}
+              {user.memberId === comment.memberId ? <button onClick={removeComment}>삭제</button> : ''}
               <div>{comment.createdAt}</div>
             </Reviewlist>
           );
@@ -131,7 +139,7 @@ export const Comment = () => {
         <Layout>
           <p>상세문의</p>
           <Form onSubmit={CommentOnSubmitHandler}>
-            <TextBox name="context" placeholder="8글자이상 작성해주세요." />
+            <TextBox name="context" placeholder="10글자이상 작성해주세요." />
             <Submitbox type="submit" value="등록하기" />
           </Form>
         </Layout>
@@ -206,21 +214,16 @@ const Reviewlist = styled.div`
   }
 
   div:nth-child(1) {
-    width: 4%;
-    text-align: left;
-  }
-
-  div:nth-child(2) {
     flex-grow: 5;
-    width: 50%;
+    width: 40%;
     text-align: left;
   }
-  div:nth-child(4) {
+  div:nth-child(3) {
     flex-grow: 1;
   }
   div:nth-child(5) {
     text-align: left;
-    width: 8%;
+    width: 13%;
   }
   button {
     all: unset;
@@ -270,4 +273,18 @@ const Submitbox = styled.input`
   border-radius: 5px;
   cursor: pointer;
   font-size: 0.9rem;
+`;
+
+const PatchButton = styled.input`
+  all: unset;
+  flex-grow: 1;
+  padding: 10px;
+  width: 25px;
+  height: 8px;
+  border: 1px solid var(--darker-gray);
+  text-align: center;
+  line-height: 10px;
+  border-radius: 5px;
+  font-size: 15px;
+  margin-right: 3px;
 `;
