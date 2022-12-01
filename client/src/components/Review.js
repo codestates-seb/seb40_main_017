@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom';
 import StarRate from './StarRate';
 import { apiServer } from '../features/axios';
 import { useSelector } from 'react-redux';
+import { getUser } from '../features/user/userSlice';
 
 //REVIEW GET, POST
 export const Review = () => {
@@ -14,6 +15,7 @@ export const Review = () => {
   const [pageCount, setpageCount] = useState(0);
   const clientId = useSelector((state) => state.user.clientId);
   const [starCount, setStarCount] = useState(0);
+  const user = useSelector(getUser);
 
   //ReviewGet
   const getReviews = async () => {
@@ -69,7 +71,6 @@ export const Review = () => {
   };
 
   // ReviewDelete
-  // reviewId 어떻게 받아오지...?
   const removeReview = async () => {
     await apiServer({
       method: 'DELETE',
@@ -87,10 +88,9 @@ export const Review = () => {
         {items.map((review) => {
           return (
             <Reviewlist key={review.reviewId}>
-              <div>{review.reviewId}</div>
               <div>{review.context}</div>
               <div>{review.name}</div>
-              <button onClick={removeReview}>삭제</button>
+              {user.clientId === review.clientId ? <button onClick={removeReview}>삭제</button> : ''}
               <div>{review.createdAt}</div>
             </Reviewlist>
           );
@@ -195,21 +195,16 @@ const Reviewlist = styled.div`
   }
 
   div:nth-child(1) {
-    width: 4%;
-    text-align: left;
-  }
-
-  div:nth-child(2) {
     flex-grow: 5;
     width: 50%;
     text-align: left;
   }
-  div:nth-child(4) {
+  div:nth-child(3) {
     flex-grow: 1;
   }
-  div:nth-child(5) {
+  div:nth-child(4) {
     text-align: left;
-    width: 8%;
+    width: 12%;
   }
   button {
     all: unset;
