@@ -38,6 +38,7 @@ const GlobalStyle = createGlobalStyle`
     --light-orange: #f24e1e;
     --light-gray: #E6E6E6;
     --lighter-gray: #fafafa;
+    --light-green: #e8f3d6;
   }
 
 `;

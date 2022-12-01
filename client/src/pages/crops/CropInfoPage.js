@@ -82,7 +82,7 @@ function CropInfoPage() {
             <p>남은수량 {board.leftStock}개</p>
             <Flexbox>
               <Linktoseller sellerId={board.sellerId} />
-              {board.leftStock === 0 ? '' : <PurchaseButton boardId={boardId} quantity={quantity} />}
+              {board.leftStock === 0 ? 'SOLDOUT🥲' : <PurchaseButton boardId={boardId} quantity={quantity} />}
             </Flexbox>
           </CropInfo>
         </Crop>
@@ -180,7 +180,7 @@ const PurchaseCount = styled.div`
 const Count = styled.div`
   border: 1px solid var(--light-gray);
   width: 50px;
-  height: 20px;
+  height: 25px;
   border-radius: 5px;
   display: flex;
   justify-content: center;

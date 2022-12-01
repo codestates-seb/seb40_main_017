@@ -14,6 +14,7 @@ export const Comment = () => {
   const [pageCount, setpageCount] = useState(0);
   const memberId = useSelector(getUser);
   const user = useSelector(getUser);
+  const [Edit, setEdit] = useState(false);
 
   //CommentGet
   const getComment = async () => {
@@ -67,23 +68,23 @@ export const Comment = () => {
 
   //CommentPatch
 
-  // const patchComment = async (e) => {
-  //   e.preventDefault();
-  //   const context = e.target.context.value;
-  //   await apiServer({
-  //     method: 'PATCH',
-  //     url: `/comments/${items[0].commentId}`,
-  //     data: JSON.stringify({
-  //       context: context,
-  //       memberId: memberId.memberId,
-  //       boardId: boardId,
-  //     }),
-  //     headers: { 'Content-Type': 'application/json' },
-  //   })
-  //     .then((res) => console.log(res))
-  //     .catch((err) => console.log(err));
-  //   getComment();
-  // };
+  const patchComment = async (e) => {
+    e.preventDefault();
+    const context = e.target.context.value;
+    await apiServer({
+      method: 'PATCH',
+      url: `/comments/${items[0].commentId}`,
+      data: JSON.stringify({
+        context: context,
+        memberId: memberId.memberId,
+        boardId: boardId,
+      }),
+      headers: { 'Content-Type': 'application/json' },
+    })
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+    getComment();
+  };
 
   //CommentDelte
   const removeComment = async () => {
@@ -104,9 +105,15 @@ export const Comment = () => {
             <Reviewlist key={comment.createdAt}>
               <div>{comment.context}</div>
               <div>{comment.name}</div>
-              {/* <PatchButton onClick={patchComment} type="submit" value="수정" /> */}
+              {!Edit ? (
+                <PatchButton type="submit" value="수정" onClick={patchComment} />
+              ) : (
+                <div>
+                  <input />
+                  <button onClick={setEdit(<input />)}>수정완료</button>
+                </div>
+              )}
               {user.memberId === comment.memberId ? <button onClick={removeComment}>삭제</button> : ''}
-              {/* <button onClick={removeComment}>삭제</button> */}
               <div>{comment.createdAt}</div>
             </Reviewlist>
           );
@@ -268,16 +275,16 @@ const Submitbox = styled.input`
   font-size: 0.9rem;
 `;
 
-// const PatchButton = styled.input`
-//   all: unset;
-//   flex-grow: 1;
-//   padding: 10px;
-//   width: 25px;
-//   height: 8px;
-//   border: 1px solid var(--darker-gray);
-//   text-align: center;
-//   line-height: 10px;
-//   border-radius: 5px;
-//   font-size: 15px;
-//   margin-right: 3px;
-// `;
+const PatchButton = styled.input`
+  all: unset;
+  flex-grow: 1;
+  padding: 10px;
+  width: 25px;
+  height: 8px;
+  border: 1px solid var(--darker-gray);
+  text-align: center;
+  line-height: 10px;
+  border-radius: 5px;
+  font-size: 15px;
+  margin-right: 3px;
+`;

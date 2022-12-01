@@ -35,7 +35,18 @@ const Button = styled.button`
 export const Linktoseller = (props) => {
   return (
     <Link to={`/seller/${props.sellerId}`}>
-      <p>생산자 정보 바로가기</p>
+      <Info>생산자 정보 바로가기</Info>
     </Link>
   );
 };
+
+const Info = styled.p`
+  background-color: var(--light-green);
+  border-radius: 5px;
+  padding: 5px;
+  :hover {
+    background-color: var(--green);
+    color: var(--white);
+    transition: 0.5s;
+  }
+`;
