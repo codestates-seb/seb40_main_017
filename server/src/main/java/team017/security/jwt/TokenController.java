@@ -56,9 +56,11 @@ public class TokenController {
 
 	/* 새로 고침 */
 	@GetMapping("/access")
-	@ReissueToken
+	// @ReissueToken /* 토큰 재발급 안함 */
 	public ResponseEntity reGet(HttpServletRequest request, Principal principal) {
 		Member member = memberService.findMemberByEmail(principal.getName());
+		String accessToken = request.getHeader("Authorization").replace("Bearer ", "");
+		HttpHeaders headers = setHeader(accessToken);
 
 		if(member.getRole().equals("SELLER")) {
 			LoginResponse.Seller sellerResponse = mapper.getSellerResponse(member);
@@ -67,7 +69,7 @@ public class TokenController {
 		} else if (member.getRole().equals("CLIENT")) {
 			LoginResponse.Cilent clientResponse = mapper.getClientResponse(member);
 
-			return new ResponseEntity<>(clientResponse, HttpStatus.OK);
+			return new ResponseEntity<>(clientResponse, headers, HttpStatus.OK);
 		}
 
 		throw new BusinessLogicException(ExceptionCode.WRONG_ACCESS);
