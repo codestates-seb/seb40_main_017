@@ -28,7 +28,8 @@ import team017.security.jwt.dto.TokenDto;
 import team017.security.oauth.service.KakaoService;
 import team017.security.jwt.service.SecurityService;
 
-@Controller
+// @Controller
+@RestController
 @Slf4j
 @RequiredArgsConstructor
 public class SocialController {
@@ -42,13 +43,18 @@ public class SocialController {
 	/* test 로 직접 인가 코드 받기 */
 	// @GetMapping("/login/oauth2/code/kakao")
 	// public String KakaoCode(@RequestParam("code") String code) {
-	// 	URI uri = UriComponentsBuilder.fromUri(URI.create("http://localhost:8080/login/oauth"))
+	// 	URI uri = UriComponentsBuilder.fromUri(URI.create("http://localhost:8080/login/kakao"))
 	// 		.queryParam("code", code)
 	// 		.build().toUri();
 	// 	return "redirect:"+uri;
 	// }
+	// @GetMapping("/login/oauth2/code/kakao")
+	// public String KakaoCode(@RequestParam("code") String code) {
+	// 	return "인가코드 발급 완료 : "+ code;
+	// }
 
 	/* frontend 로 부터 받은 인가 코드 받기 및 사용자 정보 받기, 회원가입 */
+	// @GetMapping("/login/kakao")
 	@GetMapping("/login/oauth2/code/kakao")
 	public ResponseEntity KakaoLogin(@RequestParam("code") String code) {
 		log.info("카카오에서 인가코드 발급 후 백엔드로 들어옴");
@@ -68,7 +74,10 @@ public class SocialController {
 		/* jwt 토큰 저장 */
 		LoginRequestDto requestDto = new LoginRequestDto(member.getEmail(), member.getPassword());
 		TokenDto tokenDto = securityService.socialLogin(requestDto);
-		LoginResponse.Member response = mapper.socialLoginResponseDto(member, tokenDto.getAccessToken());
+		// LoginResponse.Member response = mapper.socialLoginResponseDto(member, tokenDto.getAccessToken());
+
+		/* 아래는 로그인이 잘 된다면, 배포용 */
+		LoginResponse.Cilent response = mapper.getClientResponse(member);
 
 		HttpHeaders httpHeaders = setHeader(tokenDto);
 
