@@ -53,7 +53,7 @@ public class SellerController {
 
 	/* 판매자 정보 수정 */
 	@PutMapping("/{seller_id}")
-	@ReissueToken
+	// @ReissueToken /* 토큰 재발급 안함*/
 	public ResponseEntity patchSeller(@PathVariable("seller_id") @Positive long sellerId,
 			@RequestBody SellerPatchDto sellerPatchDto) {
 		Seller seller = sellerService.updateSeller(sellerId, mapper.sellerPatchDtoToSeller(sellerPatchDto));
