@@ -124,6 +124,7 @@ const Homevisualbox = styled.div`
     }
   }
   @media (max-width: 991px) {
+    height: 80%;
     padding-left: 0;
     .swiper-slide {
       display: flex;
@@ -144,6 +145,28 @@ const Homevisualbox = styled.div`
     .fourth-slide {
       width: 400px;
       height: 400px;
+    }
+    .text {
+      h1 {
+        font-size: 60px;
+      }
+    }
+  }
+  @media (max-width: 768px) {
+    height: 30%;
+    .slide {
+      transition: 0.3s;
+      scale: 0.001;
+    }
+    .text {
+      h1 {
+        font-size: 50px;
+      }
+    }
+  }
+  @media (max-width: 700px) {
+    .slide {
+      display: none;
     }
   }
 `;

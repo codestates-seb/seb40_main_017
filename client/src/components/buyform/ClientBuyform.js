@@ -21,6 +21,27 @@ const UserBox = styled.form`
     font-size: 16px;
     text-align: center;
   }
+  @media (max-width: 1199px) {
+    .navbox {
+      width: 100%;
+      position: absolute;
+      bottom: 0em;
+      left: 0;
+    }
+    h3 {
+      font-size: 30px;
+    }
+  }
+  @media (max-width: 991px) {
+    .navbox {
+      p {
+        font-size: 14px;
+      }
+    }
+    h3 {
+      font-size: 26px;
+    }
+  }
 `;
 const UserInfo = styled.div`
   margin-top: 2em;
@@ -38,6 +59,14 @@ const UserInfo = styled.div`
     input {
       width: 20em;
       height: 2.5em;
+    }
+  }
+  @media (max-width: 991px) {
+    div {
+      row-gap: 1em;
+      p {
+        font-size: 14px;
+      }
     }
   }
 `;
@@ -66,6 +95,17 @@ const ButtonBox = styled.div`
     border: 1px solid var(--black);
     border-radius: 0.5em;
   }
+  @media (max-width: 1199px) {
+    display: flex;
+    justify-content: space-around;
+  }
+  @media (max-width: 991px) {
+    button,
+    input {
+      width: 8em;
+      height: 3em;
+    }
+  }
 `;
 
 const ItemBox = styled.div`
@@ -76,6 +116,16 @@ const ItemBox = styled.div`
   span {
     margin-right: 2em;
     font-size: 23px;
+  }
+  @media (max-width: 1199px) {
+    h3 {
+      font-size: 30px;
+    }
+  }
+  @media (max-width: 991px) {
+    h3 {
+      font-size: 26px;
+    }
   }
 `;
 
@@ -98,6 +148,14 @@ const ItemInfo = styled.div`
   }
   span {
     font-size: 16px;
+  }
+  @media (max-width: 991px) {
+    p {
+      font-size: 14px;
+    }
+    span {
+      font-size: 14px;
+    }
   }
 `;
 
@@ -168,23 +226,22 @@ export const ClientBuyForm = ({ nextButton, userData, itemData, count, price, se
       setIsLoading(true);
       await apiServer({ method: 'POST', url: `/orders`, data: JSON.stringify(newData), headers: { 'Content-Type': 'application/json' } })
         .then((res) => {
-          console.log(res);
-          console.log(res.data.ordId);
           let orderId = res.data.ordId;
           console.log(orderId);
           dispatch(payActions.setPay({ orderid: res.data.ordId }));
         })
         .catch((err) => console.log(err));
-      // dispatch(payActions.setPay({ orderid: 1, tid: 777 }));
       console.log(payInfo);
       console.log(orderInfo);
       setIsLoading(false);
       nextButton();
     }
   };
-
-  const handleOnClick = () => {
-    navigate(-1);
+  // 주문 폼 뒤로가기
+  const handleCancelClick = () => {
+    if (window.confirm('주문 취소')) {
+      navigate(-1);
+    }
   };
   return (
     <>
@@ -207,13 +264,15 @@ export const ClientBuyForm = ({ nextButton, userData, itemData, count, price, se
               </InputBox>
             </div>
           </UserInfo>
-          <p>구매 정보를 확인했습니다.</p>
-          <ButtonBox>
-            <button className="cancel" onClick={handleOnClick}>
-              이전단계
-            </button>
-            <input className="order" type="submit" value="주문하기" />
-          </ButtonBox>
+          <div className="navbox">
+            <p>구매 정보를 확인했습니다.</p>
+            <ButtonBox>
+              <button type="button" className="cancel" onClick={handleCancelClick}>
+                이전단계
+              </button>
+              <input className="order" type="submit" value="주문하기" />
+            </ButtonBox>
+          </div>
         </UserBox>
         <ItemBox>
           <h3>상품</h3>

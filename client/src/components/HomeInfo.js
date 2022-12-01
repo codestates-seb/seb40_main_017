@@ -7,8 +7,10 @@ const Homeinfobox = styled.div`
   height: 740px;
   display: flex;
   justify-content: center;
+  align-items: center;
   padding: 30px;
   position: relative;
+  transition: 0.3s;
   .farmer {
     position: absolute;
     width: 200px;
@@ -17,20 +19,52 @@ const Homeinfobox = styled.div`
   .image1 {
     background: url('https://ifh.cc/g/ZsOAoQ.png');
     bottom: 100px;
-    left: 110px;
+    left: 20%;
     border-radius: 20px;
+    transition: 0.3s;
+    background-size: cover;
   }
   .image2 {
     background: url('https://ifh.cc/g/MGCrNd.png');
     clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
-    bottom: 200px;
-    left: 500px;
+    bottom: 530px;
+    left: 40%;
+    background-size: cover;
+    transition: 0.3s;
   }
   .image3 {
     background: url('https://ifh.cc/g/tsOf9W.png');
     bottom: 500px;
     left: 30px;
     border-radius: 50%;
+    transition: 0.3s;
+    background-size: cover;
+  }
+  @media (max-width: 1500px) {
+    .image3 {
+      scale: 0.0001;
+    }
+  }
+  @media (max-width: 1199px) {
+    .image2,
+    .image1 {
+      width: 130px;
+      height: 130px;
+    }
+  }
+  @media (max-width: 768px) {
+    .image2 {
+      scale: 0.0001;
+    }
+    .image1 {
+      width: 80px;
+      height: 80px;
+    }
+  }
+  @media (max-width: 480px) {
+    .image1 {
+      scale: 0.0001;
+    }
   }
 `;
 
@@ -42,6 +76,7 @@ const Homeinfobox2 = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
   .paragraph {
     h2 {
       color: var(--off-white);
@@ -52,6 +87,32 @@ const Homeinfobox2 = styled.div`
     margin-left: 150px;
     font-size: 30px;
     font-weight: bold;
+    @media (max-width: 1199px) {
+      h2 {
+        font-size: 34px;
+      }
+      p {
+        font-size: 24px;
+      }
+    }
+    @media (max-width: 991px) {
+      margin-left: 50px;
+      h2 {
+        font-size: 28px;
+      }
+      p {
+        font-size: 18px;
+      }
+    }
+    @media (max-width: 768px) {
+      margin-left: 20px;
+      h2 {
+        font-size: 23px;
+      }
+      p {
+        font-size: 14px;
+      }
+    }
   }
   .image {
     margin-right: 150px;
@@ -59,6 +120,20 @@ const Homeinfobox2 = styled.div`
     height: 500px;
     border-radius: 180px;
     background-image: url('https://ifh.cc/g/aCHPlw.jpg');
+    background-size: cover;
+    transition: 0.3s;
+    @media (max-width: 1199px) {
+      width: 300px;
+      height: 450px;
+    }
+    @media (max-width: 768px) {
+      width: 200px;
+      height: 300px;
+      margin-right: 0px;
+    }
+    @media (max-width: 480px) {
+      display: none;
+    }
   }
 `;
 
@@ -76,6 +151,7 @@ const Homeinfoparagraphbox = styled.div`
   flex-direction: column;
   gap: 5px;
   font-weight: bold;
+  transition: 0.3s;
   .first {
     color: var(--brown);
     font-size: 40px;
@@ -83,14 +159,53 @@ const Homeinfoparagraphbox = styled.div`
   p {
     font-size: 30px;
   }
+  @media (max-width: 1199px) {
+    .first {
+      font-size: 34px;
+    }
+    p {
+      font-size: 24px;
+    }
+  }
+  @media (max-width: 991px) {
+    margin-right: 50px;
+    .first {
+      font-size: 28px;
+    }
+    p {
+      font-size: 18px;
+    }
+  }
+  @media (max-width: 768px) {
+    margin-right: 20px;
+    .first {
+      font-size: 23px;
+    }
+    p {
+      font-size: 14px;
+    }
+  }
 `;
 
 const Homeinfoimagebox = styled.div`
   width: 400px;
   height: 600px;
   background: url('https://ifh.cc/g/hnQZV7.jpg');
+  background-size: cover;
   border-top-left-radius: 200px;
   border-top-right-radius: 200px;
+  transition: 0.3s;
+  @media (max-width: 1199px) {
+    width: 300px;
+    height: 450px;
+  }
+  @media (max-width: 768px) {
+    width: 200px;
+    height: 300px;
+  }
+  @media (max-width: 480px) {
+    display: none;
+  }
 `;
 
 function HomeInfo() {
