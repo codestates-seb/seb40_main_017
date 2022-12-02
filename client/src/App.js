@@ -26,6 +26,8 @@ import SellerInfoPage from './pages/sellers/SellerInfoPage';
 import CropInfoPage from './pages/crops/CropInfoPage';
 import Footer from './components/Footer';
 import { useEffect } from 'react';
+import { updateSession } from './api/login';
+import { getCookie } from './features/cookie';
 
 const StyledApp = styled.main`
   display: flex;
@@ -51,22 +53,7 @@ const App = () => {
       pay: paySlice,
     },
   });
-  //  Provider 로부터 상태를 받는 위치가 아니기 때문에 store 변수에서 직접 dispatch 받아옴
-
-  /*
-  //  세션 딜레이 문제로 localStorage로 대체
-  // useEffect 는 컴포넌트 렌더링 후 실행되는 Hook 함수임 (클래스형 컴포넌트의 componentDidMount 에 해당)
-  // 페이지 새로고침 시 로그인 세션 체크
-  useEffect(() => {
-    const accessToken = getCookie('accessToken');
-    if (accessToken) {
-      //  쿠키에 token 이 존재하면 사용자 세션을 다시 불러오도록 요청
-      dispatch(updateSession(handleChangeLoaded));
-    } else {
-      handleChangeLoaded();
-    }
-  }, [dispatch]); //  dispatch 값이 변할 때 함수 재 정의
-  */
+  //  Provider 로부터 상태를 받는 위치가 아니기 때문에 store 변수에서 직접 dispatch 받아옴\
 
   //  새로고침 시 localStorage에서 user 데이터를 불러옴
   useEffect(() => {
@@ -74,6 +61,13 @@ const App = () => {
     if (user) {
       //  데이터가 유효한 경우 JSON Object로 변환하여 Redux에 저장
       store.dispatch(setUser(JSON.parse(user)));
+
+      // 불러온 사용자 데이터가 만료되었는지 체크하기 위해 추가로 세션 확인 코드 적용
+      const accessToken = getCookie('accessToken');
+      if (accessToken) {
+        // 쿠키에 token 이 존재하면 사용자 세션을 다시 불러오도록 요청
+        store.dispatch(updateSession());
+      }
     }
   }, []);
 
