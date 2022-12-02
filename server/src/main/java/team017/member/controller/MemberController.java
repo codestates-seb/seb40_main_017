@@ -1,5 +1,6 @@
 package team017.member.controller;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 
@@ -7,6 +8,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,6 +26,7 @@ import team017.member.service.MemberService;
 import team017.security.jwt.dto.LoginRequestDto;
 import team017.security.jwt.dto.TokenDto;
 import team017.security.jwt.service.SecurityService;
+import team017.security.utils.SecurityUtil;
 
 /* 공통의 회원 클래스 컨트롤러 : 회원가입, 로그인, 회원 탈퇴 등을 구현 */
 @Slf4j
@@ -82,6 +85,14 @@ public class MemberController {
 
 		return ResponseEntity.ok(message);
 	}
+
+	/* 로그아웃 */
+	// @GetMapping("/members/logout")
+	// public ResponseEntity logoutMember(HttpServletRequest request) {
+	// 	securityService.logout(request);
+	//
+	// 	return ResponseEntity.ok("로그아웃 되었습니다.");
+	// }
 
 	/* 로그인 헤더 설정 */
 	private HttpHeaders setHeader(String token) {

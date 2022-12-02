@@ -28,6 +28,7 @@ import team017.security.jwt.SecurityProvider;
 import team017.security.jwt.refresh.RefreshToken;
 import team017.security.jwt.refresh.RefreshTokenRepository;
 import team017.security.utils.CookieUtil;
+import team017.security.utils.SecurityUtil;
 
 @Service
 @Slf4j
@@ -80,6 +81,28 @@ public class SecurityService {
 		return tokenDto;
 	}
 
+	/* 로그 아웃 */
+	public void logout(HttpServletRequest request){
+		String accessToken = request.getHeader("Authorization").replace("Bearer ", "");
+
+		/* Access Token 검증 */
+		if (!securityProvider.validate(accessToken)) {
+			log.error("유효하지 않은 access token");
+			throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED_TOKEN);
+		}
+
+		/* 인증 정보 가져오기 */
+		Authentication authentication = securityProvider.getAuthentication(accessToken);
+		String email = SecurityUtil.getCurrentEmail();
+		if (authentication.getName() != email) {
+			new BusinessLogicException(ExceptionCode.WRONG_ACCESS);
+		}
+
+		RefreshToken refreshToken = refreshTokenRepository.findRefreshTokenByKey(email);
+
+		refreshTokenRepository.delete(refreshToken);
+	}
+
 	/* 소셜 로그인 권한 선택 */
 	public Member updateSocial(String role, long memberId) {
 
@@ -106,6 +129,7 @@ public class SecurityService {
 	/* 엑세스 토큰 재발급 */
 	@Transactional
 	public String reissueAccess(String accessToken) {
+		accessToken = accessToken.replace("Bearer ","");
 
 		/* Access Token 검증 */
 		if (!securityProvider.validate(accessToken)) {
@@ -142,7 +166,7 @@ public class SecurityService {
 	public TokenDto reissueRefresh(HttpServletRequest request, HttpServletResponse response) {
 
 		/* Access Token 확인 */
-		String accessToken = request.getHeader("Authorization");
+		String accessToken = request.getHeader("Authorization").replace("Bearer ","");
 
 		if (!securityProvider.validate(accessToken)) {
 			log.error("유효하지 않은 access token");
