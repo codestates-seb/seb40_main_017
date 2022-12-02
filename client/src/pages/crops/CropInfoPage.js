@@ -16,7 +16,7 @@ import '@toast-ui/editor/dist/toastui-editor.css';
 function CropInfoPage() {
   const { boardId } = useParams();
   const [board, setBoard] = useState({});
-  const [quantity, setQuantity] = useState(0);
+  const [quantity, setQuantity] = useState(1);
   const user = useSelector(getUser);
 
   //BoardGet
@@ -64,7 +64,7 @@ function CropInfoPage() {
               <p>구매수량</p>
               <Minus
                 onClick={() => {
-                  if (quantity > 0) {
+                  if (quantity > 1) {
                     setQuantity(quantity - 1);
                   }
                 }}
