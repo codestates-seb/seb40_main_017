@@ -19,7 +19,6 @@ import team017.global.Exception.ExceptionCode;
 import team017.member.entity.Member;
 import team017.member.mapper.MemberMapper;
 import team017.member.service.MemberService;
-import team017.security.aop.ReissueToken;
 import team017.security.jwt.dto.LoginResponse;
 import team017.security.jwt.dto.TokenDto;
 import team017.security.jwt.service.SecurityService;

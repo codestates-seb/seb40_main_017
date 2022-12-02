@@ -23,13 +23,11 @@ import team017.member.entity.Member;
 import team017.member.entity.Seller;
 import team017.member.repository.MemberRepository;
 import team017.security.jwt.dto.LoginRequestDto;
-import team017.security.oauth.dto.SocialPatchDto;
 import team017.security.jwt.dto.TokenDto;
 import team017.security.jwt.SecurityProvider;
 import team017.security.jwt.refresh.RefreshToken;
 import team017.security.jwt.refresh.RefreshTokenRepository;
 import team017.security.utils.CookieUtil;
-import team017.security.utils.SecurityUtil;
 
 @Service
 @Slf4j

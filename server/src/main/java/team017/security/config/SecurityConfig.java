@@ -19,8 +19,6 @@ import team017.security.jwt.service.MemberPrincipalService;
 import team017.security.jwt.SecurityProvider;
 import team017.security.jwt.handler.MemberAccessDeniedHandler;
 import team017.security.jwt.handler.MemberAuthenticationEntryPoint;
-import team017.security.oauth.handler.OAuth2FailureHandler;
-import team017.security.oauth.handler.OAuth2SuccessHandler;
 import team017.security.jwt.refresh.RefreshTokenRepository;
 
 @Configuration
@@ -99,10 +97,6 @@ public class SecurityConfig {
 				/* 접근 제한 확인을 위해 나머지는 접근할 수 없는 권한으로 설정 */
 				.anyRequest().permitAll()
 			)
-			// .oauth2Login(oauth -> oauth
-			// 	.successHandler(oAuth2AuthenticationSuccessHandler())
-			// 	.failureHandler(oAuth2AuthenticationFailureHandler())
-			// )
 			.exceptionHandling()
 			.authenticationEntryPoint(new MemberAuthenticationEntryPoint())
 			.accessDeniedHandler(new MemberAccessDeniedHandler());
@@ -132,20 +126,4 @@ public class SecurityConfig {
 	public HttpSessionOAuth2AuthorizationRequestRepository oAuth2AuthorizationRequestRepository() {
 		return new HttpSessionOAuth2AuthorizationRequestRepository();
 	}
-
-	/* Oauth 인증 성공 핸들러*/
-	// @Bean
-	// public OAuth2SuccessHandler oAuth2AuthenticationSuccessHandler() {
-	// 	return new OAuth2SuccessHandler(
-	// 		refreshTokenRepository,
-	// 		oAuth2AuthorizationRequestRepository(),
-	// 		securityProvider
-	// 	);
-	// }
-	//
-	// /* Oauth 인증 실패 핸들러*/
-	// @Bean
-	// public OAuth2FailureHandler oAuth2AuthenticationFailureHandler() {
-	// 	return new OAuth2FailureHandler(oAuth2AuthorizationRequestRepository());
-	// }
 }
