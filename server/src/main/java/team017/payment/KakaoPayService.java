@@ -44,9 +44,9 @@ public class KakaoPayService {
         parameters.add("total_amount", Integer.toString(ord.getTotalPrice()));          //상품 총액
         parameters.add("tax_free_amount", "0");                                         //상품 총액
 
-        parameters.add("approval_url", "https://17farm-server.shop:8080/order/pay/completed/"+ ord.getOrdId());    // 결제 승인 시 넘어갈 redirect url,
-        parameters.add("cancel_url", "https://17farm-server.shop:8080/order/pay/cancel/"+ ord.getOrdId());         // 결제 취소 시 넘어갈 redirect url,
-        parameters.add("fail_url", "https://17farm-server.shop:8080/order/pay/fail/"+ ord.getOrdId());             // 결제 실패 시 넘어갈 redirect url,
+        parameters.add("approval_url", "https://www.17farm-server.shop/order/pay/completed/"+ ord.getOrdId());    // 결제 승인 시 넘어갈 redirect url,
+        parameters.add("cancel_url", "https://www.17farm-server.shop/order/pay/cancel/"+ ord.getOrdId());         // 결제 취소 시 넘어갈 redirect url,
+        parameters.add("fail_url", "https://www.17farm-server.shop/order/pay/fail/"+ ord.getOrdId());             // 결제 실패 시 넘어갈 redirect url,
 
         //Header + Body 합치기
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(parameters, this.getHeaders());
