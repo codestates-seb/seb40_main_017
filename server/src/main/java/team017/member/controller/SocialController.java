@@ -63,7 +63,7 @@ public class SocialController {
 		LoginResponse.Cilent response = mapper.getClientResponse(member);
 
 		HttpHeaders httpHeaders = setHeader(tokenDto);
-		httpHeaders.setLocation(URI.create("https://www.17farm.shop/members/client/" + response.getClientId()));
+		httpHeaders.setLocation(URI.create("https://www.17farm.shop/access"));
 
 		return new ResponseEntity(response, httpHeaders, HttpStatus.MOVED_PERMANENTLY);
 	}
