@@ -251,7 +251,7 @@ const MenuLink = styled.div`
       text-align: center;
       img {
         height: 100%;
-        width: 100%;
+        width: 70%;
       }
     }
   }

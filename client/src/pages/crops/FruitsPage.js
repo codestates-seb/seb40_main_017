@@ -11,7 +11,7 @@ function CropListPage() {
 
   useEffect(() => {
     const getBoards = async () => {
-      const res = await fetch(`${process.env.REACT_APP_API_URL}/boards?page=1&size=10`);
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/boards/category/1?page=1&size=10`);
       const data = await res.json();
       console.log('data:', data);
       setItems(data.data);
@@ -19,7 +19,7 @@ function CropListPage() {
     getBoards();
   }, []);
 
-  console.log('items:', items);
+  console.log('fruits:', items);
 
   const fetchBoards = async () => {
     const res = await fetch(`${process.env.REACT_APP_API_URL}/boards?page=${page}&size=10`);
