@@ -1,5 +1,7 @@
 package team017.member.controller;
 
+import java.net.URI;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -60,8 +63,9 @@ public class SocialController {
 		LoginResponse.Cilent response = mapper.getClientResponse(member);
 
 		HttpHeaders httpHeaders = setHeader(tokenDto);
+		httpHeaders.setLocation(URI.create("https://www.17farm.shop/members/client/" + response.getClientId()));
 
-		return new ResponseEntity(response, httpHeaders, HttpStatus.OK);
+		return new ResponseEntity(response, httpHeaders, HttpStatus.MOVED_PERMANENTLY);
 	}
 
 	/* 소셜 로그인 수정 -> only 권한 */
