@@ -9,7 +9,6 @@ import team017.member.entity.Client;
 import team017.member.entity.Member;
 import team017.member.entity.Seller;
 import team017.security.jwt.dto.LoginResponse;
-import team017.security.jwt.dto.TokenDto;
 
 @Mapper(componentModel = "spring")
 public interface MemberMapper {

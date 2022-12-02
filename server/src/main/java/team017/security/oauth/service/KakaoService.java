@@ -3,15 +3,10 @@ package team017.security.oauth.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -30,13 +25,6 @@ import team017.member.repository.MemberRepository;
 import team017.security.oauth.dto.KakaoToken;
 import team017.security.oauth.info.KakaoProfile;
 
-/*
- * uri 직접 입력 && web client 사용 --> yml 에서 불러올 때 자꾸 IP 주소로 불러옴 + HttpEntity 와 ResponseEntity 가 만들어지지 않음.
- * controller 에서 get 하고 redirect
- * controller 에서 get 하고 직접 다시 호출
- * 변수 값 다 그냥 직접 입력해보기
- * 안되면 멘토님 찬스
- * */
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -146,7 +134,7 @@ public class KakaoService {
 			log.info("사용자 강제 가입");
 			log.error("사용자 강제 가입");
 			member = new Member(
-				profile.getKakao_account().getProfile().getNickname(),
+				String.valueOf(profile.getKakao_account().getProfile().getNickname()),
 				profile.getKakao_account().getEmail(),
 				"소셜 로그인 사용자", /* 비밀번호 */
 				ProviderType.KAKAO,
@@ -159,7 +147,7 @@ public class KakaoService {
 			member.setClient(new Client());
 
 			memberRepository.save(member);
-			emailService.sendSimpleMessage(member.getEmail());
+			emailService.sendSimpleMessage(member.getEmail(), member.getName());
 		}
 
 		/* 만일 사용자가 로컬 사용자라면 예외를 던져야 함 */

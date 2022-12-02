@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 import team017.member.entity.Member;
 import team017.member.repository.MemberRepository;
-// import team017.security.auth.service.MemberPrincipal;
 
 @Service
 @RequiredArgsConstructor

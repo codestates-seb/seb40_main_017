@@ -18,7 +18,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import team017.board.Entity.Board;
-import team017.ord.entity.Ord;
 import team017.product.Entity.Product;
 
 @Getter

@@ -2,7 +2,6 @@ package team017.member.controller;
 
 import javax.validation.constraints.Positive;
 
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,7 +23,6 @@ import team017.member.entity.Seller;
 import team017.member.mapper.MemberMapper;
 import team017.member.service.MemberService;
 import team017.member.service.SellerService;
-import team017.security.aop.ReissueToken;
 
 import java.util.List;
 
@@ -40,7 +38,6 @@ public class SellerController {
 
 	/* 판매자 마이 페이지 조회 */
 	@GetMapping("/{seller_id}")
-	// @ReissueToken /* 셀러는 전체 조회이기 때문에 토큰 없음 */
 	public ResponseEntity getSeller(@PathVariable("seller_id") @Positive long sellerId) {
 		Member member = sellerService.findSeller(sellerId).getMember();
 
@@ -53,7 +50,6 @@ public class SellerController {
 
 	/* 판매자 정보 수정 */
 	@PutMapping("/{seller_id}")
-	// @ReissueToken /* 토큰 재발급 안함*/
 	public ResponseEntity patchSeller(@PathVariable("seller_id") @Positive long sellerId,
 			@RequestBody SellerPatchDto sellerPatchDto) {
 		Seller seller = sellerService.updateSeller(sellerId, mapper.sellerPatchDtoToSeller(sellerPatchDto));
