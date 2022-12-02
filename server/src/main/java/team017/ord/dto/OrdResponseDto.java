@@ -6,7 +6,6 @@ import lombok.Setter;
 import team017.ord.entity.Ord;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Getter
 @Setter
