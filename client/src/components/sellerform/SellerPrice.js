@@ -97,12 +97,10 @@ export const SellerPrice = ({ nextButton, formData, setFormData }) => {
             </InputBox>
             <span> 카테 고리 </span>
             <InputBox>
-              <select name="category" {...register('category')}>
-                <option selected value={1}>
-                  과일
-                </option>
+              <select defaultValue={1} name="category" {...register('category')}>
+                <option value={1}>과일</option>
                 <option value={2}>채소</option>
-                <option value={3}>곡물</option>
+                <option value={3}>쌀/잡곡</option>
                 <option value={4}>견과류</option>
               </select>
             </InputBox>

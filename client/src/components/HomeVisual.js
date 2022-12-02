@@ -1,8 +1,15 @@
 import styled from 'styled-components';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/swiper-bundle.min.css';
 import 'swiper/swiper.min.css';
+
+const Homevisuallayout = styled.div`
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+`;
 
 const Homevisualbox = styled.div`
   background: var(--green);
@@ -14,6 +21,32 @@ const Homevisualbox = styled.div`
   justify-content: center;
   padding-left: 150px;
   overflow: hidden;
+
+  .cursor {
+    z-index: 80;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    top: 0; // 초기 위치값을 설정해줍니다.
+    left: 0; // 초기 위치값을 설정해줍니다.
+
+    width: 100px; //원 가로사이즈
+    height: 100px; //원 세로사이즈
+    border: dashed 2px white;
+    border-radius: 50%; // 원의 형태설정
+    background-color: transparent; //원 컬러설정
+    color: var(--white);
+    opacity: 0.7;
+    transform: translate(-50%, -50%); // 원을 정가운데로 맞추기위해서 축을-50%이동해줍니다.
+    filter: sepia(1px);
+    transition-timing-function: ease;
+    :active {
+      opacity: 0.1;
+      transition: 0.3s;
+    }
+  }
 
   .text {
     display: flex;
@@ -173,10 +206,24 @@ const Homevisualbox = styled.div`
 
 function HomeVisual() {
   const [swiper, setSwiper] = useState(null);
+  const [xy, setXY] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const updateMousePosition = (e) => {
+      setXY({ x: e.pageX, y: e.pageY - 85 });
+    };
+
+    window.addEventListener('mousemove', updateMousePosition);
+
+    return () => {
+      window.removeEventListener('mousemove', updateMousePosition);
+    };
+  }, []);
 
   const visualRef = useRef(null);
   const headerRef = useRef(null);
   const darkheaderRef = useRef(null);
+  const cursorRef = useRef(null);
 
   const colors = ['#5d9061', '#d26a51', '#aba35a', '#5561c7'];
   const whiteTexts = ['신선한 농산물', '유기농 채소', '맛있는 우리쌀', '건강한 먹거리'];
@@ -199,43 +246,48 @@ function HomeVisual() {
   };
 
   return (
-    <Homevisualbox ref={visualRef} onClick={handleChange}>
-      <div className="text effect">
-        <h1 className="text-white effect" ref={headerRef}>
-          {' '}
-          신선한 농산물{' '}
-        </h1>
-        <h1 className="text-darktan effect2" ref={darkheaderRef}>
-          {' '}
-          바로 직거래{' '}
-        </h1>
-      </div>
-      <div className="slide">
-        <Swiper
-          spaceBetween={80}
-          slidesPerView={1}
-          centeredSlides={true}
-          loop={true}
-          onClick={handleSwiperChange}
-          onSwiper={setSwiper}
-          speed={350}
-          ref={setSwiper}
-        >
-          <SwiperSlide>
-            <div className="first-slide"></div>
-          </SwiperSlide>
-          <SwiperSlide>
-            <div className="second-slide"></div>
-          </SwiperSlide>
-          <SwiperSlide>
-            <div className="third-slide"></div>
-          </SwiperSlide>
-          <SwiperSlide>
-            <div className="fourth-slide"></div>
-          </SwiperSlide>
-        </Swiper>
-      </div>
-    </Homevisualbox>
+    <Homevisuallayout>
+      <Homevisualbox ref={visualRef} onClick={handleChange}>
+        <div ref={cursorRef} className="cursor" style={{ position: 'absolute', left: xy.x, top: xy.y }}>
+          Click
+        </div>
+        <div className="text effect">
+          <h1 className="text-white effect" ref={headerRef}>
+            {' '}
+            신선한 농산물{' '}
+          </h1>
+          <h1 className="text-darktan effect2" ref={darkheaderRef}>
+            {' '}
+            바로 직거래{' '}
+          </h1>
+        </div>
+        <div className="slide">
+          <Swiper
+            spaceBetween={80}
+            slidesPerView={1}
+            centeredSlides={true}
+            loop={true}
+            onClick={handleSwiperChange}
+            onSwiper={setSwiper}
+            speed={350}
+            ref={setSwiper}
+          >
+            <SwiperSlide>
+              <div className="first-slide"></div>
+            </SwiperSlide>
+            <SwiperSlide>
+              <div className="second-slide"></div>
+            </SwiperSlide>
+            <SwiperSlide>
+              <div className="third-slide"></div>
+            </SwiperSlide>
+            <SwiperSlide>
+              <div className="fourth-slide"></div>
+            </SwiperSlide>
+          </Swiper>
+        </div>
+      </Homevisualbox>
+    </Homevisuallayout>
   );
 }
 
