@@ -83,7 +83,7 @@ function CropListPage() {
           dataLength={items.length} //This is important field to render the next data
           next={fetchData}
           hasMore={hasMore}
-          loader={''}
+          loader={' '}
           endMessage={''}
         >
           <BoardList>

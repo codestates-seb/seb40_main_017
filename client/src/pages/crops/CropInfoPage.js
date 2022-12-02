@@ -4,7 +4,7 @@ import { Link } from 'react-scroll';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-// import { Review } from '../../components/Review';
+import { Review } from '../../components/Review';
 import { Comment } from '../../components/Comment';
 import { PurchaseButton, PatchButton, Linktoseller } from '../../components/CropInfoElement';
 import { apiServer } from '../../features/axios';
@@ -29,7 +29,7 @@ function CropInfoPage() {
     GetCropInfo();
   }, []);
 
-  console.log(board);
+  console.log(board.content);
 
   //BoardDelete
   const BoardDelete = async () => {
@@ -83,13 +83,7 @@ function CropInfoPage() {
             <p>남은수량 {board.leftStock}개</p>
             <Flexbox>
               <Linktoseller sellerId={board.sellerId} />
-              {board.leftStock === 0 ? (
-                'SOLDOUT'
-              ) : user.clientId ? (
-                <PurchaseButton boardId={boardId} quantity={quantity} />
-              ) : (
-                '구매를 원하신다면 회원가입해주세요'
-              )}
+              {board.leftStock === 0 ? 'SOLDOUT' : user.clientId ? <PurchaseButton boardId={boardId} quantity={quantity} /> : '회원가입해주세요😊'}
             </Flexbox>
           </CropInfo>
         </Crop>
@@ -118,7 +112,7 @@ function CropInfoPage() {
               <Viewer initialValue={board.content} />
               {/* {board.content} */}
             </div>
-            {/* <Review /> */}
+            <Review />
             <Comment />
           </MenuLink>
         </ContentDiv>

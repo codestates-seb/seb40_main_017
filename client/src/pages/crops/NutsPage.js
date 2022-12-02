@@ -66,8 +66,8 @@ function NutsPage() {
           dataLength={items.length} //This is important field to render the next data
           next={fetchData}
           hasMore={hasMore}
-          loader={'로딩중'}
-          endMessage={'endMsg'}
+          loader={''}
+          endMessage={''}
         >
           <BoardList>
             {items.map((item) => {
