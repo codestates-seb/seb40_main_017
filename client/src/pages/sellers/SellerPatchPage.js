@@ -12,7 +12,8 @@ import { useForm } from 'react-hook-form';
 import { DotSpinner } from '@uiball/loaders';
 
 const SellerPostLayout = styled.div`
-  margin-top: 2em;
+  margin-top: 3.5em;
+  margin-bottom: 3.5em;
   background: var(--off-white);
   width: 100%;
   height: 100vh;
@@ -203,7 +204,8 @@ function SellerPatchPage() {
     formState: { errors },
     reset,
     handleSubmit,
-  } = useForm({ defaultValues: { title: itemData.title, stock: itemData.stock, price: itemData.price } });
+    setValue,
+  } = useForm({ defaultValues: { title: itemData.title, price: itemData.price } });
   const handleOnchangeForm = (e) => {
     setForm({
       ...form,
@@ -216,33 +218,29 @@ function SellerPatchPage() {
     await axios
       .get(`${process.env.REACT_APP_API_URL}/boards/${boardInfo}`)
       .then((res) => {
-        console.log(res);
-        console.log(res.data);
         setItemData((prevState) => {
           return { ...prevState, ...res.data };
         });
-        console.log('데이터 넣기');
+        setForm({ ...form, category: res.data.category, price: res.data.price });
+        setValue('category', res.data.category);
       })
       .catch((error) => console.log(error));
   };
   const setContent = () => {
     editorRef.current.getInstance().setMarkdown(itemData.content);
-    console.log('콘텐츠 넣기');
   };
 
   useEffect(() => {
     getItem();
-    console.log(itemData);
   }, []);
 
   useEffect(() => {
     setContent();
-    reset({ title: itemData.title, stock: itemData.stock, price: itemData.price });
+    reset({ title: itemData.title, price: itemData.price });
   }, [itemData]);
 
   useEffect(() => {
     console.log(form);
-    // setForm({ ...form, mainImage: mainImage });
   }, [form]);
 
   // 썸네일 이미지 input 이벤트
@@ -368,11 +366,11 @@ function SellerPatchPage() {
     } else if (!form.price) {
       return alert('가격을 수정해주세요');
     }
-    console.log('수정하기');
+
     setForm((prevState) => {
       return { ...prevState, ...data };
     });
-    console.log(form);
+
     if (window.confirm('수정확인')) {
       setIsLoading(true);
       await apiServer({
@@ -389,6 +387,7 @@ function SellerPatchPage() {
         .catch((err) => {
           console.log(err);
           alert('수정 실패 하였습니다');
+          navigate(-1);
         });
     }
   };
@@ -447,11 +446,9 @@ function SellerPatchPage() {
             <ContentHead>카테고리</ContentHead>
             <ContentInput>
               <select name="category" {...register('category')} onChange={handleOnchangeForm}>
-                <option selected value={1}>
-                  과일
-                </option>
+                <option value={1}>과일</option>
                 <option value={2}>채소</option>
-                <option value={3}>곡물</option>
+                <option value={3}>쌀/잡곡</option>
                 <option value={4}>견과류</option>
               </select>
             </ContentInput>
