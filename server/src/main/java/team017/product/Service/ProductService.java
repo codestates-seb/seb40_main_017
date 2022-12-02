@@ -39,6 +39,8 @@ public class ProductService {
                 .ifPresent(status ->findProduct.setStatus(status));
         Optional.ofNullable(boardPatchDto.getCategory())
                 .ifPresent(category -> findProduct.setCategory(category));
+        Optional.ofNullable(boardPatchDto.getMainImage())
+                .ifPresent(mainImage -> findProduct.setMainImage(mainImage));
 
         return productRepository.save(findProduct);
     }
