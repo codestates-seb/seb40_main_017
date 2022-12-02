@@ -177,7 +177,7 @@ export const ClientMyPage = ({ handleDeleteMember }) => {
   const [pagination, setPagination] = useState({
     page: 1,
     size: 5,
-    totalPage: 0,
+    totalPages: 0,
   });
   const { page, size } = pagination;
 
@@ -253,12 +253,12 @@ export const ClientMyPage = ({ handleDeleteMember }) => {
       setOrderList([...orderList, ...data]);
 
       const pageData = orderData.pageInfo;
-      const { page, size, totalPage } = pageData;
+      const { page, size, totalPages } = pageData;
 
       setPagination({
         page,
         size,
-        totalPage,
+        totalPages,
       });
     },
     [orderList]
@@ -286,7 +286,7 @@ export const ClientMyPage = ({ handleDeleteMember }) => {
       setPagination({
         page: 1,
         size: 5,
-        totalPage: 0,
+        totalPages: 0,
       });
     };
   }, [user]);
@@ -556,7 +556,7 @@ export const SellerMyPage = ({ handleDeleteMember }) => {
   const [pagination, setPagination] = useState({
     page: 1,
     size: 5,
-    totalPage: 0,
+    totalPages: 0,
   });
   const { page, size } = pagination;
 
@@ -650,12 +650,12 @@ export const SellerMyPage = ({ handleDeleteMember }) => {
       setSaleList([...saleList, ...data]);
 
       const pageData = saleData.pageInfo;
-      const { page, size, totalPage } = pageData;
+      const { page, size, totalPages } = pageData;
 
       setPagination({
         page,
         size,
-        totalPage,
+        totalPages,
       });
     },
     [saleList]
@@ -686,7 +686,7 @@ export const SellerMyPage = ({ handleDeleteMember }) => {
       setPagination({
         page: 1,
         size: 5,
-        totalPage: 0,
+        totalPages: 0,
       });
     };
   }, [user]);
@@ -772,7 +772,7 @@ export const SellerMyPage = ({ handleDeleteMember }) => {
                     return (
                       <tr key={sale.boardId}>
                         <td>{sale.title}</td>
-                        <td>{sale.stock}</td>
+                        <td>{sale.leftStock}</td>
                         <td>{sale.createAt}</td>
                       </tr>
                     );
