@@ -87,12 +87,12 @@ public class MemberController {
 	}
 
 	/* 로그아웃 */
-	// @GetMapping("/members/logout")
-	// public ResponseEntity logoutMember(HttpServletRequest request) {
-	// 	securityService.logout(request);
-	//
-	// 	return ResponseEntity.ok("로그아웃 되었습니다.");
-	// }
+	@GetMapping("/members/logout")
+	public ResponseEntity logoutMember(HttpServletRequest request) {
+		securityService.logout(request);
+
+		return ResponseEntity.ok("Success!");
+	}
 
 	/* 로그인 헤더 설정 */
 	private HttpHeaders setHeader(String token) {
