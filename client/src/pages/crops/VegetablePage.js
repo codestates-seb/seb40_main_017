@@ -22,7 +22,7 @@ function VegetablePage() {
   console.log('vegetables:', items);
 
   const fetchBoards = async () => {
-    const res = await fetch(`${process.env.REACT_APP_API_URL}/boards?page=${page}&size=10`);
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/boards/category/2?page=${page}&size=10`);
     const data = await res.json();
     return data.data;
   };
@@ -62,13 +62,7 @@ function VegetablePage() {
             </Link>
           </ol>
         </CategoryList>
-        <InfiniteScroll
-          dataLength={items.length} //This is important field to render the next data
-          next={fetchData}
-          hasMore={hasMore}
-          loader={''}
-          endMessage={''}
-        >
+        <InfiniteScroll dataLength={items.length} next={fetchData} hasMore={hasMore} loader={''} endMessage={''}>
           <BoardList>
             {items.map((item) => {
               if (item.category === 2) {
