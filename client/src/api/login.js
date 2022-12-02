@@ -61,7 +61,9 @@ export const logout = (callback) => {
     //  쿠키 토큰 폐기
     removeCookie('accessToken');
 
-    callback();
+    if (typeof callback === 'function') {
+      callback();
+    }
   };
 };
 
@@ -84,9 +86,18 @@ export const updateSession = (callback) => {
       })
       .catch((reason) => {
         console.log(reason);
+
+        // 세션 만료 시 데이터를 모두 지우고 새로고침
+        dispatch(
+          logout(() => {
+            location.reload();
+          })
+        );
       })
       .finally(() => {
-        callback();
+        if (typeof callback === 'function') {
+          callback();
+        }
       });
   };
 };
