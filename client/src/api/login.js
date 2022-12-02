@@ -52,6 +52,49 @@ export const login = ({ userId, userPassword }, callback) => {
   };
 };
 
+//  Axios SNS 로그인 및 Redux 상태 관리
+export const snsLogin = ({ accessToken }, callback) => {
+  //  입력 값을 활용하여 dispatch 와 통신하도록 Thunk 형 함수 리턴
+  return (dispatch) => {
+    apiServer({
+      method: 'GET',
+      url: '/access',
+      headers: {
+        Authorization: `Bearer ${accessToken}`, // accessToken 삽입
+      },
+    })
+      .then((response) => {
+        if (response.data.memberId) {
+          //  Response 데이터에 사용자 정보가 있다면 저장
+          dispatch(setUser(response.data));
+
+          //  페이지 새로 로드 시에도 로그인 세션을 유지하기 위해 Token 저장
+          const accessToken = response.data.authorization || response.headers['authorization'];
+          setCookie('accessToken', accessToken);
+
+          //  로그인 성공을 알림
+          callback(true);
+        } else {
+          //  오류 발생 시 메시지 경고 창 표시
+          if (response.data.message) {
+            alert(response.data.message);
+          }
+          callback(false);
+        }
+      })
+      .catch((reason) => {
+        const { response } = reason;
+
+        //  오류 발생 시 메시지 경고 창 표시
+        if (response.data.message) {
+          alert(response.data.message);
+        }
+
+        callback(false);
+      });
+  };
+};
+
 //  Axios 로그아웃 및 Redux 상태 관리
 export const logout = (callback) => {
   return (dispatch) => {
