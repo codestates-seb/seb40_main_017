@@ -65,6 +65,9 @@ function BuyFormPage() {
   const userInfo = useSelector((state) => state.user.clientId);
 
   useEffect(() => {
+    if (!userInfo) {
+      return;
+    }
     const getItem = async () => {
       await apiServer({ method: 'GET', url: `/boards/${boardInfo}` })
         .then((res) => {
