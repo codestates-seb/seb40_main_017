@@ -19,8 +19,8 @@ public class Review extends Auditable {
     @Column(nullable = false)
     private String context;
 
-    @Column
-    private String image;
+//    @Column
+//    private String image;
 
     @Column(nullable = false)
     private int star;

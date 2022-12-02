@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { apiServer } from '../features/axios';
 
-import { removeCookie, setCookie } from '../features/cookie';
+import { getCookie, removeCookie, setCookie } from '../features/cookie';
 import { clearUser, getUser, setUser } from '../features/user/userSlice';
 
 //  Axios 로그인 및 Redux 상태 관리
@@ -55,13 +55,25 @@ export const login = ({ userId, userPassword }, callback) => {
 //  Axios 로그아웃 및 Redux 상태 관리
 export const logout = (callback) => {
   return (dispatch) => {
-    //  사용자 로그인 상태 제거
+    // 사용자 로그인 상태 제거
     dispatch(clearUser());
 
-    //  쿠키 토큰 폐기
+    if (getCookie('accessToken')) {
+      // 쿠키 토큰이 유효하다면 서버에 로그아웃 요청
+      apiServer({
+        method: 'GET',
+        url: '/members/logout',
+      }).catch((reason) => {
+        console.error(reason);
+      });
+    }
+
+    // 쿠키 토큰 폐기
     removeCookie('accessToken');
 
-    callback();
+    if (typeof callback === 'function') {
+      callback();
+    }
   };
 };
 
@@ -84,9 +96,18 @@ export const updateSession = (callback) => {
       })
       .catch((reason) => {
         console.log(reason);
+
+        // 세션 만료 시 데이터를 모두 지우고 새로고침
+        dispatch(
+          logout(() => {
+            location.reload();
+          })
+        );
       })
       .finally(() => {
-        callback();
+        if (typeof callback === 'function') {
+          callback();
+        }
       });
   };
 };

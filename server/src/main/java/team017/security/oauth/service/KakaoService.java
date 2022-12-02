@@ -3,15 +3,10 @@ package team017.security.oauth.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -20,6 +15,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import team017.global.Exception.BusinessLogicException;
+import team017.global.Exception.ExceptionCode;
+import team017.mail.EmailService;
 import team017.member.entity.Client;
 import team017.member.entity.Member;
 import team017.member.entity.ProviderType;
@@ -27,19 +25,12 @@ import team017.member.repository.MemberRepository;
 import team017.security.oauth.dto.KakaoToken;
 import team017.security.oauth.info.KakaoProfile;
 
-/*
- * uri 직접 입력 && web client 사용 --> yml 에서 불러올 때 자꾸 IP 주소로 불러옴 + HttpEntity 와 ResponseEntity 가 만들어지지 않음.
- * controller 에서 get 하고 redirect
- * controller 에서 get 하고 직접 다시 호출
- * 변수 값 다 그냥 직접 입력해보기
- * 안되면 멘토님 찬스
- * */
 @Service
 @Slf4j
 @RequiredArgsConstructor
-// @Transactional
 public class KakaoService {
 	private final MemberRepository memberRepository;
+	private final EmailService emailService;
 
 	@Value("${spring.security.oauth2.client.registration.kakao.clientId}")
 	private String clientId;
@@ -47,16 +38,10 @@ public class KakaoService {
 	@Value("${spring.security.oauth2.client.registration.kakao.clientSecret}")
 	private String clientSecret;
 
-	// @Value("${spring.security.oauth2.client.registration.kakao.redirectUri}") -> 서버에서 배포하면 ip 주소로 들어옴
-	private String redirectUri = "http://17farm-server.shop:8080/login/oauth2/code/kakao";
-	// private String redirectUri = "https://17farm-server.shop:8080/login/oauth2/code/kakao";
-	// private String redirectUri = "http://localhost:8080/login/oauth2/code/kakao";
-
-	// @Value("${spring.security.oauth2.client.provider.kakao.tokenUri}")
-	private String accessTokenUri = "https://kauth.kakao.com/oauth/token";
-
-	// @Value("${spring.security.oauth2.client.provider.kakao.userInfoUri}")
-	private String userInfoUri = "https://kapi.kakao.com/v2/user/me";
+	/* 서버에서 배포하면 ip 주소로 들어옴 -> 직접 주입 */
+	private final String redirectUri = "https://www.17farm-server.shop/login/oauth2/code/kakao";
+	private final String accessTokenUri = "https://kauth.kakao.com/oauth/token";
+	private final String userInfoUri = "https://kapi.kakao.com/v2/user/me";
 
 	/* 엑세스 토큰 from Kakao */
 	public KakaoToken getAccessToken(String code) {
@@ -81,34 +66,6 @@ public class KakaoService {
 			.retrieve()
 			.bodyToMono(String.class)
 			.block();
-
-		// RestTemplate restTemplate = new RestTemplate();
-		// HttpHeaders headers  = new HttpHeaders();
-		// headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
-		//
-		// MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-		// params.add("grant_type", "authorization_code");
-		// params.add("client_id", clientId);
-		// params.add("redirect_uri", redirectUri);
-		// params.add("code", code);
-		// params.add("client_secret", clientSecret);
-		//
-		// log.info("리다이렉트 주소: {}", params.get("redirect_uri").toString());
-		// log.error("리다이렉트 주소: {}", params.get("redirect_uri").toString());
-		//
-		// // HttpHeader와 HttpBody를 하나의 오브젝트로 담는다
-		// HttpEntity<MultiValueMap<String,String>> kakaoTokenRequest =
-		// 	new HttpEntity<>(params, headers);
-		//
-		// log.info(kakaoTokenRequest.getBody().toString());
-		// log.error(kakaoTokenRequest.getBody().toString());
-		//
-		// ResponseEntity<String> response = restTemplate.exchange(
-		// 	accessTokenUri,
-		// 	HttpMethod.POST,
-		// 	kakaoTokenRequest,
-		// 	String.class
-		// );
 
 		log.info(response);
 		log.error(response);
@@ -135,21 +92,6 @@ public class KakaoService {
 
 		log.info("사용자 정보 가져오기 : {}", token);
 		log.error("사용자 정보 가져오기 : {}", token);
-
-		// RestTemplate restTemplate = new RestTemplate();
-		// HttpHeaders headers  = new HttpHeaders();
-		// headers.add("Authorization", "Bearer " + token);
-		// headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
-		//
-		// HttpEntity<MultiValueMap<String,String>> kakaoTokenRequest =
-		// 	new HttpEntity<>(headers);
-		//
-		// ResponseEntity<String> response = restTemplate.exchange(
-		// 	userInfoUri,
-		// 	HttpMethod.POST,
-		// 	kakaoTokenRequest,
-		// 	String.class
-		// );
 
 		WebClient wc = WebClient.create(userInfoUri);
 
@@ -180,7 +122,7 @@ public class KakaoService {
 
 	/* 카카오 로그인 사용자 강제 회원 가입 */
 	@Transactional
-	public Member saveMember(String access_token) {
+	public Member saveMember(String access_token) throws Exception {
 		log.info("카카오 서비스 save member 시작");
 		log.error("카카오 서비스 save member 시작");
 
@@ -192,7 +134,7 @@ public class KakaoService {
 			log.info("사용자 강제 가입");
 			log.error("사용자 강제 가입");
 			member = new Member(
-				profile.getKakao_account().getProfile().getNickname(),
+				String.valueOf(profile.getKakao_account().getProfile().getNickname()),
 				profile.getKakao_account().getEmail(),
 				"소셜 로그인 사용자", /* 비밀번호 */
 				ProviderType.KAKAO,
@@ -200,10 +142,19 @@ public class KakaoService {
 				List.of("CLIENT"),
 				profile.getId()
  			);
+			member.setPhone("010-1111-1111");
+			member.setAddress("주소를 입력해주세요.");
 			member.setClient(new Client());
 
 			memberRepository.save(member);
+			emailService.sendSimpleMessage(member.getEmail(), member.getName());
 		}
+
+		/* 만일 사용자가 로컬 사용자라면 예외를 던져야 함 */
+		if (member.getProviderType() == ProviderType.LOCAL) {
+			throw new BusinessLogicException(ExceptionCode.PROVIDER_ERROR);
+		}
+
 		log.info("return member : {}", member.getName());
 		log.error("return member : {}", member.getName());
 

@@ -30,7 +30,6 @@ public class KakaoPayService {
     private final BoardRepository boardRepository;
     @Value("${spring.security.oauth2.client.registration.kakao.adminKey}")
     private String adminKey;
-    ReadyResponseDto readyResponseDto;
 
     // 결제 준비 메서드
     public ReadyResponseDto payReady(Ord ord) {
@@ -45,9 +44,9 @@ public class KakaoPayService {
         parameters.add("total_amount", Integer.toString(ord.getTotalPrice()));          //상품 총액
         parameters.add("tax_free_amount", "0");                                         //상품 총액
 
-        parameters.add("approval_url", "http://17farm-server.shop:8080/order/pay/completed");    // 결제승인시 넘어갈 redirect url,
-        parameters.add("cancel_url", "http://17farm-server.shop:8080/order/pay/cancel");         // 결제취소시 넘어갈 redirect url,
-        parameters.add("fail_url", "http://17farm-server.shop:8080/order/pay/fail");             // 결제 실패시 넘어갈 redirect url,
+        parameters.add("approval_url", "https://17farm-server.shop:8080/order/pay/completed/"+ ord.getOrdId());    // 결제 승인 시 넘어갈 redirect url,
+        parameters.add("cancel_url", "https://17farm-server.shop:8080/order/pay/cancel/"+ ord.getOrdId());         // 결제 취소 시 넘어갈 redirect url,
+        parameters.add("fail_url", "https://17farm-server.shop:8080/order/pay/fail/"+ ord.getOrdId());             // 결제 실패 시 넘어갈 redirect url,
 
         //Header + Body 합치기
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(parameters, this.getHeaders());
@@ -58,24 +57,27 @@ public class KakaoPayService {
 
         String url = "https://kapi.kakao.com/v1/payment/ready";
 
-        readyResponseDto = template.postForObject(url, requestEntity, ReadyResponseDto.class);
-        readyResponseDto.setPartner_order_id(Long.toString(ord.getOrdId()));
-        log.info("결재준비 응답객체: " + readyResponseDto);
+        ReadyResponseDto readyResponseDto = template.postForObject(url, requestEntity, ReadyResponseDto.class);
+        ord.setTid(readyResponseDto.getTid());
+        ordRepository.save(ord);
+
+        log.info("결제준비 응답객체: " + readyResponseDto);
 
         return readyResponseDto;
     }
 
     // 결제 승인요청 메서드
-    public OrdResponseDto payApprove(String pgToken) {
+    public OrdResponseDto payApprove(Long ordId, String pgToken) {
 
-        log.info("tid:"+readyResponseDto.getTid() ) ;
-        log.info("partner_order_id:"+ readyResponseDto.getPartner_order_id());
+        Ord findOrd = ordService.findVerifiedOrd(ordId);
+        log.info("partner_order_id:"+ ordId);
+        log.info("tid:"+ findOrd.getTid());
 
         // request
         MultiValueMap<String, String> parameters = new LinkedMultiValueMap<String, String>();
         parameters.add("cid", "TC0ONETIME");                        //가맹점 코드
-        parameters.add("tid", readyResponseDto.getTid());           //결제 고유번호, 결제 준비 API 응답에 포함
-        parameters.add("partner_order_id", readyResponseDto.getPartner_order_id()); //가맹점 주문번호, 결제 준비 API 요청과 일치해야 함
+        parameters.add("tid", findOrd.getTid());                    //결제 고유번호, 결제 준비 API 응답에 포함
+        parameters.add("partner_order_id", Long.toString(ordId));   //가맹점 주문번호, 결제 준비 API 요청과 일치해야 함
         parameters.add("partner_user_id", "17farm");                //가맹점 회원 id, 결제 준비 API 요청과 일치해야 함
         parameters.add("pg_token", pgToken);                        //결제승인 요청을 인증하는 토큰
 
@@ -90,7 +92,6 @@ public class KakaoPayService {
         log.info("결재승인 응답객체: " + approveResponse);
 
         //order 상태 PAY_COMPLETE 로 변경
-         Ord findOrd = ordService.findVerifiedOrd(Long.parseLong(readyResponseDto.getPartner_order_id()));
          findOrd.setStatus(Ord.OrdStatus.PAY_COMPLETE);
          ordRepository.save(findOrd);
 
@@ -98,8 +99,7 @@ public class KakaoPayService {
     }
 
     /* 결제 취소 혹은 삭제 */
-    public void cancelOrFailPayment() {
-        long ordId = Long.parseLong(readyResponseDto.getPartner_order_id());
+    public void cancelOrFailPayment(Long ordId) {
 
         //결제 취소, 결제 실패로 인한 잔여 재고 수정
         Ord findOrd = ordService.findVerifiedOrd(ordId);

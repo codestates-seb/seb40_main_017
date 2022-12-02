@@ -19,7 +19,6 @@ import team017.member.entity.Member;
 import team017.member.mapper.MemberMapper;
 import team017.member.service.ClientService;
 import team017.member.service.MemberService;
-import team017.security.aop.ReissueToken;
 
 /* 소비자 관련 컨트롤러 : 마이페이지 조회, 정보 수정 */
 @Slf4j
@@ -34,7 +33,6 @@ public class ClientController {
 
 	/* 소비자 마이 페이지 조회 */
 	@GetMapping("/{client_id}")
-	// @ReissueToken /* 토큰 재발급 안함 */
 	public ResponseEntity getClient(@PathVariable("client_id") @Positive long clientId) {
 		Member member = clientService.findClient(clientId).getMember();
 
@@ -44,7 +42,6 @@ public class ClientController {
 
 	/* 소비자 정보 수정 */
 	@PutMapping("/{client_id}")
-	// @ReissueToken /* 토큰 재발급 안함 */
 	public ResponseEntity putClient(@PathVariable("client_id") @Positive long clientId,
 		@RequestBody ClientPatchDto clientPatchDto) {
 		Client client = clientService.updateClient(clientId, mapper.clientPatchDtoToClient(clientPatchDto));

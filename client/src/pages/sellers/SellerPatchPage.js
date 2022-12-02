@@ -368,24 +368,29 @@ function SellerPatchPage() {
     } else if (!form.price) {
       return alert('가격을 수정해주세요');
     }
-    setIsLoading(true);
     console.log('수정하기');
     setForm((prevState) => {
       return { ...prevState, ...data };
     });
     console.log(form);
     if (window.confirm('수정확인')) {
+      setIsLoading(true);
       await apiServer({
         method: 'patch',
         url: `/boards/${boardInfo}`,
         data: JSON.stringify(form),
         headers: { 'Content-Type': 'application/json' },
       })
-        .then((res) => console.log(res))
-        .catch((err) => console.log(err));
-      alert('수정 완료 되었습니다.');
+        .then((res) => {
+          console.log(res);
+          alert('수정 완료 되었습니다.');
+          navigate(-1);
+        })
+        .catch((err) => {
+          console.log(err);
+          alert('수정 실패 하였습니다');
+        });
     }
-    navigate(-1);
   };
 
   return (
@@ -428,22 +433,6 @@ function SellerPatchPage() {
                 {errors.title?.type === 'maxLength' && <p> 20자 이하로 적어 주세요</p>}
               </ErrorBox>
             </ContentInput>
-            {/* <ContentHead>판매수량</ContentHead>
-            <ContentInput>
-              <input
-                placeholder="판매수량"
-                name="stock"
-                type="number"
-                {...register('stock', { required: true, min: 1, max: 50 })}
-                onChange={handleOnchangeForm}
-              ></input>
-              개
-              <ErrorBox>
-                {errors.stock?.type === 'required' && <p>판매 수량을 적어주세요</p>}
-                {errors.stock?.type === 'min' && <p>1개이상 50개 이하의 수량을 입력 해주세요</p>}
-                {errors.stock?.type === 'max' && <p> 50개 이하의 수량을 입력 해주세요</p>}
-              </ErrorBox>
-            </ContentInput> */}
             <ContentHead>상품가격</ContentHead>
             <ContentInput>
               <input
@@ -458,7 +447,9 @@ function SellerPatchPage() {
             <ContentHead>카테고리</ContentHead>
             <ContentInput>
               <select name="category" {...register('category')} onChange={handleOnchangeForm}>
-                <option value={1}>과일</option>
+                <option selected value={1}>
+                  과일
+                </option>
                 <option value={2}>채소</option>
                 <option value={3}>곡물</option>
                 <option value={4}>견과류</option>

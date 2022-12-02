@@ -25,9 +25,14 @@ const userSlice = createSlice({
       if (action.payload.clientId) {
         state.clientId = action.payload.clientId;
       }
+
+      //  Redux에 저장되는 사용자 세션 정보를 localStorage에 저장 (Object 형식이기 때문에 JSON String 변환 후 저장)
+      localStorage.setItem('user', JSON.stringify(state));
     },
     //  사용자 세션을 초기화하는 Redux Action
     clearUser(state) {
+      //  로그아웃 시 localStorage에서 정보 삭제
+      localStorage.removeItem('user');
       //  기존에 있던 State 값을 모두 저장하며, 초기값을 덮어 씌우도록 설정
       return { ...state, ...userSlice.getInitialState() };
     },

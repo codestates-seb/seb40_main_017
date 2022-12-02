@@ -1,12 +1,10 @@
 package team017.member.entity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.*;
 
 import lombok.*;
-import team017.comments.entity.Comment;
 
 @Getter
 @Entity
@@ -25,13 +23,13 @@ public class Member {
 	@Column(length = 45, nullable = false, unique = true)
 	private String email;
 
-	@Column
+	@Column(nullable = false)
 	private String password;
 
-	@Column(length = 45)
+	@Column(length = 50, nullable = false)
 	private String phone;
 
-	@Column(length = 45)
+	@Column(length = 100, nullable = false)
 	private String address;
 
 	/* 소셜 로그인 아이디 추가 */

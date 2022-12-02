@@ -18,6 +18,6 @@ const StyledLearnMoreButton = styled.button`
   }
 `;
 export const LearnMorePagination = ({ pagination, handleLearnMore }) => {
-  const { page, totalPage } = pagination;
-  return <>{page < totalPage && <StyledLearnMoreButton onClick={handleLearnMore}>더보기</StyledLearnMoreButton>}</>;
+  const { page, totalPages } = pagination;
+  return <>{page < totalPages && <StyledLearnMoreButton onClick={handleLearnMore}>더보기</StyledLearnMoreButton>}</>;
 };

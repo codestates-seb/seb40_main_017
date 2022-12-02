@@ -131,11 +131,11 @@ public class BoardService {
     }
 
     public Page<Board> findBoards(int page, int size) {
-        return boardRepository.findAll(PageRequest.of(page, size, Sort.by("createdAt").descending()));
+        return boardRepository.findAll(PageRequest.of(page, size, Sort.by("boardId").descending()));
     }
 
     public Page<Board> findBoardsCategory(int category, int page, int size) {
-        return  boardRepository.findBoardsByProduct_Category(PageRequest.of(page, size, Sort.by("createdAt").descending()), category);
+        return  boardRepository.findBoardsByProduct_Category(PageRequest.of(page, size, Sort.by("boardId").descending()), category);
     }
 
 }

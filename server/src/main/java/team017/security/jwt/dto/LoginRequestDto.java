@@ -8,8 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import team017.member.entity.Member;
-import team017.member.repository.MemberRepository;
-import team017.security.utils.CustomAuthorityUtils;
+
 @Getter
 @Builder
 @AllArgsConstructor

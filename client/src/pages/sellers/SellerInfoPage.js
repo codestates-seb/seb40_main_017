@@ -27,9 +27,6 @@ const StyledSellerInfo = styled.div`
     align-items: flex-start;
 
     .seller-profile-image {
-      position: sticky;
-      top: 120px;
-
       width: 350px;
       margin-right: 50px;
 
@@ -235,7 +232,7 @@ const SellerInfoPage = () => {
   const [pagination, setPagination] = useState({
     page: 1,
     size: 5,
-    totalPage: 0,
+    totalPages: 0,
   });
   const { page, size } = pagination;
 
@@ -277,18 +274,20 @@ const SellerInfoPage = () => {
           stock: sale.stock,
           category: sale.category,
           leftStock: sale.leftStock,
+          createAt: sale.createAt,
+          modifiedAt: sale.modifiedAt,
         };
       });
 
       setSaleList([...saleList, ...data]);
 
       const pageData = saleData.pageInfo;
-      const { page, size, totalPage } = pageData;
+      const { page, size, totalPages } = pageData;
 
       setPagination({
         page,
         size,
-        totalPage,
+        totalPages,
       });
     },
     [saleList]
@@ -317,7 +316,7 @@ const SellerInfoPage = () => {
       setPagination({
         page: 1,
         size: 5,
-        totalPage: 0,
+        totalPages: 0,
       });
     };
   }, []);
@@ -377,8 +376,8 @@ const SellerInfoPage = () => {
                             return (
                               <tr key={sale.boardId}>
                                 <td>{sale.title}</td>
-                                <td>{sale.stock}</td>
-                                <td>{}</td>
+                                <td>{sale.leftStock}</td>
+                                <td>{sale.createAt}</td>
                               </tr>
                             );
                           })}

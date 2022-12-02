@@ -28,6 +28,15 @@ const FormBox = styled.div`
   align-items: center;
   border-radius: 0.5em;
   box-shadow: 0px 4px 5px 1px #8e8e8e;
+  @media (max-width: 1199px) {
+    width: 33em;
+    height: 20em;
+  }
+  @media (max-width: 991px) {
+    padding: 1em;
+    width: 25em;
+    height: 15em;
+  }
 `;
 
 const MultiStepBox = styled.div`
@@ -56,6 +65,9 @@ function BuyFormPage() {
   const userInfo = useSelector((state) => state.user.clientId);
 
   useEffect(() => {
+    if (!userInfo) {
+      return;
+    }
     const getItem = async () => {
       await apiServer({ method: 'GET', url: `/boards/${boardInfo}` })
         .then((res) => {
@@ -72,8 +84,10 @@ function BuyFormPage() {
         })
         .catch((error) => console.log(error));
     };
+    setIsLoading(true);
     getUserData();
     getItem();
+    setIsLoading(false);
   }, []);
 
   const count = countInfo;
