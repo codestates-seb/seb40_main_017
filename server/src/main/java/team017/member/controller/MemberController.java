@@ -42,7 +42,7 @@ public class MemberController {
 		Member createMember = memberService.createMember(mapper.memberDtoToMember(requestBody));
 
 		/* 회원가입 메세지 발송 -> 비동기 처리  */
-		emailService.sendSimpleMessage(createMember.getEmail());
+		emailService.sendSimpleMessage(createMember.getEmail(), createMember.getName());
 
 		/* 로그인 시도를 위한 LoginRequestDto 생성 */
 		LoginRequestDto loginRequestDto = new LoginRequestDto(createMember.getEmail(), requestBody.getPassword());

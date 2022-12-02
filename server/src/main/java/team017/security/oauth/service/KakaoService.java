@@ -159,7 +159,7 @@ public class KakaoService {
 			member.setClient(new Client());
 
 			memberRepository.save(member);
-			emailService.sendSimpleMessage(member.getEmail());
+			emailService.sendSimpleMessage(member.getEmail(), member.getName());
 		}
 
 		/* 만일 사용자가 로컬 사용자라면 예외를 던져야 함 */
