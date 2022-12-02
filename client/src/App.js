@@ -28,6 +28,7 @@ import Footer from './components/Footer';
 import { useEffect } from 'react';
 import { updateSession } from './api/login';
 import { getCookie } from './features/cookie';
+import SnsLoginPage from './pages/users/SnsLoginPage';
 
 const StyledApp = styled.main`
   display: flex;
@@ -85,6 +86,7 @@ const App = () => {
                 <Route path="/" element={<HomePage />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/logout" element={<LogoutPage />} />
+                <Route path="/social" element={<SnsLoginPage />} />
                 <Route path="/signup" element={<SignupPage />} />
                 <Route path="/mypage" element={<MyPage />} />
                 <Route path="/seller/:sellerId" element={<SellerInfoPage />} />
