@@ -39,7 +39,7 @@ public class KakaoService {
 	private String clientSecret;
 
 	/* 서버에서 배포하면 ip 주소로 들어옴 -> 직접 주입 */
-	private final String redirectUri = "http://localhost:8080/login/oauth2/code/kakao";
+	private final String redirectUri = "https://www.17farm-server.shop/login/oauth2/code/kakao";
 	private final String accessTokenUri = "https://kauth.kakao.com/oauth/token";
 	private final String userInfoUri = "https://kapi.kakao.com/v2/user/me";
 
