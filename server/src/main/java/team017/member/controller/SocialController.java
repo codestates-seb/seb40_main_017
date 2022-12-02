@@ -5,13 +5,13 @@ import java.net.URI;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +27,7 @@ import team017.security.jwt.dto.TokenDto;
 import team017.security.oauth.service.KakaoService;
 import team017.security.jwt.service.SecurityService;
 
-@RestController
+@Controller
 @Slf4j
 @RequiredArgsConstructor
 public class SocialController {
@@ -39,7 +39,7 @@ public class SocialController {
 	/* 카카오 로그인 */
 	/* frontend 로 부터 받은 인가 코드 받기 및 사용자 정보 받기, 회원가입 */
 	@GetMapping("/login/oauth2/code/kakao")
-	public ResponseEntity KakaoLogin(@RequestParam("code") String code) throws Exception {
+	public String KakaoLogin(@RequestParam("code") String code) throws Exception {
 		log.info("카카오에서 인가코드 발급 후 백엔드로 들어옴");
 		log.error("카카오에서 인가코드 발급 후 백엔드로 들어옴");
 
@@ -60,12 +60,15 @@ public class SocialController {
 		// LoginResponse.Member response = mapper.socialLoginResponseDto(member, tokenDto.getAccessToken());
 
 		/* 아래는 로그인이 잘 된다면, 배포용 */
-		LoginResponse.Cilent response = mapper.getClientResponse(member);
+		// LoginResponse.Cilent response = mapper.getClientResponse(member);
+		//
+		// HttpHeaders httpHeaders = setHeader(tokenDto);
+		// httpHeaders.setLocation(URI.create("https://www.17farm.shop/access"));
+		URI uri = UriComponentsBuilder.fromUri(URI.create("https://www.17farm.shop/access"))
+			.queryParam("accessToken", tokenDto.getAccessToken())
+			.build().toUri();
 
-		HttpHeaders httpHeaders = setHeader(tokenDto);
-		httpHeaders.setLocation(URI.create("https://www.17farm.shop/access"));
-
-		return new ResponseEntity(response, httpHeaders, HttpStatus.MOVED_PERMANENTLY);
+		return "redirect:" + uri;
 	}
 
 	/* 소셜 로그인 수정 -> only 권한 */
