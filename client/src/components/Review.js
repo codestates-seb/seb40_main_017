@@ -82,31 +82,37 @@ export const Review = () => {
     <Container>
       <div id="b">
         <h2>리뷰</h2>
-        {items.map((review) => {
-          return (
-            <Reviewlist key={review.reviewId}>
-              <div>{review.context}</div>
-              <div>{review.name}</div>
-              {user.clientId === review.clientId ? <button onClick={removeReview}>삭제</button> : ''}
-              <div>{review.createdAt}</div>
-            </Reviewlist>
-          );
-        })}
-        <PaginationBox>
-          <ReactPaginate
-            previousLabel={'<'}
-            nextLabel={'>'}
-            breackLabel={'...'}
-            pageCount={pageCount}
-            // 앞뒤 페이지 수
-            marginPagesDisplayed={3}
-            //...클릭시 나오는 페이지수
-            pageRangeDisplayed={3}
-            onPageChange={handlePageClick}
-            containerClassName={'pagination'}
-            activeClassName={'active'}
-          />
-        </PaginationBox>
+        {items.length === 0 ? (
+          <NoReview> 첫번째 리뷰를 남겨주세요!</NoReview>
+        ) : (
+          <div>
+            {items.map((review) => {
+              return (
+                <Reviewlist key={review.reviewId}>
+                  <div>{review.context}</div>
+                  <div>{review.name}</div>
+                  {user.clientId === review.clientId ? <button onClick={removeReview}>삭제</button> : ''}
+                  <div>{review.createdAt}</div>
+                </Reviewlist>
+              );
+            })}
+            <PaginationBox>
+              <ReactPaginate
+                previousLabel={'<'}
+                nextLabel={'>'}
+                breackLabel={'...'}
+                pageCount={pageCount}
+                // 앞뒤 페이지 수
+                marginPagesDisplayed={3}
+                //...클릭시 나오는 페이지수
+                pageRangeDisplayed={3}
+                onPageChange={handlePageClick}
+                containerClassName={'pagination'}
+                activeClassName={'active'}
+              />
+            </PaginationBox>
+          </div>
+        )}
       </div>
       <div id="c">
         <h2>리뷰작성</h2>
@@ -253,4 +259,11 @@ const Submitbox = styled.input`
   border-radius: 5px;
   cursor: pointer;
   font-size: 0.9rem;
+`;
+
+const NoReview = styled.div`
+  margin: auto;
+  text-align: center;
+  width: 500px;
+  font-size: 20px;
 `;

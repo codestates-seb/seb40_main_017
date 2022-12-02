@@ -77,38 +77,44 @@ export const Comment = () => {
     <Container>
       <div id="d">
         <h2>문의</h2>
-        {items.map((comment) => {
-          return (
-            <CommentElement
-              key={comment.commentId}
-              content={comment.context}
-              name={comment.name}
-              userId={user.memberId}
-              memberId={comment.memberId}
-              removeComment={removeComment}
-              createdAt={comment.createdAt}
-              patchCommentId={comment.commentId}
-              getComment={getComment}
-              boardId={boardId}
-              memBerId={memberId}
-            />
-          );
-        })}
-        <PaginationBox>
-          <ReactPaginate
-            previousLabel={'<'}
-            nextLabel={'>'}
-            breackLabel={'...'}
-            pageCount={pageCount}
-            // 앞뒤 페이지 수
-            marginPagesDisplayed={3}
-            //...클릭시 나오는 페이지수
-            pageRangeDisplayed={3}
-            onPageChange={handlePageClick}
-            containerClassName={'pagination'}
-            activeClassName={'active'}
-          />
-        </PaginationBox>
+        {items.length === 0 ? (
+          <NoComment>첫번째 문의를 남겨주세요!</NoComment>
+        ) : (
+          <div>
+            {items.map((comment) => {
+              return (
+                <CommentElement
+                  key={comment.commentId}
+                  content={comment.context}
+                  name={comment.name}
+                  userId={user.memberId}
+                  memberId={comment.memberId}
+                  removeComment={removeComment}
+                  createdAt={comment.createdAt}
+                  patchCommentId={comment.commentId}
+                  getComment={getComment}
+                  boardId={boardId}
+                  memBerId={memberId}
+                />
+              );
+            })}
+            <PaginationBox>
+              <ReactPaginate
+                previousLabel={'<'}
+                nextLabel={'>'}
+                breackLabel={'...'}
+                pageCount={pageCount}
+                // 앞뒤 페이지 수
+                marginPagesDisplayed={3}
+                //...클릭시 나오는 페이지수
+                pageRangeDisplayed={3}
+                onPageChange={handlePageClick}
+                containerClassName={'pagination'}
+                activeClassName={'active'}
+              />
+            </PaginationBox>
+          </div>
+        )}
       </div>
       <div id="e">
         <h2>문의작성</h2>
@@ -209,4 +215,11 @@ const Submitbox = styled.input`
   border-radius: 5px;
   cursor: pointer;
   font-size: 0.9rem;
+`;
+
+const NoComment = styled.div`
+  margin: auto;
+  text-align: center;
+  width: 500px;
+  font-size: 20px;
 `;

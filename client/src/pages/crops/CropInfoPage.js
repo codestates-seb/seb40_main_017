@@ -29,8 +29,6 @@ function CropInfoPage() {
     GetCropInfo();
   }, []);
 
-  console.log(board.content);
-
   //BoardDelete
   const BoardDelete = async () => {
     await apiServer({
@@ -108,10 +106,7 @@ function CropInfoPage() {
             </ul>
           </Menubar>
           <MenuLink>
-            <div id="a">
-              <Viewer initialValue={board.content} />
-              {/* {board.content} */}
-            </div>
+            <div id="a">{board.content && <Viewer initialValue={board.content} />}</div>
             <Review />
             <Comment />
           </MenuLink>
@@ -249,8 +244,15 @@ const MenuLink = styled.div`
   }
 
   .toastui-editor-contents {
+    height: 100%;
     p {
-      width: 500px;
+      height: 100%;
+      width: 100%;
+      text-align: center;
+      img {
+        height: 100%;
+        width: 100%;
+      }
     }
   }
 `;

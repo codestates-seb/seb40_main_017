@@ -29,8 +29,6 @@ function CropListPage() {
   //   getBoards();
   // }, []);
 
-  console.log('items:', items.data);
-
   //fetch
   const fetchBoards = async () => {
     const res = await fetch(`${process.env.REACT_APP_API_URL}/boards?page=${page}&size=10`);
