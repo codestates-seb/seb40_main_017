@@ -24,7 +24,6 @@ public interface ReviewMapper {
         Review review = new Review();
         review.setClient(client.build());
         review.setBoard(board);
-        review.setImage(reviewPostDto.getImage());
         review.setStar(reviewPostDto.getStar());
         review.setContext(reviewPostDto.getContext());
 
@@ -71,7 +70,6 @@ public interface ReviewMapper {
         reviewResponseDto.setBoardId(board.getBoardId());
         reviewResponseDto.setContext(review.getContext());
         reviewResponseDto.setName(review.getClient().getMember().getName());
-        reviewResponseDto.setImage(review.getImage());
         reviewResponseDto.setStar(review.getStar());
         reviewResponseDto.setCreatedAt(review.getCreatedAt());
         reviewResponseDto.setModifiedAt(review.getModifiedAt());
