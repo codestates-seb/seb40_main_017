@@ -134,7 +134,7 @@ public class KakaoService {
 			log.info("사용자 강제 가입");
 			log.error("사용자 강제 가입");
 			member = new Member(
-				profile.getKakao_account().getProfile().getNickname(),
+				String.valueOf(profile.getKakao_account().getProfile().getNickname()),
 				profile.getKakao_account().getEmail(),
 				"소셜 로그인 사용자", /* 비밀번호 */
 				ProviderType.KAKAO,
