@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 const FailLayout = styled.div`
   width: 100%;
@@ -58,6 +59,11 @@ const FailInfo = styled.div`
 `;
 
 function FailPage() {
+  const navigate = useNavigate();
+
+  const handleOnClick = () => {
+    navigate('/', { replace: true });
+  };
   return (
     <>
       <FailLayout>
@@ -66,7 +72,7 @@ function FailPage() {
           <FailInfo>
             <div></div>
             <p>주문이 실패하였습니다</p>
-            <button>확인</button>
+            <button onClick={handleOnClick}>확인</button>
           </FailInfo>
         </FailBox>
       </FailLayout>
