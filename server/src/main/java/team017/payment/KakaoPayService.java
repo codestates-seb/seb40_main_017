@@ -61,7 +61,6 @@ public class KakaoPayService {
         ord.setTid(readyResponseDto.getTid());
         ordRepository.save(ord);
 
-        //readyResponseDto.setPartner_order_id(Long.toString(ord.getOrdId()));
         log.info("결제준비 응답객체: " + readyResponseDto);
 
         return readyResponseDto;

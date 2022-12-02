@@ -43,12 +43,10 @@ public class PaymentController {
 
         // 카카오 결재 요청하기
         kakaoPayService.payApprove(ordId, pgToken);
-        //OrdResponseDto response = kakaoPayService.payApprove(pgToken);
         log.info("결제 완료");
 
         redirectAttributes.addAttribute("ordId", ordId);
 
-        //return "redirect:http://waymophototest.s3-website.ap-northeast-2.amazonaws.com/order/pay/completed";
         return "redirect:https://www.17farm.shop/order/pay/completed";
     }
 
@@ -58,7 +56,6 @@ public class PaymentController {
         kakaoPayService.cancelOrFailPayment(ordId);
         log.info("결제 취소");
 
-        //return "redirect:http://waymophototest.s3-website.ap-northeast-2.amazonaws.com/order/pay/cancel";
         return "redirect:https://www.17farm.shop/order/pay/cancel";
     }
 
@@ -68,7 +65,6 @@ public class PaymentController {
         kakaoPayService.cancelOrFailPayment(ordId);
         log.info("결제 실패");
 
-        //return "redirect:http://waymophototest.s3-website.ap-northeast-2.amazonaws.com/order/pay/fail";
         return "redirect:https://www.17farm.shop/order/pay/fail";
     }
 }
