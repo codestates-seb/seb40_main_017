@@ -41,7 +41,7 @@ function GrainPage() {
       <div>
         <CropInfo>
           <p>이 상품 어때요?</p>
-          <p>THE 건강한 쌀과 잡곡”</p>
+          <p>"THE 건강한 쌀과 잡곡”</p>
         </CropInfo>
         <CategoryList>
           <ol>
