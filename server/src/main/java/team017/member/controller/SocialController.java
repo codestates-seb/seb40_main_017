@@ -64,7 +64,7 @@ public class SocialController {
 		//
 		// HttpHeaders httpHeaders = setHeader(tokenDto);
 		// httpHeaders.setLocation(URI.create("https://www.17farm.shop/access"));
-		URI uri = UriComponentsBuilder.fromUri(URI.create("https://www.17farm.shop/access"))
+		URI uri = UriComponentsBuilder.fromUri(URI.create("https://www.17farm.shop/social"))
 			.queryParam("accessToken", tokenDto.getAccessToken())
 			.build().toUri();
 
