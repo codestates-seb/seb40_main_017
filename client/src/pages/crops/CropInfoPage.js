@@ -8,9 +8,10 @@ import { Review } from '../../components/Review';
 import { Comment } from '../../components/Comment';
 import { PurchaseButton, PatchButton, Linktoseller } from '../../components/CropInfoElement';
 import { apiServer } from '../../features/axios';
-import ItemViewer from '../../components/Viewer';
 import { useSelector } from 'react-redux';
 import { getUser } from '../../features/user/userSlice';
+import { Viewer } from '@toast-ui/react-editor';
+import '@toast-ui/editor/dist/toastui-editor.css';
 
 function CropInfoPage() {
   const { boardId } = useParams();
@@ -23,12 +24,10 @@ function CropInfoPage() {
     const response = await axios.get(`${process.env.REACT_APP_API_URL}/boards/${boardId}`);
     setBoard(response.data);
   };
+
   useEffect(() => {
     GetCropInfo();
   }, []);
-
-  const markdownData = board.content;
-  console.log(markdownData);
 
   //BoardDelete
   const BoardDelete = async () => {
@@ -82,7 +81,7 @@ function CropInfoPage() {
             <p>남은수량 {board.leftStock}개</p>
             <Flexbox>
               <Linktoseller sellerId={board.sellerId} />
-              {board.leftStock === 0 ? 'SOLDOUT🥲' : <PurchaseButton boardId={boardId} quantity={quantity} />}
+              {board.leftStock === 0 ? 'SOLDOUT' : user.clientId ? <PurchaseButton boardId={boardId} quantity={quantity} /> : '회원가입해주세요😊'}
             </Flexbox>
           </CropInfo>
         </Crop>
@@ -107,9 +106,7 @@ function CropInfoPage() {
             </ul>
           </Menubar>
           <MenuLink>
-            <div id="a">
-              <ItemViewer content={board.content} className="viewerstyle" />
-            </div>
+            <div id="a">{board.content && <Viewer initialValue={board.content} />}</div>
             <Review />
             <Comment />
           </MenuLink>
@@ -246,9 +243,17 @@ const MenuLink = styled.div`
     margin-bottom: 50px;
   }
 
-  .viewerstyle {
-    width: 500px;
-    height: 500px;
+  .toastui-editor-contents {
+    height: 100%;
+    p {
+      height: 100%;
+      width: 100%;
+      text-align: center;
+      img {
+        height: 100%;
+        width: 100%;
+      }
+    }
   }
 `;
 

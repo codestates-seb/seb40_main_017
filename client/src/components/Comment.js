@@ -5,8 +5,7 @@ import { useParams } from 'react-router-dom';
 import { apiServer } from '../features/axios';
 import { useSelector } from 'react-redux';
 import { getUser } from '../features/user/userSlice';
-
-//Comment GET, POST
+import { CommentElement } from './CommentElement';
 
 export const Comment = () => {
   const [items, setItems] = useState([]);
@@ -14,21 +13,18 @@ export const Comment = () => {
   const [pageCount, setpageCount] = useState(0);
   const memberId = useSelector(getUser);
   const user = useSelector(getUser);
-  const [Edit, setEdit] = useState(false);
 
   //CommentGet
   const getComment = async () => {
     const res = await fetch(`${process.env.REACT_APP_API_URL}/comments/${boardId}?page=1&size=5`);
     const data = await res.json();
-    setpageCount(Math.ceil(data.data.length / 2));
+    setpageCount(Math.ceil(data.pageInfo.totalElements / 5));
     setItems(data.data);
   };
 
   useEffect(() => {
     getComment();
   }, []);
-
-  console.log(items);
 
   const fetchComment = async (currentPage) => {
     const res = await fetch(`${process.env.REACT_APP_API_URL}/comments/${boardId}?page=${currentPage}&size=5`);
@@ -66,26 +62,6 @@ export const Comment = () => {
     getComment();
   };
 
-  //CommentPatch
-
-  const patchComment = async (e) => {
-    e.preventDefault();
-    const context = e.target.context.value;
-    await apiServer({
-      method: 'PATCH',
-      url: `/comments/${items[0].commentId}`,
-      data: JSON.stringify({
-        context: context,
-        memberId: memberId.memberId,
-        boardId: boardId,
-      }),
-      headers: { 'Content-Type': 'application/json' },
-    })
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
-    getComment();
-  };
-
   //CommentDelte
   const removeComment = async () => {
     await apiServer({
@@ -96,43 +72,49 @@ export const Comment = () => {
       .catch((err) => console.log(err));
     getComment();
   };
+
   return (
     <Container>
       <div id="d">
         <h2>문의</h2>
-        {items.map((comment) => {
-          return (
-            <Reviewlist key={comment.createdAt}>
-              <div>{comment.context}</div>
-              <div>{comment.name}</div>
-              {!Edit ? (
-                <PatchButton type="submit" value="수정" onClick={patchComment} />
-              ) : (
-                <div>
-                  <input />
-                  <button onClick={setEdit(<input />)}>수정완료</button>
-                </div>
-              )}
-              {user.memberId === comment.memberId ? <button onClick={removeComment}>삭제</button> : ''}
-              <div>{comment.createdAt}</div>
-            </Reviewlist>
-          );
-        })}
-        <PaginationBox>
-          <ReactPaginate
-            previousLabel={'<'}
-            nextLabel={'>'}
-            breackLabel={'...'}
-            pageCount={pageCount}
-            // 앞뒤 페이지 수
-            marginPagesDisplayed={3}
-            //...클릭시 나오는 페이지수
-            pageRangeDisplayed={3}
-            onPageChange={handlePageClick}
-            containerClassName={'pagination'}
-            activeClassName={'active'}
-          />
-        </PaginationBox>
+        {items.length === 0 ? (
+          <NoComment>첫번째 문의를 남겨주세요!</NoComment>
+        ) : (
+          <div>
+            {items.map((comment) => {
+              return (
+                <CommentElement
+                  key={comment.commentId}
+                  content={comment.context}
+                  name={comment.name}
+                  userId={user.memberId}
+                  memberId={comment.memberId}
+                  removeComment={removeComment}
+                  createdAt={comment.createdAt}
+                  patchCommentId={comment.commentId}
+                  getComment={getComment}
+                  boardId={boardId}
+                  memBerId={memberId}
+                />
+              );
+            })}
+            <PaginationBox>
+              <ReactPaginate
+                previousLabel={'<'}
+                nextLabel={'>'}
+                breackLabel={'...'}
+                pageCount={pageCount}
+                // 앞뒤 페이지 수
+                marginPagesDisplayed={3}
+                //...클릭시 나오는 페이지수
+                pageRangeDisplayed={3}
+                onPageChange={handlePageClick}
+                containerClassName={'pagination'}
+                activeClassName={'active'}
+              />
+            </PaginationBox>
+          </div>
+        )}
       </div>
       <div id="e">
         <h2>문의작성</h2>
@@ -199,46 +181,6 @@ const PaginationBox = styled.div`
   }
 `;
 
-const Reviewlist = styled.div`
-  display: flex;
-  border-bottom: 1px solid var(--darker-gray);
-  padding: 10px 8px;
-  div {
-    padding: 10px;
-    width: 8%;
-    height: 100%;
-    text-align: center;
-  }
-  :nth-child(1) {
-    border-top: 2px solid var(--darker-gray);
-  }
-
-  div:nth-child(1) {
-    flex-grow: 5;
-    width: 40%;
-    text-align: left;
-  }
-  div:nth-child(3) {
-    flex-grow: 1;
-  }
-  div:nth-child(5) {
-    text-align: left;
-    width: 13%;
-  }
-  button {
-    all: unset;
-    flex-grow: 1;
-    padding: 10px;
-    width: 25px;
-    height: 8px;
-    border: 1px solid var(--darker-gray);
-    text-align: center;
-    line-height: 10px;
-    border-radius: 5px;
-    font-size: 15px;
-  }
-`;
-
 const Layout = styled.div`
   display: flex;
   text-align: center;
@@ -275,16 +217,9 @@ const Submitbox = styled.input`
   font-size: 0.9rem;
 `;
 
-const PatchButton = styled.input`
-  all: unset;
-  flex-grow: 1;
-  padding: 10px;
-  width: 25px;
-  height: 8px;
-  border: 1px solid var(--darker-gray);
+const NoComment = styled.div`
+  margin: auto;
   text-align: center;
-  line-height: 10px;
-  border-radius: 5px;
-  font-size: 15px;
-  margin-right: 3px;
+  width: 500px;
+  font-size: 20px;
 `;
