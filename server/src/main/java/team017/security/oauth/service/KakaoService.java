@@ -1,6 +1,8 @@
 package team017.security.oauth.service;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -133,8 +135,17 @@ public class KakaoService {
 		if(member == null) {
 			log.info("사용자 강제 가입");
 			log.error("사용자 강제 가입");
+
+			String name = profile.getKakao_account().getProfile().getNickname();
+			Pattern emoji = Pattern.compile("[\\uD83C-\\uDBFF\\uDC00-\\uDFFF]+");
+			Matcher emojiMatcher = emoji.matcher( name );
+			name = emojiMatcher.replaceAll("");
+			if (name == null || name.equals("")) {
+				name = "이름을 입력하세요.";
+			}
+
 			member = new Member(
-				String.valueOf(profile.getKakao_account().getProfile().getNickname()),
+				name,
 				profile.getKakao_account().getEmail(),
 				"소셜 로그인 사용자", /* 비밀번호 */
 				ProviderType.KAKAO,
