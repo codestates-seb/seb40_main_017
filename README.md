@@ -8,6 +8,8 @@
 
 ---
 
+[배포링크](https://www.17farm.shop/)
+
 <br>
 
 ## 🥕소개 
@@ -287,8 +289,14 @@ https://user-images.githubusercontent.com/100844959/205430010-f836222c-bd15-404d
     
 ## 🗂팀문서
 
-[사용자 요구사항 정의서, ERD , API 명세서 ](https://docs.google.com/spreadsheets/d/1i4BwtQWzRGrpDESUa_KwrmuUiyFdsVfNbMU1ZzGLJzM/edit?usp=sharing)
+[Wiki](https://github.com/codestates-seb/seb40_main_017/wiki)
+
 </br>
+
+[사용자 요구사항 정의서, ERD , API 명세서 ](https://docs.google.com/spreadsheets/d/1XuYV4zAYaprVgFuG_aVXAgENqfdt8JvQo2yP-qbidcE/edit?usp=sharing)
+
+</br>
+
 [figma](https://www.figma.com/file/kyGwwJe468H7Tpq2GgoVPo/17farmshop?node-id=0%3A1&t=9kO65hEsbSMGKlUd-1)
 
 
