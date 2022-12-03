@@ -1,6 +1,5 @@
 import S3 from 'react-aws-s3';
 
-// Buffer 추가
 window.Buffer = window.Buffer || require('buffer').Buffer;
 
 const s3Config = {

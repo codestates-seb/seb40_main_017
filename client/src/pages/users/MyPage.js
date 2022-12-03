@@ -181,10 +181,8 @@ export const ClientMyPage = ({ handleDeleteMember }) => {
   });
   const { page, size } = pagination;
 
-  //  Edit 모드 토글 핸들러
   const handleChangeEditMode = useCallback(() => {
     if (editMode) {
-      //  ON => OFF 데이터 초기화
       setUserName(client.name);
       setUserPhone(client.phone);
       setUserAddress(client.address);
@@ -192,7 +190,6 @@ export const ClientMyPage = ({ handleDeleteMember }) => {
     setEditMode(!editMode);
   }, [editMode]);
 
-  //  마이페이지 데이터 저장 후 콜백 함수
   const handleUpdateClient = useCallback((client) => {
     alert('저장되었습니다.');
 
@@ -200,7 +197,6 @@ export const ClientMyPage = ({ handleDeleteMember }) => {
     setEditMode(false);
   }, []);
 
-  //  마이페이지 데이터 저장
   const handleSubmitClient = useCallback(
     (event) => {
       event.preventDefault();
@@ -210,19 +206,16 @@ export const ClientMyPage = ({ handleDeleteMember }) => {
       } else if (userPhone === '') {
         alert('전화번호를 입력해주세요.');
       } else if (userPhone.match(/^01(?:0|1|[6-9])-(?:\d{3}|\d{4})-\d{4}$/) === null) {
-        //  정규 표현식을 활용하여 전화번호 검증
         alert('전화번호 형식이 올바르지 않습니다.');
       } else if (userAddress === '') {
         alert('주소를 입력해주세요.');
       } else {
-        //  마이페이지 데이터 업데이트
         updateClient({ clientId, userName, userPhone, userAddress }, handleUpdateClient);
       }
     },
     [userName, userPhone, userAddress]
   );
 
-  //  마이페이지 조회 결과를 client 상태에 저장
   const handleRenderClient = useCallback((client) => {
     const data = {
       name: client.name,
@@ -233,7 +226,6 @@ export const ClientMyPage = ({ handleDeleteMember }) => {
     setClient(data);
   }, []);
 
-  //  마이페이지 주문 목록 조회 결과를 orderList 상태에 저장
   const handleRenderClientOrderList = useCallback(
     (orderData) => {
       const newOrderList = orderData.data;
@@ -264,16 +256,13 @@ export const ClientMyPage = ({ handleDeleteMember }) => {
     [orderList]
   );
 
-  //  마이페이지 조회
   useEffect(() => {
     if (clientId == 0) {
       return;
     }
 
-    //  마이페이지 데이터 조회
     getClient({ clientId }, handleRenderClient);
 
-    //  주문 목록 새로 조회
     getClientOrderList({ clientId, page, size }, handleRenderClientOrderList);
 
     return () => {
@@ -291,14 +280,12 @@ export const ClientMyPage = ({ handleDeleteMember }) => {
     };
   }, [user]);
 
-  //  client 상태 변경 시 데이터 반영
   useEffect(() => {
     setUserName(client.name);
     setUserPhone(client.phone);
     setUserAddress(client.address);
   }, [client]);
 
-  //  더보기 기능 구현
   const handleLearnMoreOrderList = useCallback(() => {
     getClientOrderList({ clientId, page: page + 1, size }, handleRenderClientOrderList);
   }, [handleRenderClientOrderList, page, size]);
@@ -539,7 +526,6 @@ export const SellerMyPage = ({ handleDeleteMember }) => {
   const [userAddress, handleChangeUserAddress, setUserAddress] = useInput(seller.address);
   const [userPhoto, setUserPhoto] = useState(seller.photo);
 
-  //  이미지 변경
   const handleChangeUserPhoto = useCallback((imageData) => {
     if (imageData) {
       const imageUrl = URL.createObjectURL(imageData);
@@ -560,10 +546,8 @@ export const SellerMyPage = ({ handleDeleteMember }) => {
   });
   const { page, size } = pagination;
 
-  //  Edit 모드 토글 핸들러
   const handleChangeEditMode = useCallback(() => {
     if (editMode) {
-      //  ON => OFF 데이터 초기화
       setUserName(seller.name);
       setUserPhone(seller.phone);
       setUserAddress(seller.address);
@@ -574,7 +558,6 @@ export const SellerMyPage = ({ handleDeleteMember }) => {
     setEditMode(!editMode);
   }, [editMode]);
 
-  //  마이페이지 데이터 저장 후 콜백 함수
   const handleUpdateSeller = useCallback((seller) => {
     alert('저장되었습니다.');
 
@@ -582,7 +565,6 @@ export const SellerMyPage = ({ handleDeleteMember }) => {
     setEditMode(false);
   }, []);
 
-  // 마이페이지 데이터 저장
   const handleSubmitSeller = useCallback(
     async (event) => {
       event.preventDefault();
@@ -592,7 +574,6 @@ export const SellerMyPage = ({ handleDeleteMember }) => {
       } else if (userPhone === '') {
         alert('전화번호를 입력해주세요.');
       } else if (userPhone.match(/^01(?:0|1|[6-9])-(?:\d{3}|\d{4})-\d{4}$/) === null) {
-        //  정규 표현식을 활용하여 전화번호 검증
         alert('전화번호 형식이 올바르지 않습니다.');
       } else if (userAddress === '') {
         alert('주소를 입력해주세요.');
@@ -606,14 +587,12 @@ export const SellerMyPage = ({ handleDeleteMember }) => {
           console.log(photo, seller.photo, newPhoto, userPhotoFile);
         }
 
-        //  마이페이지 데이터 업데이트
         updateSeller({ sellerId, userName, userPhone, userAddress, userPhoto: photo, userIntroduce }, handleUpdateSeller);
       }
     },
     [userName, userPhone, userAddress, userPhoto, userPhotoFile, userIntroduce]
   );
 
-  //  마이페이지 조회 결과를 seller 상태에 저장
   const handleRenderSeller = useCallback((seller) => {
     const data = {
       name: seller.name,
@@ -627,7 +606,6 @@ export const SellerMyPage = ({ handleDeleteMember }) => {
     setSeller(data);
   }, []);
 
-  //  마이페이지 주문 목록 조회 결과를 saleList 상태에 저장
   const handleRenderSellerSaleList = useCallback(
     (saleData) => {
       const newSaleList = saleData.data;
@@ -661,16 +639,13 @@ export const SellerMyPage = ({ handleDeleteMember }) => {
     [saleList]
   );
 
-  //  마이페이지 조회
   useEffect(() => {
     if (sellerId == 0) {
       return;
     }
 
-    //  마이페이지 데이터 조회
     getSeller({ sellerId }, handleRenderSeller);
 
-    //  판매 목록 조회
     getSellerSaleList({ sellerId, page, size }, handleRenderSellerSaleList);
 
     return () => {
@@ -691,7 +666,6 @@ export const SellerMyPage = ({ handleDeleteMember }) => {
     };
   }, [user]);
 
-  //  seller 상태 변경 시 데이터 반영
   useEffect(() => {
     setUserName(seller.name);
     setUserPhone(seller.phone);
@@ -701,7 +675,6 @@ export const SellerMyPage = ({ handleDeleteMember }) => {
     setUserIntroduce(seller.introduce);
   }, [seller]);
 
-  //  더보기 기능 구현
   const handleLearnMoreOrderList = useCallback(() => {
     getSellerSaleList({ sellerId, page: page + 1, size }, handleRenderSellerSaleList);
   }, [handleRenderSellerSaleList, page, size]);
@@ -803,37 +776,16 @@ const MyPage = () => {
 
   const user = useSelector(getUser);
 
-  // 소비자 테스트
-  // const user = {
-  //   memberId: 1,
-  //   name: '김코딩',
-  //   role: 'CLIENT',
-  //   sellerId: 0,
-  //   clientId: 1,
-  // };
-
-  // 생산자 테스트
-  // const user = {
-  //   memberId: 1,
-  //   name: '김코딩',
-  //   role: 'SELLER',
-  //   sellerId: 1,
-  //   clientId: 0,
-  // };
-
   const { memberId } = user;
 
-  //  회원 탈퇴 후 콜백 함수
   const callbackDeleteMember = useCallback(() => {
     alert('회원 탈퇴가 정상적으로 처리되었습니다.');
 
     navigate('/logout');
   }, []);
 
-  //  회원 탈퇴 함수 제공
   const handleDeleteMember = useCallback(() => {
     if (confirm('정말로 회원 탈퇴 하시겠습니까?')) {
-      //  마이페이지 데이터 업데이트
       dispatch(deleteMember({ memberId }, callbackDeleteMember));
     }
   }, [dispatch, memberId]);

@@ -1,6 +1,5 @@
 import { apiServer } from '../features/axios';
 
-//  마이페이지 접근 시 불러오는 사용자 데이터
 export const getSeller = ({ sellerId }, callback, error) => {
   apiServer({
     method: 'GET',
@@ -20,7 +19,6 @@ export const getSeller = ({ sellerId }, callback, error) => {
     });
 };
 
-//  마이페이지 데이터 수정
 export const updateSeller = ({ sellerId, userName, userPhone, userAddress, userPhoto, userIntroduce }, callback) => {
   const data = {
     sellerId,
@@ -44,7 +42,6 @@ export const updateSeller = ({ sellerId, userName, userPhone, userAddress, userP
     });
 };
 
-//  주문 목록 조회
 export const getSellerSaleList = ({ sellerId, page, size }, callback) => {
   apiServer({
     method: 'GET',
