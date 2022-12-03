@@ -1,6 +1,5 @@
 import { apiServer } from '../features/axios';
 
-//  마이페이지 접근 시 불러오는 사용자 데이터
 export const getClient = ({ clientId }, callback) => {
   apiServer({
     method: 'GET',
@@ -14,7 +13,6 @@ export const getClient = ({ clientId }, callback) => {
     });
 };
 
-//  마이페이지 데이터 수정
 export const updateClient = ({ clientId, userName, userPhone, userAddress }, callback) => {
   const data = {
     clientId,
@@ -36,7 +34,6 @@ export const updateClient = ({ clientId, userName, userPhone, userAddress }, cal
     });
 };
 
-//  주문 목록 조회
 export const getClientOrderList = ({ clientId, page, size }, callback) => {
   console.log('getClientOrderList', page, size);
   apiServer({

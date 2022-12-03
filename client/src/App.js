@@ -47,26 +47,20 @@ const StyledContent = styled.div`
 `;
 
 const App = () => {
-  //  Redux 상태 관리에 user 등록
   const store = configureStore({
     reducer: {
       user: userSlice,
       pay: paySlice,
     },
   });
-  //  Provider 로부터 상태를 받는 위치가 아니기 때문에 store 변수에서 직접 dispatch 받아옴\
 
-  //  새로고침 시 localStorage에서 user 데이터를 불러옴
   useEffect(() => {
     const user = localStorage.getItem('user');
     if (user) {
-      //  데이터가 유효한 경우 JSON Object로 변환하여 Redux에 저장
       store.dispatch(setUser(JSON.parse(user)));
 
-      // 불러온 사용자 데이터가 만료되었는지 체크하기 위해 추가로 세션 확인 코드 적용
       const accessToken = getCookie('accessToken');
       if (accessToken) {
-        // 쿠키에 token 이 존재하면 사용자 세션을 다시 불러오도록 요청
         store.dispatch(updateSession());
       }
     }
@@ -75,13 +69,11 @@ const App = () => {
   return (
     <>
       <BrowserRouter>
-        {/*  사용자 정보 등을 저장하는 Redux 상태를 하위 컴포넌트에 위임 */}
         <Provider store={store}>
           <StyledApp>
             <Header />
-            {/*  react-router-dom 활용하여 페이지 URL 별로 표시할 컴포넌트 연결 */}
+
             <StyledContent>
-              {/*  Header / Footer 제외한 본문 컨텐츠만 URL 에 따라 변경되도록 Routes 적용 */}
               <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/login" element={<LoginPage />} />

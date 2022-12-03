@@ -14,7 +14,6 @@ export const Comment = () => {
   const memberId = useSelector(getUser);
   const user = useSelector(getUser);
 
-  //CommentGet
   const getComment = async () => {
     const res = await fetch(`${process.env.REACT_APP_API_URL}/comments/${boardId}?page=1&size=5`);
     const data = await res.json();
@@ -32,7 +31,6 @@ export const Comment = () => {
     return data.data;
   };
 
-  //Pagination
   const handlePageClick = async (page) => {
     console.log(page.selected);
 
@@ -43,7 +41,6 @@ export const Comment = () => {
     setItems(commentsFormServer);
   };
 
-  // CommentPost
   const CommentOnSubmitHandler = async (e) => {
     e.preventDefault();
     const context = e.target.context.value;
@@ -62,7 +59,6 @@ export const Comment = () => {
     getComment();
   };
 
-  //CommentDelte
   const removeComment = async () => {
     await apiServer({
       method: 'DELETE',
@@ -104,9 +100,7 @@ export const Comment = () => {
                 nextLabel={'>'}
                 breackLabel={'...'}
                 pageCount={pageCount}
-                // 앞뒤 페이지 수
                 marginPagesDisplayed={3}
-                //...클릭시 나오는 페이지수
                 pageRangeDisplayed={3}
                 onPageChange={handlePageClick}
                 containerClassName={'pagination'}

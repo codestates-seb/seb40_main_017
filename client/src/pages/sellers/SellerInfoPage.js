@@ -236,7 +236,6 @@ const SellerInfoPage = () => {
   });
   const { page, size } = pagination;
 
-  //  생산자 조회 실패 시 메인 페이지로 리다이렉션
   const handleErrorFindSeller = useCallback(
     (message) => {
       alert(message);
@@ -245,7 +244,6 @@ const SellerInfoPage = () => {
     [navigate]
   );
 
-  //  생산자 조회 결과를 seller 상태에 저장
   const handleRenderSeller = useCallback((seller) => {
     const data = {
       name: seller.name,
@@ -259,7 +257,6 @@ const SellerInfoPage = () => {
     setSeller(data);
   }, []);
 
-  //  생산자 주문 목록 조회 결과를 saleList 상태에 저장
   const handleRenderSellerSaleList = useCallback(
     (saleData) => {
       const newSaleList = saleData.data;
@@ -293,12 +290,9 @@ const SellerInfoPage = () => {
     [saleList]
   );
 
-  //  생산자 조회
   useEffect(() => {
-    //  생산자 데이터 조회
     getSeller({ sellerId }, handleRenderSeller, handleErrorFindSeller);
 
-    //  생산자 판매 목록 조회
     getSellerSaleList({ sellerId, page, size }, handleRenderSellerSaleList);
 
     return () => {
@@ -321,7 +315,6 @@ const SellerInfoPage = () => {
     };
   }, []);
 
-  //  더보기 기능 구현
   const handleLearnMoreOrderList = useCallback(() => {
     getSellerSaleList({ sellerId, page: page + 1, size }, handleRenderSellerSaleList);
   }, [handleRenderSellerSaleList, page, size]);

@@ -6,13 +6,10 @@ export const apiServer = axios.create({
   timeout: 10000,
 });
 
-//  accessToken 헤더 사용하지 않는 URL List
 const excludeURL = ['/login', '/signup'];
 
-//  요청 인터셉터 추가
 apiServer.interceptors.request.use(
   (config) => {
-    //  요청 전 처리부
     const accessToken = getCookie('accessToken');
 
     if (accessToken !== null) {
@@ -27,7 +24,6 @@ apiServer.interceptors.request.use(
     return config;
   },
   (error) => {
-    //  오류 발생 시 처리부
     return Promise.reject(error);
   }
 );
