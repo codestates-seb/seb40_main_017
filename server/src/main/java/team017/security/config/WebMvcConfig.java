@@ -14,7 +14,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
 			.allowedMethods("POST", "PUT", "GET", "DELETE", "OPTIONS", "PATCH") /* 요청 가능한 메서드 */
 			.allowedHeaders("*") /* 헤더 허용 */
 			.exposedHeaders("Authorization", "Refresh") /* 헤더를 통하여 토큰을 전달해야 하기 때문, 추가 헤더 허용 */
-			.allowedOriginPatterns("https://kapi.kakao.com", "https://kauth.kakao.com","https://www.17farm.shop", "https://17farm.shop")
+			.allowedOriginPatterns("https://kapi.kakao.com", "https://kauth.kakao.com","https://www.17farm.shop", "https://17farm.shop",
+				"https://www.17farm-sever.shop", "https://17farm-sever.shop")
 			 // .maxAge(3600) /* pre flight 요청에 대한 응답을 캐싱하는 시간 */
 			.allowCredentials(true); /* 쿠키 요청 허용 */
 	}
