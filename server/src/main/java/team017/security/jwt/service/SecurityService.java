@@ -52,7 +52,12 @@ public class SecurityService {
 		TokenDto tokenDto = securityProvider.generatedTokenDto(authentication.getName());
 
 		/* Refresh Token 저장 */
-		RefreshToken refreshToken = new RefreshToken(authentication.getName(), tokenDto.getRefreshToken());
+		RefreshToken refreshToken = refreshTokenRepository.findRefreshTokenByKey(authentication.getName());
+		if (refreshToken == null) {
+			refreshToken = new RefreshToken(authentication.getName(), tokenDto.getRefreshToken());
+		} else {
+			refreshToken.updateValue(tokenDto.getRefreshToken());
+		}
 		refreshTokenRepository.save(refreshToken);
 
 		return tokenDto;
