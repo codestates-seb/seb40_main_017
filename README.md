@@ -42,88 +42,168 @@
 ## ☀️주요 기능 시연
 
 </br>
+<details>
+<summary>📌  매인페이지 </summary>
+
+![메인페이지(웹)](https://user-images.githubusercontent.com/100844959/205430518-e9e3918b-09f4-4201-a616-6a8c307465a4.gif)
+
+
+</details>
+
+</br>
 
 <details>
-<summary> 회원가입, 로그인 , 로그아웃 </summary>
+<summary>📌  회원가입, 로그인 , 로그아웃 </summary>
 </br>
+
   <details>
   <summary> 회원가입 </summary>
+  
+  ![회원가입](https://user-images.githubusercontent.com/100844959/205429204-945de18b-b3a3-4c74-a3cd-6cea3c75927e.gif)
+
   </details>
 </br>
+
+  <details>
+  <summary> 이메일 유효성 </summary>
+  
+  ![이메일유효성](https://user-images.githubusercontent.com/100844959/205430734-13b14a93-db5c-444b-a1ac-dcf16c073b44.gif)
+
+  </details>
+</br>
+
   <details>
   <summary> 로그인 </summary>
+  
+  ![로그인](https://user-images.githubusercontent.com/100844959/205429267-dd6820ca-045e-4e0b-9966-1daa6b050d63.gif)
+
   </details>
 </br>  
+
+  <details>
+  <summary> 카카오 로그인 </summary>
+  
+  
+  ![카카오로그인](https://user-images.githubusercontent.com/100844959/205430691-5e4a59f0-3d13-40cc-8de1-047567727ba8.gif)
+
+  </details>
+</br>  
+
   <details>
   <summary> 로그아웃 </summary>
+  
+  ![로그아웃](https://user-images.githubusercontent.com/100844959/205429520-17044d48-15fb-49e4-bef9-d7212604afad.gif)
+
+  
   </details>
+  
 </details>
 </br>
+
 <details>
-<summary> 마이페이지, 정보 수정, 판매 물품 등록</summary>
+<summary>📌  마이페이지, 정보 수정, 판매 물품 등록</summary>
 </br>
-<details>
-  <summary> 마이페이지 정보 조회 </summary>
+
+  <details>
+  <summary> 소비자 수정 </summary>
+  
+  ![소비자수정](https://user-images.githubusercontent.com/100844959/205429966-86d30547-2aff-40b5-9371-646ed74f8b94.gif)
+
   </details>
 </br>
   <details>
-  <summary>  정보 수정 </summary>
+  <summary>  판매자 수정 </summary>
+  
+![판매자수정](https://user-images.githubusercontent.com/100844959/205429947-945c65e7-c572-41fd-b22e-9175e3637df2.gif)
+
+
   </details>
 </br>
- <details>
-  <summary>  주문 조회 </summary>
-  </details>
-</br>
+
   <details>
   <summary> 판매 물품 등록 </summary>
+
+  ![판매글등록](https://user-images.githubusercontent.com/100844959/205429610-b8f75fe2-2bbe-424f-ba64-6da2976463c8.gif)
+
+  
   </details>
 </br>
 </details>
 </br>
+
 <details>
-<summary> 전체 게시판 조회 , 카테고리별 조회  </summary>
+<summary>📌  전체 게시판 조회 , 카테고리별 조회  </summary>
 </br>
+
 <details>
 <summary> 전체 게시판 조회  </summary>
+
+![전체게시판조회](https://user-images.githubusercontent.com/100844959/205429685-2da24f74-551d-4ac4-94f2-7985f219e603.gif)
+
+
 </details>
 </br>
+
 <details>
 <summary> 카테고리별 조회   </summary>
+
+![카테고리별조회](https://user-images.githubusercontent.com/100844959/205429707-93148478-d98c-4a3f-920a-5016523bc0a0.gif)
+
 </details>
+
 </br>
 </details>
 </br>
 
 
 <details>
-<summary> 판매물품 상세페이지 조회 수정 삭제, 리뷰, 문의 </summary>
+<summary>📌  판매물품 상세페이지 조회 수정 삭제, 리뷰, 문의 </summary>
 </br>
+
 <details>
 <summary> 판매 물품 상세 페이지 조회 </summary>
+
+![게시글 상세조회](https://user-images.githubusercontent.com/100844959/205429928-2910f081-5041-4a6f-9499-2fdd7db5e757.gif)
+
+
 </details>
 </br>
 <details>
 <summary> 판매 물품 상세 페이지 수정 </summary>
+
+https://user-images.githubusercontent.com/100844959/205430010-f836222c-bd15-404d-b3c7-ad71fe1a805e.mp4
+
 </details>
+
 </br>
 <details>
 <summary> 판매 물품 상세 페이지 삭제 </summary>
+
+![판매글삭제](https://user-images.githubusercontent.com/100844959/205429987-ffad1cf4-2d18-4f40-af54-8f8f6ad40ec0.gif)
+
+
 </details>
 </br>
 <details>
-<summary> 리뷰 작성   </summary>
+<summary> 리뷰 작성 / 삭제  </summary>
+
+![리뷰등록 삭제](https://user-images.githubusercontent.com/100844959/205429747-8c441370-8c9b-4f36-8326-d86cb3ddf779.gif)
+
 </details>
 </br>
 <details>
-<summary> 리뷰 삭제 </summary>
-</details>
-</br>
-<details>
-<summary>  문의 작성 </summary>
+<summary>  문의 작성 / 수정  </summary>
+
+![문의작성 수정](https://user-images.githubusercontent.com/100844959/205430319-febd2b13-5149-484e-bf7a-261fcf38fdc3.gif)
+
+
 </details>
 </br>
 <details>
 <summary>  문의 삭제</summary>
+
+![문의삭제](https://user-images.githubusercontent.com/100844959/205429768-1916a2ef-357b-4c07-988a-2ee542e03cd7.gif)
+
 </details>
 </details>
 
@@ -131,22 +211,35 @@
 
 <details>
 </br>
-<summary> 상품 주문 , 결제 </summary>
+<summary>📌 상품 주문 , 결제 </summary>
 </br>
 <details>
 <summary> 상품 주문 등록</summary>
+
+![주문등록](https://user-images.githubusercontent.com/100844959/205430103-9b147eb9-f3e2-451d-955a-3b53bc1b1e51.gif)
+
+
 </details>
 </br>
 <details>
 <summary> 결제 요청 </summary>
+
+![결제요청](https://user-images.githubusercontent.com/100844959/205430116-6f14ac04-ffb6-4aa1-810d-0feddf95277a.gif)
+
 </details>
 </br>
 <details>
 <summary> 결제 성공 </summary>
+
+![결제성공](https://user-images.githubusercontent.com/100844959/205430140-d997b23b-d5b3-4ad5-af25-cb1ff658a2d3.gif)
+
 </details>
 </br>
 <details>
 <summary> 결제 실패 </summary>
+
+![결제실패](https://user-images.githubusercontent.com/100844959/205430150-141dd108-ec7e-461a-a8d0-82e981100cce.gif)
+
 </details>
 </details>
 
