@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { payActions } from '../../features/pay/paySlice';
 import { useEffect } from 'react';
 import { apiServer } from '../../features/axios';
@@ -194,11 +194,8 @@ const ErrorBox = styled.div`
 
 export const ClientBuyForm = ({ nextButton, userData, itemData, count, price, setIsLoading }) => {
   const userFormData = userData;
-  console.log(userFormData);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const payInfo = useSelector((state) => state.pay.tid);
-  const orderInfo = useSelector((state) => state.pay.orderid);
   const {
     register,
     formState: { errors },
@@ -219,20 +216,16 @@ export const ClientBuyForm = ({ nextButton, userData, itemData, count, price, se
   };
 
   const onSubmit = async (data) => {
-    console.log(data);
     const newData = { ...orderData, ...data };
-    console.log(newData);
+
     if (window.confirm('주문 확인')) {
       setIsLoading(true);
       await apiServer({ method: 'POST', url: `/orders`, data: JSON.stringify(newData), headers: { 'Content-Type': 'application/json' } })
         .then((res) => {
-          let orderId = res.data.ordId;
-          console.log(orderId);
           dispatch(payActions.setPay({ orderid: res.data.ordId }));
         })
         .catch((err) => console.log(err));
-      console.log(payInfo);
-      console.log(orderInfo);
+
       setIsLoading(false);
       nextButton();
     }

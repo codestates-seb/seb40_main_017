@@ -1,6 +1,6 @@
 import { MultiStepProgressBar } from '../../components/sellerform/MultiStepProgressBar';
 import styled from 'styled-components';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { MultiStepForm } from '../../components/sellerform/MultiStepForm';
 import { DotSpinner } from '@uiball/loaders';
 import { useSelector } from 'react-redux';
@@ -79,11 +79,7 @@ function SellerformPage() {
     price: '',
     category: '',
     mainImage: '이미지테스트',
-    // content: '테스트',
   });
-  useEffect(() => {
-    console.log(formData);
-  }, [formData]);
   const prevButton = () => {
     if (index > 1) {
       setIndex((prevIndex) => prevIndex - 1);
