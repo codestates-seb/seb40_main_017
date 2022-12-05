@@ -146,13 +146,12 @@ public class KakaoService {
 				profile.getKakao_account().getEmail(),
 				"소셜 로그인 사용자", /* 비밀번호 */
 				ProviderType.KAKAO,
-				"CLIENT",
-				List.of("CLIENT"),
+				"SOCIAL",
+				List.of("SOCIAL"),
 				profile.getId()
  			);
 			member.setPhone("010-1111-1111");
 			member.setAddress("주소를 입력해주세요.");
-			member.setClient(new Client());
 
 			memberRepository.save(member);
 			emailService.sendSimpleMessage(member.getEmail(), member.getName());
