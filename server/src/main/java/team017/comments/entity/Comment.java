@@ -19,7 +19,6 @@ public class Comment extends Auditable {
     @Column(nullable = false)
     private String context;
 
-    private String commentMemberName;
     /* 💝 회원 - 댓글 다대일 연관 관계 : 소비자 참조 */
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID")

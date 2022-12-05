@@ -26,7 +26,6 @@ public class CommentService {
     public Comment createComment(Comment comment, Long memberId) {
         comment.setMember(memberService.findVerifiedMember(memberId));
         verifiedMember(comment); //회원 존재 확인
-        comment.setCommentMemberName(memberService.getMemberName(memberId));
         comment.setBoard(boardService.findVerifiedBoard(comment.getBoard().getBoardId()));
         verifiedBoard(comment); // 게시판 존재 확인
 
