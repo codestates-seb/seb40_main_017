@@ -137,11 +137,8 @@ public class KakaoService {
 			log.error("사용자 강제 가입");
 
 			String name = profile.getKakao_account().getProfile().getNickname();
-			Pattern emoji = Pattern.compile("[\\uD83C-\\uDBFF\\uDC00-\\uDFFF]+");
-			Matcher emojiMatcher = emoji.matcher( name );
-			name = emojiMatcher.replaceAll("");
 			if (name == null || name.equals("")) {
-				name = "이름을 입력하세요.";
+				name = "이름을 입력하세요";
 			}
 
 			member = new Member(
