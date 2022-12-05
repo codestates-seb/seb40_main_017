@@ -60,10 +60,13 @@ public class SocialController {
 		// LoginResponse.Member response = mapper.socialLoginResponseDto(member, tokenDto.getAccessToken());
 
 		/* 아래는 로그인이 잘 된다면, 배포용 */
-		// LoginResponse.Cilent response = mapper.getClientResponse(member);
-		//
-		// HttpHeaders httpHeaders = setHeader(tokenDto);
-		// httpHeaders.setLocation(URI.create("https://www.17farm.shop/access"));
+		if (member.getRole().equalsIgnoreCase("SOCIAL")) {
+			URI uri = UriComponentsBuilder.fromUri(URI.create("https://www.17farm.shop/social"))
+				.queryParam("accessToken", tokenDto.getAccessToken())
+				.queryParam("memberId", member.getMemberId())
+				.build().toUri();
+			return "redirect:" + uri;
+		}
 		URI uri = UriComponentsBuilder.fromUri(URI.create("https://www.17farm.shop/social"))
 			.queryParam("accessToken", tokenDto.getAccessToken())
 			.build().toUri();
