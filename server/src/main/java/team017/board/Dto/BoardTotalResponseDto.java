@@ -28,7 +28,7 @@ public class BoardTotalResponseDto {
 
     private int category;           //상품분류
 
-    private double reviewAvg ;      //별점의 평균
+    private double reviewAvg;      //별점의 평균
 
     private int reviewNum;          //리뷰 갯수
 
