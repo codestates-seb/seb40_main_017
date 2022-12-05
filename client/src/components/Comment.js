@@ -59,16 +59,6 @@ export const Comment = () => {
     getComment();
   };
 
-  const removeComment = async () => {
-    await apiServer({
-      method: 'DELETE',
-      url: `/comments/${items[0].commentId}?memberId=${memberId.memberId}`,
-    })
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
-    getComment();
-  };
-
   return (
     <Container>
       <div id="d">
@@ -85,9 +75,8 @@ export const Comment = () => {
                   name={comment.name}
                   userId={user.memberId}
                   memberId={comment.memberId}
-                  removeComment={removeComment}
                   createdAt={comment.createdAt}
-                  patchCommentId={comment.commentId}
+                  CommentId={comment.commentId}
                   getComment={getComment}
                   boardId={boardId}
                   memBerId={memberId}

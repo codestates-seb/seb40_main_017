@@ -11,7 +11,7 @@ function CropListPage() {
 
   //fetch
   const getBoards = async () => {
-    const res = await fetch(`${process.env.REACT_APP_API_URL}/boards?page=1&size=10`);
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/boards?page=1&size=8`);
     const data = await res.json();
     console.log('data:', data);
     setItems(data.data);
@@ -31,7 +31,7 @@ function CropListPage() {
 
   //fetch
   const fetchBoards = async () => {
-    const res = await fetch(`${process.env.REACT_APP_API_URL}/boards?page=${page}&size=10`);
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/boards?page=${page}&size=8`);
     const data = await res.json();
     return data.data;
   };
@@ -84,11 +84,13 @@ function CropListPage() {
           loader={' '}
           endMessage={''}
         >
-          <BoardList>
-            {items.map((item) => {
-              return <CropBoard key={item.boardId} boardId={item.boardId} item={item} />;
-            })}
-          </BoardList>
+          <Outer>
+            <BoardList>
+              {items.map((item) => {
+                return <CropBoard className="board" key={item.boardId} boardId={item.boardId} item={item} />;
+              })}
+            </BoardList>
+          </Outer>
         </InfiniteScroll>
       </div>
     </Background>
@@ -103,10 +105,20 @@ const Background = styled.div`
   height: 100%;
 `;
 
+const Outer = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
 const BoardList = styled.div`
+  width: 1500px;
   display: flex;
   flex-wrap: wrap;
   overflow: hidden;
+  justify-content: space-between;
+  .board {
+    width: 25%;
+  }
 `;
 
 const CropInfo = styled.div`

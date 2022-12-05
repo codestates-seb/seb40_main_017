@@ -8,7 +8,7 @@ export const CommentElement = (props) => {
     e.preventDefault();
     await apiServer({
       method: 'PATCH',
-      url: `/comments/${props.patchCommentId}`,
+      url: `/comments/${props.CommentId}`,
       data: JSON.stringify({
         context: text,
         memberId: props.memBerId.memberId,
@@ -21,6 +21,17 @@ export const CommentElement = (props) => {
     props.getComment();
     setEdit(!edit);
   };
+
+  const removeComment = async () => {
+    await apiServer({
+      method: 'DELETE',
+      url: `/comments/${props.CommentId}?memberId=${props.memBerId.memberId}`,
+    })
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+    props.getComment();
+  };
+
   const [edit, setEdit] = useState(false);
   const [text, setText] = useState('');
   const onChange = (e) => {
@@ -35,19 +46,19 @@ export const CommentElement = (props) => {
   };
 
   return (
-    <Reviewlist>
+    <Commentlist>
       {!edit && <div>{props.content}</div>}
       {edit && <input defaultValue={props.content} onChange={onChange} />}
       <div>{props.name}</div>
       {edit && <button onClick={patchComment}> 수정 완료</button>}
       {props.userId === props.memberId ? <PatchButton type="submit" value="수정" onClick={handleChangeOnClick} /> : ''}
-      {props.userId === props.memberId ? <button onClick={props.removeComment}>삭제</button> : ''}
+      {props.userId === props.memberId ? <button onClick={removeComment}>삭제</button> : ''}
       <div>{props.createdAt}</div>
-    </Reviewlist>
+    </Commentlist>
   );
 };
 
-const Reviewlist = styled.div`
+const Commentlist = styled.div`
   display: flex;
   border-bottom: 1px solid var(--darker-gray);
   padding: 10px 8px;

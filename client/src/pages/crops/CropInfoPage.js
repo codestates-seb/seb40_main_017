@@ -247,8 +247,10 @@ const MenuLink = styled.div`
     height: 100%;
     p {
       height: 100%;
-      width: 100%;
+      width: 75%;
       text-align: center;
+      margin: 0 auto;
+      font-size: 16px;
       img {
         height: 100%;
         width: 70%;
