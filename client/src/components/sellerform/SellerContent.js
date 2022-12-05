@@ -62,7 +62,6 @@ export const SellerContent = ({ nextButton, formData, setFormData, setIsLoading 
     const ReactS3Client = new S3(config);
     await ReactS3Client.uploadFile(file, file.name)
       .then((data) => {
-        console.log(data.location); // 이미지 링크 확인
         dataImgurl = data.location; // dataimgurl 에 이미지 링크 할당
         return dataImgurl;
       })
@@ -71,7 +70,6 @@ export const SellerContent = ({ nextButton, formData, setFormData, setIsLoading 
 
   // 토스트 ui editor 이미지 삽입 함수
   const onUploadImage = async (blob, callback) => {
-    console.log('이미지 삽입');
     let blank_pattern = /[\s]/g;
     if (blank_pattern.test(blob.name)) {
       return alert('이미지명에는 공백제거해주세요');
@@ -84,7 +82,6 @@ export const SellerContent = ({ nextButton, formData, setFormData, setIsLoading 
     }
 
     await uploadImage(blob); // 버킷에 이미지 저장하고 링크 불러오는 함수
-    console.log(dataImgurl); // 이미지 링크 확인
     callback(dataImgurl, 'image'); // 에디터에 해당 이미지 링크 전달
   };
 
@@ -109,8 +106,6 @@ export const SellerContent = ({ nextButton, formData, setFormData, setIsLoading 
         .then((res) => console.log(res))
         .catch((err) => console.log(err));
 
-      console.log('데이터 테스트');
-      console.log(formData);
       setIsLoading(false);
       nextButton();
     }

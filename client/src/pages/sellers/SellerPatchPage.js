@@ -239,10 +239,6 @@ function SellerPatchPage() {
     reset({ title: itemData.title, price: itemData.price });
   }, [itemData]);
 
-  useEffect(() => {
-    console.log(form);
-  }, [form]);
-
   // 썸네일 이미지 input 이벤트
   const handleThumbnailInput = (e) => {
     const file = e.target.files[0];
@@ -279,7 +275,6 @@ function SellerPatchPage() {
       const imgNameArr = previewImg.filter((el, idx) => idx !== index);
       setImg([...imgArr]);
       setPreviewImg([...imgNameArr]);
-      console.log(img);
     };
     if (img === null || img.length === 0) {
       return (
@@ -315,7 +310,6 @@ function SellerPatchPage() {
     const ReactS3Client = new S3(config);
     await ReactS3Client.uploadFile(file, file.name)
       .then((data) => {
-        console.log(data.location); // 이미지 링크 확인
         mainImgurl = data.location; // dataimgurl 에 이미지 링크 할당
         setForm((prevState) => ({ ...prevState, mainImage: mainImgurl }));
         return mainImgurl;
@@ -327,7 +321,6 @@ function SellerPatchPage() {
     const ReactS3Client = new S3(config);
     await ReactS3Client.uploadFile(file, file.name)
       .then((data) => {
-        console.log(data.location); // 이미지 링크 확인
         dataImgurl = data.location; // dataimgurl 에 이미지 링크 할당
         return dataImgurl;
       })
@@ -336,7 +329,6 @@ function SellerPatchPage() {
 
   // 토스트 ui editor 이미지 삽입 함수
   const onUploadImage = async (blob, callback) => {
-    console.log('이미지 삽입');
     let blank_pattern = /[\s]/g;
     if (blank_pattern.test(blob.name)) {
       return alert('이미지명에는 공백제거해주세요');
@@ -349,7 +341,6 @@ function SellerPatchPage() {
     }
 
     await uploadImage(blob); // 버킷에 이미지 저장하고 링크 불러오는 함수
-    console.log(dataImgurl); // 이미지 링크 확인
     callback(dataImgurl, 'image'); // 에디터에 해당 이미지 링크 전달
   };
 
@@ -357,7 +348,6 @@ function SellerPatchPage() {
     const data = editorRef.current.getInstance().getMarkdown(); // 토스트 에디터 작성 내용 콘솔창 보이게 하기
     let contentData = { content: data };
     setForm({ ...form, ...contentData });
-    console.log(form);
   };
   // 판매 수정 등록 버튼 이벤트
   const onPatch = async (data) => {
@@ -379,13 +369,11 @@ function SellerPatchPage() {
         data: JSON.stringify(form),
         headers: { 'Content-Type': 'application/json' },
       })
-        .then((res) => {
-          console.log(res);
+        .then(() => {
           alert('수정 완료 되었습니다.');
           navigate(-1);
         })
-        .catch((err) => {
-          console.log(err);
+        .catch(() => {
           alert('수정 실패 하였습니다');
           navigate(-1);
         });

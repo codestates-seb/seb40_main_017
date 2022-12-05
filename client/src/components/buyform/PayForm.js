@@ -105,7 +105,6 @@ export const PayForm = ({ price }) => {
   const [isLoading, setIsLoading] = useState(false);
   const orderId = useSelector((state) => state.pay.orderid);
 
-  console.log(orderId);
   const changeCheck = (e) => {
     if (e.target.checked) {
       setIsCheck(true);
@@ -119,8 +118,6 @@ export const PayForm = ({ price }) => {
       setIsLoading(true);
       await apiServer({ method: 'GET', url: `/order/pay/${orderId}` })
         .then((res) => {
-          console.log(res);
-          console.log(res.data.next_redirect_pc_url);
           window.location.href = res.data.next_redirect_pc_url;
         })
         .catch((err) => console.log(err));
