@@ -69,7 +69,7 @@ public interface CommentMapper {
           commentResponseDto.setCommentId(comment.getCommentId());
           commentResponseDto.setBoardId(board.getBoardId());
           commentResponseDto.setContext(comment.getContext());
-          commentResponseDto.setName(comment.getCommentMemberName());
+          commentResponseDto.setName(member.getName());
           commentResponseDto.setCreatedAt(comment.getCreatedAt());
           commentResponseDto.setModifiedAt(comment.getModifiedAt());
 
