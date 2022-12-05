@@ -33,6 +33,8 @@ public class SecurityConfig {
 			// .headers().frameOptions().sameOrigin()
 			// .and()
 			.csrf().disable()
+			.cors()
+			.and()
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 			.and()
 			.formLogin().disable()
