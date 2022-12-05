@@ -16,6 +16,7 @@ public enum ExceptionCode {
 
 	/* 리뷰 관련 예외 */
 	REVIEW_NOT_FOUND(404, "리뷰가 존재하지 않습니다."),
+	REVIEW_NOT_CLINET(404, "상품을 구매한 사람이 아닙니다."),
 
 	/* Member 관련 예외 */
 	MEMBER_NOT_FOUND(404, "회원을 찾을 수 없습니다."),
