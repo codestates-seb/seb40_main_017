@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { useSessionCheck } from '../../api/login';
 import { getSeller, getSellerSaleList } from '../../api/seller';
@@ -368,7 +368,9 @@ const SellerInfoPage = () => {
                           {saleList.map((sale) => {
                             return (
                               <tr key={sale.boardId}>
-                                <td>{sale.title}</td>
+                                <td>
+                                  <Link to={`/boards/${sale.boardId}`}>{sale.title}</Link>
+                                </td>
                                 <td>{sale.leftStock}</td>
                                 <td>{sale.createAt}</td>
                               </tr>
