@@ -1,4 +1,5 @@
 package team017.board.Dto;
+
 import lombok.*;
 import team017.product.Entity.Product;
 
@@ -33,7 +34,7 @@ public class BoardResponseDto {
 
     private Product.ProductStatus status;   //판매 상태
 
-    private double reviewAvg ;              //별점의 평균
+    private double reviewAvg;              //별점의 평균
 
     private int leftStock;                  //잔여 재고
 
