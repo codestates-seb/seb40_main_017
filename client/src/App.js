@@ -15,7 +15,7 @@ import SellerformPage from './pages/sellers/SellerformPage';
 import BuyFormPage from './pages/payments/BuyFormPage';
 import styled from 'styled-components';
 import { configureStore } from '@reduxjs/toolkit';
-import userSlice, { setUser } from './features/user/userSlice';
+import userSlice, { clearUser, setUser } from './features/user/userSlice';
 import { Provider } from 'react-redux';
 import LogoutPage from './pages/users/LogoutPage';
 import paySlice from './features/pay/paySlice';
@@ -62,6 +62,8 @@ const App = () => {
       const accessToken = getCookie('accessToken');
       if (accessToken) {
         store.dispatch(updateSession());
+      } else {
+        store.dispatch(clearUser());
       }
     }
   }, []);

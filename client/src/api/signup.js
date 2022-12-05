@@ -48,6 +48,49 @@ export const signupMember = ({ userId, userPassword, userPasswordCheck, userName
   };
 };
 
+export const snsSignupMember = ({ accessToken, memberId, userRole }, callback) => {
+  return (dispatch) => {
+    const data = {
+      role: userRole,
+    };
+
+    apiServer({
+      method: 'PUT',
+      url: `/social/${memberId}`,
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+      data,
+    })
+      .then((response) => {
+        if (response.data.memberId) {
+          dispatch(setUser(response.data));
+
+          const accessToken = response.data.authorization || response.headers['authorization'];
+          setCookie('accessToken', accessToken);
+
+          alert('회원가입 성공');
+
+          callback(true);
+        } else {
+          if (response.data.message) {
+            alert(response.data.message);
+          }
+          callback(false);
+        }
+      })
+      .catch((reason) => {
+        const { response } = reason;
+
+        if (response.data.message) {
+          alert(response.data.message);
+        }
+
+        callback(false);
+      });
+  };
+};
+
 export const deleteMember = ({ memberId }, callback) => {
   apiServer({
     method: 'DELETE',
