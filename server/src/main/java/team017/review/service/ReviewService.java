@@ -80,6 +80,11 @@ public class ReviewService {
         Long postClientId = foundReview.getClient().getClientId();
         verifyWriter(postClientId, clientId);
         reviewRepository.delete(foundReview);
+        Board board = boardRepository.findById(foundReview.getBoard().getBoardId())
+            .orElseThrow(() -> new BusinessLogicException(ExceptionCode.BOARD_NOT_FOUND));
+        board.setReviewAvg(reviewRepository.findbyReviewAvg(board.getBoardId()));
+        board.setReviewNum(board.getReviewNum() - 1);
+        boardRepository.save(board);
     }
 
     private Review findVerifiedReviewById(Long reviewId) {
