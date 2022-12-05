@@ -335,7 +335,9 @@ export const ClientMyPage = ({ handleDeleteMember }) => {
             {orderList.map((order) => {
               return (
                 <tr key={order.ordId}>
-                  <td>{order.title}</td>
+                  <td>
+                    <Link to={`/boards/${order.boardId}`}>{order.title}</Link>
+                  </td>
                   <td>{order.name}</td>
                   <td>{order.phone}</td>
                   <td>{order.quantity}</td>
@@ -744,7 +746,9 @@ export const SellerMyPage = ({ handleDeleteMember }) => {
                   {saleList.map((sale) => {
                     return (
                       <tr key={sale.boardId}>
-                        <td>{sale.title}</td>
+                        <td>
+                          <Link to={`/boards/${sale.boardId}`}>{sale.title}</Link>
+                        </td>
                         <td>{sale.leftStock}</td>
                         <td>{sale.createAt}</td>
                       </tr>
