@@ -44,7 +44,7 @@ public class ReviewService {
         verifiedBoard(review);
 
         //주문을 완료한 사람인지 확인
-        Ord findOrd = findVerifiedOrdByclientId(clientId, review.getBoard().getBoardId());
+        Ord findOrd = findVerifiedOrdByclientId(clientId);
 
         if(findOrd.getProduct().getProductId() == review.getBoard().getProduct().getProductId() && findOrd.getStatus() == Ord.OrdStatus.PAY_COMPLETE){
             Review savedReview = reviewRepository.save(review);
@@ -109,8 +109,8 @@ public class ReviewService {
         return reviewRepository.findByBoard_BoardId(boardId, PageRequest.of(page, size, Sort.by("reviewId").descending()));
     }
 
-    private Ord findVerifiedOrdByclientId(Long clientId, Long boardId){
-        Optional<Ord> optionalOrd = ordRepository.findByClient_ClientIdAndBoardId(clientId, boardId);
+    private Ord findVerifiedOrdByclientId(Long clientId){
+        Optional<Ord> optionalOrd = ordRepository.findByClient_ClientId(clientId);
         Ord ord = optionalOrd.orElseThrow(() -> new BusinessLogicException(ExceptionCode.REVIEW_NOT_CLINET));
 
         return ord;
