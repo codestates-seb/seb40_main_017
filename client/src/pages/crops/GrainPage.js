@@ -18,8 +18,6 @@ function GrainPage() {
     getBoards();
   }, []);
 
-  console.log('grain:', items);
-
   const fetchBoards = async () => {
     const res = await fetch(`${process.env.REACT_APP_API_URL}/boards/category/3?page=${page}&size=10`);
     const data = await res.json();

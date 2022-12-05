@@ -13,13 +13,10 @@ function NutsPage() {
     const getBoards = async () => {
       const res = await fetch(`${process.env.REACT_APP_API_URL}/boards/category/4?page=1&size=10`);
       const data = await res.json();
-      console.log('data:', data);
       setItems(data.data);
     };
     getBoards();
   }, []);
-
-  console.log('nuts:', items);
 
   const fetchBoards = async () => {
     const res = await fetch(`${process.env.REACT_APP_API_URL}/boards/category/4?page=${page}&size=10`);

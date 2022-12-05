@@ -17,7 +17,6 @@ function StarRate(props) {
   };
 
   let score = clicked.filter(Boolean).length;
-  console.log(score);
   props.setStarCount(score);
 
   return (
