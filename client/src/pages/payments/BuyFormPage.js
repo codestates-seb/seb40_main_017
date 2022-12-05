@@ -71,7 +71,6 @@ function BuyFormPage() {
     const getItem = async () => {
       await apiServer({ method: 'GET', url: `/boards/${boardInfo}` })
         .then((res) => {
-          console.log(res.data);
           setItemData({ ...itemData, ...res.data });
         })
         .catch((error) => console.log(error));
@@ -79,7 +78,6 @@ function BuyFormPage() {
     const getUserData = async () => {
       await apiServer({ method: 'GET', url: `/members/client/${userInfo}` })
         .then((res) => {
-          console.log(res.data);
           setUserData({ ...userData, ...res.data });
         })
         .catch((error) => console.log(error));
