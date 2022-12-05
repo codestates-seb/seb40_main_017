@@ -48,7 +48,7 @@ export const signupMember = ({ userId, userPassword, userPasswordCheck, userName
   };
 };
 
-export const snsSignupMember = ({ memberId, userRole }, callback) => {
+export const snsSignupMember = ({ accessToken, memberId, userRole }, callback) => {
   return (dispatch) => {
     const data = {
       role: userRole,
@@ -57,6 +57,9 @@ export const snsSignupMember = ({ memberId, userRole }, callback) => {
     apiServer({
       method: 'PUT',
       url: `/social/${memberId}`,
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
       data,
     })
       .then((response) => {

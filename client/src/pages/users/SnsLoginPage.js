@@ -37,7 +37,7 @@ const SnsLoginPage = () => {
       if (userRole === '') {
         alert('회원 구분을 선택해주세요.');
       } else {
-        dispatch(snsSignupMember({ memberId, userRole }, handleSuccessCallback));
+        dispatch(snsSignupMember({ accessToken, memberId, userRole }, handleSuccessCallback));
       }
     },
     [dispatch, handleSuccessCallback, memberId, userRole]
