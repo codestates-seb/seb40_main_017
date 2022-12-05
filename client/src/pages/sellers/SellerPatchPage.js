@@ -426,6 +426,7 @@ function SellerPatchPage() {
                 placeholder="상품가격"
                 name="price"
                 type="number"
+                min={1}
                 {...register('price', { required: true })}
                 onChange={handleOnchangeForm}
               ></input>
