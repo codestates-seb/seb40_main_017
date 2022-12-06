@@ -85,8 +85,7 @@
   <details>
   <summary> 카카오 로그인 </summary>
   
-  
-  ![카카오로그인](https://user-images.githubusercontent.com/100844959/205430691-5e4a59f0-3d13-40cc-8de1-047567727ba8.gif)
+  ![new카카오로그인](https://user-images.githubusercontent.com/100844959/205823221-2631a231-4d13-4f4a-927e-4211003bfe77.gif)
 
   </details>
 </br>  
