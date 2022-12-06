@@ -17,7 +17,7 @@ import team017.ord.service.OrdService;
 import team017.review.entity.Review;
 import team017.review.repository.ReviewRepository;
 
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,7 +26,6 @@ import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final ClientService clientService;
@@ -34,6 +33,7 @@ public class ReviewService {
     private final BoardRepository boardRepository;
     private final OrdRepository ordRepository;
 
+    @Transactional
     public Review createReview(Review review, Long clientId) {
 
         // 존재하는 회원인지 확인
@@ -64,6 +64,7 @@ public class ReviewService {
         return savedReview;
     }
 
+    @Transactional(readOnly = true)
     public Review findReview(Long reviewId){
         return findVerifiedReviewById(reviewId);
     }
@@ -84,7 +85,13 @@ public class ReviewService {
         reviewRepository.delete(foundReview);
         Board board = boardRepository.findById(foundReview.getBoard().getBoardId())
             .orElseThrow(() -> new BusinessLogicException(ExceptionCode.BOARD_NOT_FOUND));
-        board.setReviewAvg(reviewRepository.findbyReviewAvg(board.getBoardId()));
+
+        /* 만약 보드에서 리뷰가 없으면 평균값을 0으로 만듦 -> repository 에서 찾지 못함 */
+        if (board.getReviewList().size() == 0) {
+            board.setReviewAvg(0);
+        } else {
+            board.setReviewAvg(reviewRepository.findbyReviewAvg(board.getBoardId()));
+        }
         board.setReviewNum(board.getReviewNum() - 1);
         boardRepository.save(board);
     }
