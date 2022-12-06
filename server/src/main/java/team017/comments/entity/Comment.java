@@ -24,6 +24,7 @@ public class Comment extends Auditable {
     @JoinColumn(name = "MEMBER_ID")
     @ToString.Exclude
     private Member member;
+
     /* 🍉게시판 - 댓글 다대일 연관 관계 : 판매자 참조 */
     @ManyToOne
     @JoinColumn(name = "BOARD_ID")

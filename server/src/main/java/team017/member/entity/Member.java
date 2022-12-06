@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.*;
 
 import lombok.*;
+import team017.comments.entity.Comment;
 
 @Getter
 @Entity
@@ -47,6 +48,9 @@ public class Member {
 	/* security 이용하여 역할 추가 */
 	@ElementCollection(fetch = FetchType.EAGER)
 	private List<String> roles;
+
+	@OneToMany(mappedBy = "member", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+	private Comment comment;
 
 
 	/* 💜 소비자 - 회원 일대일 연관 관계 : 회원 참조*/
