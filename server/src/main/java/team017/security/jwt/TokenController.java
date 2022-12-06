@@ -64,7 +64,7 @@ public class TokenController {
 		if(member.getRole().equals("SELLER")) {
 			LoginResponse.Seller sellerResponse = mapper.getSellerResponse(member);
 
-			return new ResponseEntity<>(sellerResponse, HttpStatus.OK);
+			return new ResponseEntity<>(sellerResponse, headers, HttpStatus.OK);
 		} else if (member.getRole().equals("CLIENT")) {
 			LoginResponse.Cilent clientResponse = mapper.getClientResponse(member);
 
