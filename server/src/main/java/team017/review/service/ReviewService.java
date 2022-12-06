@@ -18,7 +18,11 @@ import team017.review.entity.Review;
 import team017.review.repository.ReviewRepository;
 
 import javax.transaction.Transactional;
+
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +32,7 @@ public class ReviewService {
     private final ClientService clientService;
     private final BoardService boardService;
     private final BoardRepository boardRepository;
+    private final OrdRepository ordRepository;
 
     public Review createReview(Review review, Long clientId) {
 
@@ -38,6 +43,15 @@ public class ReviewService {
         // 존재하는 게시판인지 확인
         review.setBoard(boardService.findVerifiedBoard(review.getBoard().getBoardId()));
         verifiedBoard(review);
+
+        List<Ord> ordList = ordRepository.findByClient_ClientId(clientId);
+        List<Ord> hasProduct = ordList.stream()
+            .filter(ord -> ord.getProduct().getProductId() == review.getBoard().getProduct().getProductId())
+            .filter(ord -> ord.getStatus() == Ord.OrdStatus.PAY_COMPLETE)
+            .collect(Collectors.toList());
+        if (hasProduct.size() == 0) {
+            throw new BusinessLogicException(ExceptionCode.NOT_BUY_REVIEW);
+        }
 
         Review savedReview = reviewRepository.save(review);
 
