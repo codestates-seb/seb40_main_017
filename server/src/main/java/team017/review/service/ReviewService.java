@@ -27,10 +27,6 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final ClientService clientService;
     private final BoardService boardService;
-
-    private final OrdService ordService;
-
-    private final OrdRepository ordRepository;
     private final BoardRepository boardRepository;
 
     public Review createReview(Review review, Long clientId) {
@@ -43,23 +39,15 @@ public class ReviewService {
         review.setBoard(boardService.findVerifiedBoard(review.getBoard().getBoardId()));
         verifiedBoard(review);
 
-        //주문을 완료한 사람인지 확인
-        Ord findOrd = findVerifiedOrdByclientId(clientId);
+        Review savedReview = reviewRepository.save(review);
 
-        if(findOrd.getProduct().getProductId() == review.getBoard().getProduct().getProductId() && findOrd.getStatus() == Ord.OrdStatus.PAY_COMPLETE){
-            Review savedReview = reviewRepository.save(review);
+        //리뷰의 평균, 총 리뷰수 저장
+        Board board = boardService.findVerifiedBoard(savedReview.getBoard().getBoardId());
+        board.setReviewAvg(reviewRepository.findbyReviewAvg(board.getBoardId()));
+        board.setReviewNum(board.getReviewNum() + 1);
+        boardRepository.save(board);
 
-            //리뷰의 평균, 총 리뷰수 저장
-            Board board = boardService.findVerifiedBoard(savedReview.getBoard().getBoardId());
-            board.setReviewAvg(reviewRepository.findbyReviewAvg(board.getBoardId()));
-            board.setReviewNum(board.getReviewNum() + 1);
-            boardRepository.save(board);
-            return savedReview;
-        }
-        else{
-            throw new BusinessLogicException(ExceptionCode.REVIEW_NOT_CLINET);
-        }
-
+        return savedReview;
     }
 
     public Review findReview(Long reviewId){
@@ -112,12 +100,5 @@ public class ReviewService {
 
     public Page<Review> findReviewByBoards(Long boardId, int page, int size){
         return reviewRepository.findByBoard_BoardId(boardId, PageRequest.of(page, size, Sort.by("reviewId").descending()));
-    }
-
-    private Ord findVerifiedOrdByclientId(Long clientId){
-        Optional<Ord> optionalOrd = ordRepository.findByClient_ClientId(clientId);
-        Ord ord = optionalOrd.orElseThrow(() -> new BusinessLogicException(ExceptionCode.REVIEW_NOT_CLINET));
-
-        return ord;
     }
 }
