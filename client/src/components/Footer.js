@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import logoImg from '../assets/images/logo.svg';
 
 const Footerbox = styled.footer`
   width: 100%;
@@ -7,21 +8,27 @@ const Footerbox = styled.footer`
   background-color: var(--brown);
   display: flex;
   align-items: center;
+  justify-content: center;
   color: var(--white);
 `;
 
 const Logo = styled.p`
-  font-size: 187.5%;
+  font-size: 30px;
 `;
 
 const Team = styled.div`
-  border-right: 2px solid var(--white);
-  padding: 35px 300px 35px 100px;
+  margin-left: 30px;
 `;
 
+const LogoImg = styled.img`
+  width: 180px;
+  height: 180px;
+  margin-right: 20px;
+`;
 function Footer() {
   return (
     <Footerbox>
+      <LogoImg src={logoImg} alt="로고이미지" />
       <Logo>17시 내고향</Logo>
       <Team>
         <p>FE : 남궁태욱 김민성 권수현</p>

@@ -58,7 +58,9 @@ export const Comment = () => {
       .then((response) => console.log(response))
       .catch((res) => {
         const { response } = res;
-        if (response.data.fieldErrors[0].reason) {
+        if (response.data.message) {
+          alert(response.data.message);
+        } else if (context.length < 10) {
           alert(response.data.fieldErrors[0].reason);
         }
       });
