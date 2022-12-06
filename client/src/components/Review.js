@@ -52,6 +52,7 @@ export const Review = () => {
   const reviewOnSubmitHandler = async (e) => {
     e.preventDefault();
     const context = e.target.context.value;
+    e.target.reset();
     await apiServer({
       method: 'POST',
       url: `/boards/${boardId}/reviews`,
