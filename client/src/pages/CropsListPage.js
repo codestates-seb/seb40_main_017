@@ -13,7 +13,6 @@ function CropListPage() {
   const getBoards = async () => {
     const res = await fetch(`${process.env.REACT_APP_API_URL}/boards?page=1&size=8`);
     const data = await res.json();
-    console.log('data:', data);
     setItems(data.data);
   };
   useEffect(() => {

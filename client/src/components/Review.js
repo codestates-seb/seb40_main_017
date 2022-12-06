@@ -64,8 +64,15 @@ export const Review = () => {
       }),
       headers: { 'Content-Type': 'application/json' },
     })
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
+      .then((response) => console.log(response))
+      .catch((res) => {
+        const { response } = res;
+        if (response.data.message) {
+          alert(response.data.message);
+        } else if (context.length < 8) {
+          alert(response.data.fieldErrors[0].reason);
+        }
+      });
     getReviews();
   };
 
