@@ -81,7 +81,13 @@ function CropInfoPage() {
             <p>남은수량 {board.leftStock}개</p>
             <Flexbox>
               <Linktoseller sellerId={board.sellerId} />
-              {board.leftStock === 0 ? 'SOLDOUT' : user.clientId ? <PurchaseButton boardId={boardId} quantity={quantity} /> : '회원가입해주세요😊'}
+              {board.leftStock === 0 ? (
+                'SOLDOUT'
+              ) : user.clientId ? (
+                <PurchaseButton boardId={boardId} quantity={quantity} />
+              ) : (
+                '구매자로 회원가입한 경우에 구매가 가능합니다😊'
+              )}
             </Flexbox>
           </CropInfo>
         </Crop>
