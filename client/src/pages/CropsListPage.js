@@ -115,7 +115,7 @@ const BoardList = styled.div`
   display: flex;
   flex-wrap: wrap;
   overflow: hidden;
-  justify-content: space-between;
+  justify-content: flex-start;
   .board {
     width: 25%;
   }

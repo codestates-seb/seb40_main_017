@@ -44,6 +44,7 @@ export const Comment = () => {
   const CommentOnSubmitHandler = async (e) => {
     e.preventDefault();
     const context = e.target.context.value;
+    e.target.reset();
     await apiServer({
       method: 'POST',
       url: `/comments`,

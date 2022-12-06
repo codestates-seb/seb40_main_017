@@ -60,13 +60,15 @@ function VegetablePage() {
           </ol>
         </CategoryList>
         <InfiniteScroll dataLength={items.length} next={fetchData} hasMore={hasMore} loader={''} endMessage={''}>
-          <BoardList>
-            {items.map((item) => {
-              if (item.category === 2) {
-                return <CropBoard key={item.boardId} item={item} />;
-              }
-            })}
-          </BoardList>
+          <Outer>
+            <BoardList>
+              {items.map((item) => {
+                if (item.category === 2) {
+                  return <CropBoard className="board" key={item.boardId} item={item} />;
+                }
+              })}
+            </BoardList>
+          </Outer>
         </InfiniteScroll>
       </div>
     </Background>
@@ -81,10 +83,20 @@ const Background = styled.div`
   height: 100%;
 `;
 
+const Outer = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
 const BoardList = styled.div`
+  width: 1500px;
   display: flex;
   flex-wrap: wrap;
   overflow: hidden;
+  justify-content: flex-start;
+  .board {
+    width: 25%;
+  }
 `;
 
 const CropInfo = styled.div`
