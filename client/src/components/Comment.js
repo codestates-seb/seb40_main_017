@@ -55,8 +55,13 @@ export const Comment = () => {
       }),
       headers: { 'Content-Type': 'application/json' },
     })
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
+      .then((response) => console.log(response))
+      .catch((res) => {
+        const { response } = res;
+        if (response.data.fieldErrors[0].reason) {
+          alert(response.data.fieldErrors[0].reason);
+        }
+      });
     getComment();
   };
 
