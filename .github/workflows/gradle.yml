@@ -16,7 +16,7 @@ permissions:
   contents: read
 
 env:
-  S3_BUCKET_NAME: 17farm-deploy
+  S3_BUCKET_NAME: 17farm-codedeploy-app
   RESOURCE_PATH: ./server/src/main/resources/application-server.yml
 
 jobs:
@@ -81,5 +81,5 @@ jobs:
         run: >
           aws deploy create-deployment --application-name 17farm-codedeploy-app
           --deployment-config-name CodeDeployDefault.AllAtOnce
-          --deployment-group-name 17farm-group
+          --deployment-group-name 17farm-deploy-group
           --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=main-017-deploy.zip
