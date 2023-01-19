@@ -81,5 +81,5 @@ jobs:
         run: >
           aws deploy create-deployment --application-name 17farm-codedeploy-app
           --deployment-config-name CodeDeployDefault.AllAtOnce
-          --deployment-group-name 17farm-deploy-group
+          --deployment-group-name 17farm-group
           --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=main-017-deploy.zip
